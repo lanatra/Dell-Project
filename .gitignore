@@ -44,5 +44,6 @@ Temporary Items
 workspace.xml
 misc.xml
 /out
+out/*
 out/artifacts/Dell_Project_war_exploded/index.jsp
 .idea/workspace.xml
