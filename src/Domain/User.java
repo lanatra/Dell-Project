@@ -24,7 +24,7 @@ public class User {
 
     }
 
-    public String userToString()
+    public String toString()
     {
         return "IM HERE";
         /*

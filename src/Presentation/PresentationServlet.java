@@ -32,7 +32,7 @@ public class PresentationServlet extends HttpServlet {
         if(request.getParameter("action") != null)
             action = request.getParameter("action");
         // Can use a switch here instead of if / if-else but I didn't have the right version of the JDK (couldn't use strings in a switch statement)
-        
+
 
 
        /* try {
@@ -62,9 +62,11 @@ public class PresentationServlet extends HttpServlet {
             request.setAttribute("User", request.getSession().getAttribute("User"));
             System.out.println("loggedin");
             if (action.equals("getUser")) {
-               //request.setAttribute(Controller.getUser(), "userInfo");
-                request.setAttribute("testHole", "hole through");
-               request.getRequestDispatcher("index.jsp").forward(request, response);
+                String user_id = request.getParameter("user_id");
+                User user = cont.getUser(user_id);
+                String user_info = user.toString();
+                request.setAttribute("userInfo", user_info);
+                request.getRequestDispatcher("index.jsp").forward(request, response);
             }
             request.getRequestDispatcher("index.jsp").forward(request, response);
         } else {
