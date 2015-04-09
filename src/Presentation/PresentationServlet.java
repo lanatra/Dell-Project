@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * Created by Lasse on 09-04-2015.
@@ -18,14 +19,23 @@ public class PresentationServlet extends HttpServlet {
 
     protected void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        Controller cont = AssignController(request);
+        //response.setContentType("text/html;charset=UTF-8");
+        //PrintWriter out = response.getWriter();
+        //out.println("SERVLET REACHED");
+
+        //Controller cont = AssignController(request);
+
+        request.setAttribute("testHole", "hole through");
+        request.getRequestDispatcher("index.jsp").forward(request, response);
 
         // The action parameter is a hidden field in html/jsp that designates where the servlet should redirect
         String action = request.getParameter("action");
 
         // Can use a switch here instead of if / if-else but I didn't have the right version of the JDK (couldn't use strings in a switch statement)
-        if (action.equals("hest")) {
-            // do something
+        if (action.equals("getUser")) {
+           //request.setAttribute(Controller.getUser(), "userInfo");
+            request.setAttribute("testHole", "hole through");
+           request.getRequestDispatcher("index.jsp").forward(request, response);
         }
         else if (action.equals("fisk")) {
             // do something else
