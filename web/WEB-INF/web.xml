@@ -18,10 +18,6 @@
     <servlet-mapping>
         <servlet-name>PresentationServlet</servlet-name>
         <url-pattern>/submit</url-pattern>
-
-    <servlet-mapping>
-        <servlet-name>PresentationServlet</servlet-name>
-        <url-pattern>/submit</url-pattern>
     </servlet-mapping>
 
 </web-app>
