@@ -32,17 +32,25 @@ public class PresentationServlet extends HttpServlet {
         String action = request.getParameter("action");
 
         // Can use a switch here instead of if / if-else but I didn't have the right version of the JDK (couldn't use strings in a switch statement)
-        if (action.equals("getUser")) {
-           //request.setAttribute(Controller.getUser(), "userInfo");
-            request.setAttribute("testHole", "hole through");
-           request.getRequestDispatcher("index.jsp").forward(request, response);
+        if(request.getSession().getAttribute("User") != null) {
+            if (action.equals("getUser")) {
+               //request.setAttribute(Controller.getUser(), "userInfo");
+                request.setAttribute("testHole", "hole through");
+               request.getRequestDispatcher("index.jsp").forward(request, response);
+            }
+        } else {
+            if(action.equals("login")) {
+                Object user = cont.login(request.getParameter("email"), request.getParameter("password"));
+                if (user != null) {
+                    request.getSession().setAttribute("User", user);
+                    request.getRequestDispatcher("index.jsp").forward(request, response);
+                } else {
+                    request.setAttribute("message", "Incorrect password");
+                }
+            }
         }
-        else if (action.equals("fisk")) {
-            // do something else
-        } else if(action.equals("register")) {
-            cont.
+            request.getRequestDispatcher("login.jsp").forward(request, response);
         }
-
 
     }
 

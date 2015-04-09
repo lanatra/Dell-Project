@@ -21,7 +21,7 @@ create table users (
   name VARCHAR2(32),
   role VARCHAR2(20),
   email VARCHAR2(32),
-  password VARCHAR2(32),
+  password CHAR(77),
   company_id int,
 
   PRIMARY KEY (id),

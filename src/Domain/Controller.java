@@ -21,5 +21,11 @@ public class Controller {
 
 
     //User Login / Registration
-    public void register(String email, String password)
+    public User login(String email, String password) {
+        User user = facade.getUserByEmail(email);
+        if(Login.testPassword(password, user.password))
+            return user;
+        else
+            return user
+    }
 }
