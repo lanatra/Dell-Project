@@ -1,6 +1,7 @@
 package Presentation;
 
 import Domain.Controller;
+import Domain.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,7 +19,7 @@ public class PresentationServlet extends HttpServlet {
 
     protected void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        //response.setContentType("text/html;charset=UTF-8");
+    //response.setContentType("text/html;charset=UTF-8");
         //PrintWriter out = response.getWriter();
         //out.println("SERVLET REACHED");
 
@@ -26,11 +27,37 @@ public class PresentationServlet extends HttpServlet {
 
 
         // The action parameter is a hidden field in html/jsp that designates where the servlet should redirect
+
         String action = "";
         if(request.getParameter("action") != null)
             action = request.getParameter("action");
-        System.out.println("hiJensa2");
         // Can use a switch here instead of if / if-else but I didn't have the right version of the JDK (couldn't use strings in a switch statement)
+        
+
+
+       /* try {
+            if (action == null) { // DEFAULT PAGE FORWARD
+                request.getRequestDispatcher("index.jsp").forward(request, response);
+            } else if (action.equals("getUser")) {
+
+                String user_id = request.getParameter("user_id");
+
+                User user = cont.getUser(user_id);
+
+                String user_info = user.userToString();
+
+                request.setAttribute("userInfo", user_info);
+
+                request.getRequestDispatcher("index.jsp").forward(request, response);
+
+            }
+        }
+        catch (NullPointerException e) {
+            response.setContentType("text/html;charset=UTF-8");
+            PrintWriter out = response.getWriter();
+            out.println("nullpointer");
+        }*/
+
         if(request.getSession().getAttribute("User") != null) {
             request.setAttribute("User", request.getSession().getAttribute("User"));
             System.out.println("loggedin");
@@ -55,10 +82,8 @@ public class PresentationServlet extends HttpServlet {
             System.out.println("fallback");
             response.sendRedirect("/login.jsp");
         }
-        //response.setHeader("Location", "/login.jsp");
-
-        //request.getRequestDispatcher("login.jsp").forward(request, response);
     }
+
 
     private Controller AssignController(HttpServletRequest request) {
 

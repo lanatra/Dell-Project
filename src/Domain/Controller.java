@@ -15,6 +15,11 @@ public class Controller {
 
     }
 
+    // Readers
+    public User getUser(String user_id) {
+        return facade.getUser(user_id);
+    }
+
     ;
 
 

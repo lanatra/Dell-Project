@@ -7,24 +7,30 @@ import Domain.*;
  */
 public class UserMapper {
 
-    public User getUser(int id, Connection con) {
+
+    public User getUser(String user_id, Connection con) {
+
         User user = null;
-        String SQL = "select * from users where id= ? ";
+        String SQL = "select * from intellij where user_id=?";
+
 
         PreparedStatement statement = null;
 
         try {
             statement = con.prepareStatement(SQL);
-            statement.setInt(1, id);
+
+            statement.setString(1, user_id);
             ResultSet rs = statement.executeQuery();
             if (rs.next())
             {
-                user = new User(id,
+
+                user = new User(rs.getInt(1),
                         rs.getString(2),
                         rs.getString(3),
                         rs.getString(4),
                         rs.getString(5),
                         rs.getInt(6));
+
             }
 
         } catch (Exception e) {
