@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="Oracle - dat@datdb.cphbusiness.dk" uuid="a2edeb47-03bc-47ad-a7f4-0e6e973c5c82">
+      <secret-storage>master_key</secret-storage>
+      <first-sync>true</first-sync>
+      <user-name>cphlj222</user-name>
+    </data-source>
+  </component>
+</project>

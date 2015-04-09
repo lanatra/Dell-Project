@@ -5,21 +5,21 @@ package Domain;
  */
 public class User {
 
-    int user_id;
-    String name;
-    String password;
-    String role;
-    String email;
-    int company_id;
+    public int id;
+    public String name;
+    public String password;
+    public String role;
+    public String email;
+    public int company_id;
 
-    public User(int user_id, String name, String password, String role, String email, int company_id) {
+    public User(int id1, String name1, String role1, String email1, String password1, int company_id1) {
 
-        this.user_id = user_id;
-        this.name = name;
-        this.password = password;
-        this.role = role;
-        this.email = email;
-        this.company_id = company_id;
+        this.id = id1;
+        this.name = name1;
+        this.password = password1;
+        this.role = role1;
+        this.email = email1;
+        this.company_id = company_id1;
 
     }
 

@@ -14,7 +14,6 @@ import java.io.PrintWriter;
 /**
  * Created by Lasse on 09-04-2015.
  */
-@WebServlet(name = "PresentationServlet")
 public class PresentationServlet extends HttpServlet {
 
     protected void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -25,33 +24,40 @@ public class PresentationServlet extends HttpServlet {
 
         Controller cont = AssignController(request);
 
-        request.setAttribute("testHole", "hole through");
-        request.getRequestDispatcher("index.jsp").forward(request, response);
 
         // The action parameter is a hidden field in html/jsp that designates where the servlet should redirect
-        String action = request.getParameter("action");
-
+        String action = "";
+        if(request.getParameter("action") != null)
+            action = request.getParameter("action");
+        System.out.println("hiJensa2");
         // Can use a switch here instead of if / if-else but I didn't have the right version of the JDK (couldn't use strings in a switch statement)
         if(request.getSession().getAttribute("User") != null) {
+            request.setAttribute("User", request.getSession().getAttribute("User"));
+            System.out.println("loggedin");
             if (action.equals("getUser")) {
                //request.setAttribute(Controller.getUser(), "userInfo");
                 request.setAttribute("testHole", "hole through");
                request.getRequestDispatcher("index.jsp").forward(request, response);
             }
+            request.getRequestDispatcher("index.jsp").forward(request, response);
         } else {
             if(action.equals("login")) {
                 Object user = cont.login(request.getParameter("email"), request.getParameter("password"));
                 if (user != null) {
+                    System.out.println("correct");
                     request.getSession().setAttribute("User", user);
                     request.getRequestDispatcher("index.jsp").forward(request, response);
                 } else {
+                    System.out.println("incorrect");
                     request.setAttribute("message", "Incorrect password");
                 }
             }
+            System.out.println("fallback");
+            response.sendRedirect("/login.jsp");
         }
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-        }
+        //response.setHeader("Location", "/login.jsp");
 
+        //request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 
     private Controller AssignController(HttpServletRequest request) {

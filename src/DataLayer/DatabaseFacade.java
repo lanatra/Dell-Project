@@ -8,7 +8,7 @@ import Domain.User;
 public class DatabaseFacade {
 
     public User getUserByEmail(String email) {
-        return UserMapper.getUserByEmail(email);
+        return new UserMapper().getUserByEmail(email, DatabaseConnection.getInstance().getConnection());
     }
 
 }

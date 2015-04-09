@@ -1,3 +1,4 @@
+<%@ page import="Domain.User" %>
 <%--
   Created by IntelliJ IDEA.
   User: Andreas Poulsen
@@ -17,7 +18,6 @@ hest4
     <input name="name">
     <input type="submit">
 </form>
-  <%= request.getAttribute("name") %>
   <%= "<p>" + request.getAttribute("testHole") + "</p>" %>
   </body>
 </html>
