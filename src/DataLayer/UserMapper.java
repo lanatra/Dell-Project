@@ -7,14 +7,14 @@ import Domain.*;
  */
 public class UserMapper {
 
-    public User getUser(int user_id, DatabaseConnection con) {
+    public User getUser(int user_id, Connection con) {
         User user = null;
         String SQL = "select * from users where user_id= ? ";
 
         PreparedStatement statement = null;
 
         try {
-
+            statement = Connection.prepareStatement(SQL);
             statement = con.prepareStatement(SQL);
             statement.setInt(1, user_id);
             ResultSet rs = statement.executeQuery();

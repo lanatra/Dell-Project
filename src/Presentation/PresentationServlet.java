@@ -23,7 +23,7 @@ public class PresentationServlet extends HttpServlet {
         //PrintWriter out = response.getWriter();
         //out.println("SERVLET REACHED");
 
-        //Controller cont = AssignController(request);
+        Controller cont = AssignController(request);
 
         request.setAttribute("testHole", "hole through");
         request.getRequestDispatcher("index.jsp").forward(request, response);
@@ -39,6 +39,8 @@ public class PresentationServlet extends HttpServlet {
         }
         else if (action.equals("fisk")) {
             // do something else
+        } else if(action.equals("register")) {
+            cont.
         }
 
 

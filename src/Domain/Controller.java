@@ -15,4 +15,11 @@ public class Controller {
 
     };
 
+
+
+
+
+
+    //User Login / Registration
+    public void register(String email, String password)
 }
