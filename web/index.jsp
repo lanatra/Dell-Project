@@ -12,7 +12,8 @@
   </head>
   <body>
 hest
-<form action="/" method="get">
+<form action="PresentationServlet" method="get">
+    <input hidden name="action" value="getUser">
     <input name="name">
     <input type="submit">
 </form>
