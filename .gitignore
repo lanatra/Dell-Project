@@ -45,11 +45,5 @@ workspace.xml
 misc.xml
 out/
 *.class
-<<<<<<< HEAD
-=======
-out/artifacts/Dell_Project_war_exploded/WEB-INF/classes/DataLayer/UserMapper.class
-*.class
 out/artifacts/Dell_Project_war_exploded/WEB-INF/classes/Domain/Controller.class
-*.class
->>>>>>> origin/master
 .idea/workspace.xml
