@@ -2,9 +2,7 @@ package DataLayer;
 
 import java.sql.Connection;
 import Domain.User;
-/**
- * Created by Lasse on 09-04-2015.
- */
+
 public class DatabaseFacade {
 
     private Connection con;
@@ -17,6 +15,11 @@ public class DatabaseFacade {
         User u;
         u = new UserMapper().getUser(user_id, con);
         return u;
+    }
+
+
+    public User getUserByEmail(String email) {
+        return UserMapper.getUserByEmail(email);
     }
 
 

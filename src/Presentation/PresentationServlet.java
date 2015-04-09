@@ -24,15 +24,12 @@ public class PresentationServlet extends HttpServlet {
         //PrintWriter out = response.getWriter();
         //out.println("SERVLET REACHED");
 
-       Controller cont = AssignController(request);
+        Controller cont = AssignController(request);
+
 
         // The action parameter is a hidden field in html/jsp that designates where the servlet should redirect
         String action = request.getParameter("action");
 
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        out.println(action);
-        // Can use a switch here instead of if / if-else but I didn't have the right version of the JDK (couldn't use strings in a switch statement)
 
         try {
             if (action == null) { // DEFAULT PAGE FORWARD
@@ -53,15 +50,33 @@ public class PresentationServlet extends HttpServlet {
         }
         catch (NullPointerException e) {
             response.setContentType("text/html;charset=UTF-8");
-            out = response.getWriter();
+            PrintWriter out = response.getWriter();
             out.println("nullpointer");
         }
 
 
 
+        if(request.getSession().getAttribute("User") != null) {
+            if (action.equals("getUser")) {
+               //request.setAttribute(Controller.getUser(), "userInfo");
+                request.setAttribute("testHole", "hole through");
+               request.getRequestDispatcher("index.jsp").forward(request, response);
+            }
+        } else {
+            if(action.equals("login")) {
+                Object user = cont.login(request.getParameter("email"), request.getParameter("password"));
+                if (user != null) {
+                    request.getSession().setAttribute("User", user);
+                    request.getRequestDispatcher("index.jsp").forward(request, response);
+                } else {
+                    request.setAttribute("message", "Incorrect password");
+                }
+            }
+        }
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        }
 
 
-    }
 
     private Controller AssignController(HttpServletRequest request) {
 

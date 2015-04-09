@@ -20,4 +20,17 @@ public class Controller {
         return facade.getUser(user_id);
     }
 
+
+
+
+
+
+    //User Login / Registration
+    public User login(String email, String password) {
+        User user = facade.getUserByEmail(email);
+        if(Login.testPassword(password, user.password))
+            return user;
+        else
+            return user
+    }
 }

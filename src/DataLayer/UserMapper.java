@@ -8,13 +8,13 @@ import Domain.*;
 public class UserMapper {
 
     public User getUser(String user_id, Connection con) {
+
         User user = null;
         String SQL = "select * from intellij where user_id=?";
 
         PreparedStatement statement = null;
 
         try {
-
             statement = con.prepareStatement(SQL);
             statement.setString(1, user_id);
             ResultSet rs = statement.executeQuery();
