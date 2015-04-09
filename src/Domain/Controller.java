@@ -13,6 +13,11 @@ public class Controller {
 
         this.facade = new DatabaseFacade();
 
-    };
+    }
+
+    // Readers
+    public User getUser(String user_id) {
+        return facade.getUser(user_id);
+    }
 
 }

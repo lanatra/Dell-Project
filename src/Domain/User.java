@@ -5,14 +5,14 @@ package Domain;
  */
 public class User {
 
-    int user_id;
+    String user_id;
     String name;
     String password;
     String role;
     String email;
     int company_id;
 
-    public User(int user_id, String name, String password, String role, String email, int company_id) {
+    public User(String user_id, String name, String password, String role, String email, int company_id) {
 
         this.user_id = user_id;
         this.name = name;
@@ -21,6 +21,16 @@ public class User {
         this.email = email;
         this.company_id = company_id;
 
+    }
+
+    public String userToString()
+    {
+        return "  User_id: " + user_id
+                + "  Name: " + name
+                + "  Password: " + password
+                + "  Role: " + role
+                + "  Email: " + email
+                + "  Company_id: " +  company_id;
     }
 
 }

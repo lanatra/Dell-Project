@@ -11,13 +11,13 @@
     <title></title>
   </head>
   <body>
-hest4
+hest
+
 <form action="submit" method="get">
     <input hidden name="action" value="getUser">
-    <input name="name">
+    <input name="user_id">
     <input type="submit">
 </form>
-  <%= request.getAttribute("name") %>
-  <%= "<p>" + request.getAttribute("testHole") + "</p>" %>
+
   </body>
 </html>
