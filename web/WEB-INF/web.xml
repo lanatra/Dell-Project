@@ -7,20 +7,17 @@
         <listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
     </listener>
 
+    <servlet-mapping>
+        <servlet-name>PresentationServlet</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>PresentationServlet</servlet-name>
         <servlet-class>Presentation.PresentationServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>PresentationServlet</servlet-name>
-        <url-pattern>/</url-pattern>
-<<<<<<< HEAD
-=======
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>PresentationServlet</servlet-name>
         <url-pattern>/submit</url-pattern>
->>>>>>> origin/master
     </servlet-mapping>
 
 </web-app>
