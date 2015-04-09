@@ -41,4 +41,8 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+workspace.xml
+misc.xml
+/out
+out/artifacts/Dell_Project_war_exploded/index.jsp
 .idea/workspace.xml
