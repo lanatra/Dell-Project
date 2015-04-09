@@ -20,12 +20,14 @@ public class UserMapper {
             ResultSet rs = statement.executeQuery();
             if (rs.next())
             {
+
                 user = new User(user_id,
                         rs.getString(2),
                         rs.getString(3),
                         rs.getString(4),
                         rs.getString(5),
                         rs.getInt(6));
+
             }
 
         } catch (Exception e) {

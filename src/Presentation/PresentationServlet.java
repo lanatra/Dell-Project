@@ -24,18 +24,21 @@ public class PresentationServlet extends HttpServlet {
         //PrintWriter out = response.getWriter();
         //out.println("SERVLET REACHED");
 
-       // Controller cont = AssignController(request);
+       Controller cont = AssignController(request);
 
         // The action parameter is a hidden field in html/jsp that designates where the servlet should redirect
         String action = request.getParameter("action");
 
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        out.println(action);
         // Can use a switch here instead of if / if-else but I didn't have the right version of the JDK (couldn't use strings in a switch statement)
 
         try {
-            if (action == null) {
+            if (action == null) { // DEFAULT PAGE FORWARD
                 request.getRequestDispatcher("index.jsp").forward(request, response);
             } else if (action.equals("getUser")) {
-                /*
+
                 String user_id = request.getParameter("user_id");
 
                 User user = cont.getUser(user_id);
@@ -45,17 +48,15 @@ public class PresentationServlet extends HttpServlet {
                 request.setAttribute("userInfo", user_info);
 
                 request.getRequestDispatcher("index.jsp").forward(request, response);
-                */
-            } else if (action.equals("fisk")) {
-                // do something else
 
             }
         }
         catch (NullPointerException e) {
             response.setContentType("text/html;charset=UTF-8");
-            PrintWriter out = response.getWriter();
+            out = response.getWriter();
             out.println("nullpointer");
         }
+
 
 
 

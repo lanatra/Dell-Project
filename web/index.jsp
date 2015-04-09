@@ -19,5 +19,9 @@ hest
     <input type="submit">
 </form>
 
+  <%= request.getAttribute("userInfo") %>
+
+
+
   </body>
 </html>
