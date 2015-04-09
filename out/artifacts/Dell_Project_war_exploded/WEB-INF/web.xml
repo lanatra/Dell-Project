@@ -6,23 +6,14 @@
     <listener>
         <listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
     </listener>
+
     <servlet>
-        <description>JAX-WS endpoint</description>
-        <display-name>WSServlet</display-name>
-        <servlet-name>WSServlet</servlet-name>
-        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet>
-        <servlet-name>TheServlet</servlet-name>
-        <servlet-class>TheServlet</servlet-class>
+        <servlet-name>PresentationServlet</servlet-name>
+        <servlet-class>Presentation.PresentationServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>TheServlet</servlet-name>
-        <url-pattern>/</url-pattern>
+        <servlet-name>PresentationServlet</servlet-name>
+        <url-pattern>/*</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>WSServlet</servlet-name>
-        <url-pattern>/services/*</url-pattern>
-    </servlet-mapping>
+
 </web-app>
