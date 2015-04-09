@@ -42,12 +42,12 @@ public class PresentationServlet extends HttpServlet {
         {
             // Start new session
             // Not using singleton; each user will be given their own controller for use throughout their session
-            con = new Controller();
-            sessionObj.setAttribute("Controller", con);
+            cont = new Controller();
+            sessionObj.setAttribute("Controller", cont);
         } else
         {
             // Continue ongoing session
-            con = (Controller) sessionObj.getAttribute("Controller");
+            cont = (Controller) sessionObj.getAttribute("Controller");
         }
         return cont;
 
