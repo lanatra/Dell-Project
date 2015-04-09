@@ -19,15 +19,10 @@ hest
     <input name="user_id">
     <input type="submit">
 </form>
-<<<<<<< HEAD
-  <%= request.getAttribute("User").toString() %>
   <%= "<p>" + request.getAttribute("testHole") + "</p>" %>
-=======
 
   <%= request.getAttribute("userInfo") %>
 
 
-
->>>>>>> origin/master
   </body>
 </html>

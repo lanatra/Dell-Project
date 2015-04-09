@@ -14,13 +14,12 @@
     <servlet-mapping>
         <servlet-name>PresentationServlet</servlet-name>
         <url-pattern>/</url-pattern>
-<<<<<<< HEAD
-=======
     </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>PresentationServlet</servlet-name>
         <url-pattern>/submit</url-pattern>
->>>>>>> origin/master
+
     </servlet-mapping>
 
 </web-app>

@@ -43,8 +43,12 @@ Temporary Items
 .apdisk
 workspace.xml
 misc.xml
-out/*
 out/
 out/artifacts/Dell_Project_war_exploded/index.jsp
 .idea/workspace.xml
 *.class
+out/artifacts/Dell_Project_war_exploded/WEB-INF/classes/DataLayer/UserMapper.class
+*.class
+out/artifacts/Dell_Project_war_exploded/WEB-INF/classes/Domain/Controller.class
+*.class
+.idea/workspace.xml
