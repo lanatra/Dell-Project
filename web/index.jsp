@@ -23,6 +23,7 @@ hest
 
   <%= request.getAttribute("userInfo") %>
 
-
+    <p>URL is: <%= request.getAttribute("url") %></p>
+    <a href="/myaction">Action!</a>
   </body>
 </html>

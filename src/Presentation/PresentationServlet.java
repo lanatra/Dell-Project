@@ -38,6 +38,8 @@ public class PresentationServlet extends HttpServlet {
                     break;
                  */
                 default:
+                    String url = request.getRequestURI();
+                    request.setAttribute("url", url);
                     request.getRequestDispatcher("index.jsp").forward(request, response);
             }
 
