@@ -20,8 +20,9 @@ public class PresentationServlet extends HttpServlet {
             // Can use a switch here instead of if / if-else but I didn't have the right version of the JDK (couldn't use strings in a switch statement)
 
         // if logged in
-        if (request.getSession().getAttribute("User") != null) {
-            request.setAttribute("User", request.getSession().getAttribute("User")); // passing user object to request
+        Object userObj = request.getSession().getAttribute("User");
+        if (userObj != null) {
+            request.setAttribute("User", userObj); // passing user object to request
 
             switch (action) {
                 case "getUser":
@@ -30,30 +31,20 @@ public class PresentationServlet extends HttpServlet {
                 case "createProjectRequest":
                     createProjectRequest(request, response, cont);
                     break;
-
-                /*
-                // It's good to put actions into separate methods like this, it would be mess in little while otherwise.
-                case "anotherAction":
-                    anotherAction(request, response, cont);
+                case "getProjectsByState":
+                    getProjectsByState(request, response, cont);
                     break;
-                 */
-                    default:
-                        String url = request.getRequestURI();
-                        request.setAttribute("url", url);
-                        request.getRequestDispatcher("index.jsp").forward(request, response);
+                default:
+                    String url = request.getRequestURI();
+                    request.setAttribute("url", url);
+                    request.getRequestDispatcher("index.jsp").forward(request, response);
                 }
 
             } else {
-                if (action.equals("login")) {
-                    Object user = cont.login(request.getParameter("email"), request.getParameter("password"));
-                    if (user != null) {
-                        request.getSession().setAttribute("User", user);
-                        request.getRequestDispatcher("index.jsp").forward(request, response);
-                    } else {
-                        request.setAttribute("message", "Incorrect password");
-                    }
-                }
-                response.sendRedirect("/login.jsp");
+                if (action.equals("login"))
+                    login(request, response, cont);
+                else
+                    response.sendRedirect("/login.jsp");
             }
     }
 
@@ -77,11 +68,21 @@ public class PresentationServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-            process(request, response);
+        process(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         process(request, response);
+    }
+
+    void login(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        Object user = cont.login(request.getParameter("email"), request.getParameter("password"));
+        if (user != null) {
+            request.getSession().setAttribute("User", user);
+            request.getRequestDispatcher("index.jsp").forward(request, response);
+        } else {
+            request.setAttribute("message", "Incorrect password");
+        }
     }
 
     void getUser (HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
@@ -99,9 +100,13 @@ public class PresentationServlet extends HttpServlet {
         if (cont.createProjectRequest(budget, project_body)) {
             request.setAttribute("submitCheck", true);
             request.getRequestDispatcher("index.jsp").forward(request, response);
+        } else {
+            request.setAttribute("submitCheck", false);
+            request.getRequestDispatcher("index.jsp").forward(request, response);
         }
-        request.setAttribute("submitCheck", false);
+    }
+    void getProjectsByState(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        request.setAttribute("projects", cont.getProjectsByState(request.getParameter("state")));
         request.getRequestDispatcher("index.jsp").forward(request, response);
-
     }
 }

@@ -25,5 +25,6 @@
     <orderEntry type="library" name="JAX-WS-Glassfish / JAX-WS 2.2 RI / Metro 1.X / JWSDP 2.2" level="project" />
     <orderEntry type="library" name="Java EE 6-Java EE 6" level="project" />
     <orderEntry type="library" name="ojdbc7" level="project" />
+    <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>

@@ -3,6 +3,7 @@ package DataLayer;
 import Domain.Project;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 
 /**
@@ -96,6 +97,38 @@ public class ProjectMapper {
 
     }
 
+    public ArrayList getProjectsByState(String state, Connection con) {
+        ArrayList<Project> projects = new ArrayList<>();
+        String SQL = "select * from projects where status= ? ";
 
+        PreparedStatement statement = null;
+
+        try {
+            statement = con.prepareStatement(SQL);
+            statement.setString(1, state);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next())
+            {
+                projects.add(new Project(rs.getInt(1),
+                        rs.getTimestamp(2),
+                        rs.getTimestamp(3),
+                        rs.getInt(4),
+                        rs.getInt(5),
+                        rs.getString(6),
+                        rs.getInt(7),
+                        rs.getString(8),
+                        rs.getTimestamp(9),
+                        rs.getTimestamp(10),
+                        rs.getTimestamp(11),
+                        rs.getBoolean(12),
+                        rs.getBoolean(13)));
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error in UserMapper");
+        }
+
+        return projects;
+    }
 
 }

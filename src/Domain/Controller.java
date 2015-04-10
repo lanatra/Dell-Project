@@ -2,6 +2,8 @@ package Domain;
 
 import DataLayer.DatabaseFacade;
 
+import java.util.ArrayList;
+
 /**
  * Created by Lasse on 09-04-2015.
  */
@@ -19,12 +21,13 @@ public class Controller {
         return facade.createProjectRequest(budget, project_body);
     }
 
-    // Readers
-    public User getUser(String user_id) {
-        return facade.getUser(user_id);
-    }
+   //Readers
+    //User
+    public User getUser(String user_id) { return facade.getUser(user_id); }
+    //Project
+    public ArrayList getProjectsByState(String state) { return  facade.getProjectsByState(state); }
 
-    ;
+
 
 
     //User Login / Registration
