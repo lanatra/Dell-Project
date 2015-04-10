@@ -66,7 +66,7 @@ Verification complete:
 <c:forEach var="project" items="${projects}">
     <tr>
         <td><c:out value="${project.getId()}" /></td>
-        <td><c:out value="${project.getCompany_id()}" /></td>
+        <td><c:out value="${project.getCompanyName()}" /></td>
         <td><c:out value="${project.getBudget()}" /></td>
         <td><c:out value="${project.getBody()}" /></td>
         <td><c:out value="${project.getStatus()}" /></td>

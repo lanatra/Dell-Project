@@ -28,6 +28,7 @@ public class Controller {
     public ArrayList getProjectsByState(String state) { return  facade.getProjectsByState(state); }
     public boolean verifyProjectRequest(String project_id) { return facade.verifyProjectRequest(project_id); }
 
+    public Company getCompanyById(int id) { return facade.getCompanyById(id); }
 
     //User Login / Registration
     public User login(String email, String password) {

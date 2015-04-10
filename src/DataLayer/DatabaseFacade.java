@@ -3,6 +3,7 @@ package DataLayer;
 import java.sql.Connection;
 import java.util.ArrayList;
 
+import Domain.Company;
 import Domain.User;
 
 public class DatabaseFacade {
@@ -30,6 +31,10 @@ public class DatabaseFacade {
         return new ProjectMapper().verifyProjectRequest(project_id, con);
     }
 
+    // COMPANY
+    public Company getCompanyById(int id) {
+        return new CompanyMapper().getCompanyById(id, con);
+    }
 
     // USER
     public User getUserByEmail(String email) {
