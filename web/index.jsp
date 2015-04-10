@@ -10,6 +10,7 @@
 <html>
   <head>
     <title></title>
+      <link rel="stylesheet" type="text/css" href="/css/normalize.css">
   </head>
   <body>
 hest
