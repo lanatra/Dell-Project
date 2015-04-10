@@ -1,9 +1,5 @@
 package DataLayer;
 
-/**
- * Created by Lasse on 09-04-2015.
- */
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 

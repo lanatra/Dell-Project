@@ -26,20 +26,20 @@ public class DisplayProject {
     public int f_last_change_admin;
     public int f_last_change_partner;
 
-    public String f_end_time;
+    /*public String f_end_time;
     public String f_start_time;
     public String f_start_time;
     public String f_start_time;
     public String f_start_time;
-    public String f_start_time;
+    public String f_start_time;*/
 
 
     public String companyName;
     public String companyLogoUrl;
 
-    public ArrayList<Message> messages;
+    //public ArrayList<Message> messages;
 
-    public ArrayList<POE> poes;
+    //public ArrayList<POE> poes;
 
 
 
@@ -60,11 +60,12 @@ public class DisplayProject {
         DP.unread_admin = project.unread_admin;
         DP.unread_partner = project.unread_partner;
 
-        f_start_time
+        /*f_start_time
         f_end_time
         f_execution_date
         f_last_change_admin
-        f_last_change_partner
+        f_last_change_partner*/
+        return DP;
     }
 
 }

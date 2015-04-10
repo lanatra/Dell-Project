@@ -1,8 +1,10 @@
 $color-blue: #0085C3;
-$black: transparent;
+$color-dark: #5B5B5B;
+$color-light-gray: #EBEBEB;
 
 body, html {
 	font-family: 'Roboto', Helvetica, Arial, sans-serif;
+	background-color: #F4F4F4;
 }
 
 h1 {
@@ -104,5 +106,104 @@ div.login-background {
 		    -khtml-text-fill-color: white;
 		    -khtml-box-shadow: 0 0 0px 1000px $color-blue inset;
 		}
+	}
+}
+
+div.header{
+	background-color: $color-blue;
+	height: 80px;
+	color: white;
+
+	div.logo {
+		margin-top: 20px;
+		img {
+			float:left;
+		}
+		span {
+			float: left;
+			color: white;
+			line-height: 1;
+			font-weight: lighter;
+			font-size: 0.8em;
+			margin-left: 20px;
+			margin-top: 2px;
+		}
+	}
+	div.user-label {
+		margin-top: 22px;
+		cursor: pointer;
+		span {
+			margin-top: 4px;
+			float: right;
+		}
+		img {
+			float: right;
+			margin-top: 14px;
+			margin-left: 10px;
+		}
+	}
+	div.budget-label {
+		float: right;
+		margin-top: 20px;
+		margin-right: 50px;
+		span.big {
+			float: left;
+			font-size: 1.5em;
+			line-height: 1;
+			font-weight: lighter;
+		}
+		span.desc {
+			font-size: 0.8em;
+			float: left;
+			clear: left;
+		}
+	}
+}
+
+div.filter {
+	float: left;
+	color: $color-dark;
+	margin-right: 20px;
+
+	div.circle {
+		float: left;
+		box-sizing: border-box;
+		width: 60px;
+		height: 60px;
+		border-radius: 30px;
+		background-color: red;
+		text-align: center;
+		font-size: 1.7em;
+		font-weight: lighter;
+		padding-top: 9px;
+
+		&.finished {
+			color: #5B5B5B;
+			background-color: $color-light-gray;
+			border: 2px solid $color-light-gray;
+		}
+		&.execution {
+			color: #5B5B5B;
+			background-color: $color-light-gray;
+			border: 2px dashed #5B5B5B;
+		}
+		&.waiting {
+			color: #5B5B5B;
+			background-color: $color-light-gray;
+			border: 2px solid #5B5B5B;
+		}
+		&.unread {
+			color: white;
+			background-color: #5B5B5B;
+			border: 2px solid #5B5B5B;
+		}
+	}
+
+	&>span {
+		float: left;
+		font-size: 0.8em;
+		line-height: 1;
+		margin-top: 19px;
+		margin-left: 10px;
 	}
 }

@@ -17,7 +17,6 @@ public class PresentationServlet extends HttpServlet {
             String action = ""; // The action parameter is a hidden field in html/jsp that designates where the servlet should redirect
             if (request.getParameter("action") != null)
                 action = request.getParameter("action");
-            // Can use a switch here instead of if / if-else but I didn't have the right version of the JDK (couldn't use strings in a switch statement)
 
         // if logged in
         Object userObj = request.getSession().getAttribute("User");
@@ -39,8 +38,16 @@ public class PresentationServlet extends HttpServlet {
                     break;
                 default:
                     String url = request.getRequestURI();
-                    request.setAttribute("url", url);
-                    request.getRequestDispatcher("index.jsp").forward(request, response);
+
+                    if(url.equals("/logout")) {
+                        HttpSession session = request.getSession(false);
+                        if (session != null) {
+                            session.invalidate();
+                            request.getRequestDispatcher("login.jsp").forward(request, response);
+                        }
+                    } else {
+                        request.getRequestDispatcher("index.jsp").forward(request, response);
+                    }
                 }
             } else {
                 if (action.equals("login"))
@@ -84,6 +91,7 @@ public class PresentationServlet extends HttpServlet {
             request.getRequestDispatcher("index.jsp").forward(request, response);
         } else {
             request.setAttribute("message", "Incorrect password");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
         }
     }
 
