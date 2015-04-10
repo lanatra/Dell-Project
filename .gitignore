@@ -1,7 +1,1 @@
-.*
-!/.gitignore
 .idea/workspace.xml
-workspace.xml
-misc.xml
-out/
-*.class
