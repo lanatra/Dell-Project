@@ -3,5 +3,5 @@
 .idea/workspace.xml
 workspace.xml
 misc.xml
-out/
+out/*
 *.class
