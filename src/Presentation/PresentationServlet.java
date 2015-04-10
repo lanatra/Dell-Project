@@ -34,18 +34,21 @@ public class PresentationServlet extends HttpServlet {
                 case "getProjectsByState":
                     getProjectsByState(request, response, cont);
                     break;
+                case "verifyProjectRequestByProjectId":
+                    verifyProjectRequestByProjectId(request, response, cont);
+                    break;
                 default:
                     String url = request.getRequestURI();
                     request.setAttribute("url", url);
                     request.getRequestDispatcher("index.jsp").forward(request, response);
                 }
-
             } else {
                 if (action.equals("login"))
                     login(request, response, cont);
                 else
                     response.sendRedirect("/login.jsp");
             }
+            response.sendRedirect("/login.jsp");
     }
 
     private Controller AssignController(HttpServletRequest request) {
@@ -100,13 +103,23 @@ public class PresentationServlet extends HttpServlet {
         if (cont.createProjectRequest(budget, project_body)) {
             request.setAttribute("submitCheck", true);
             request.getRequestDispatcher("index.jsp").forward(request, response);
-        } else {
-            request.setAttribute("submitCheck", false);
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            return;
         }
     }
     void getProjectsByState(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
         request.setAttribute("projects", cont.getProjectsByState(request.getParameter("state")));
         request.getRequestDispatcher("index.jsp").forward(request, response);
+    }
+
+    void verifyProjectRequestByProjectId(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        String project_id = request.getParameter("project_id");
+        if (cont.verifyProjectRequest(project_id)) {
+            request.setAttribute("verificationCheck", true);
+            request.getRequestDispatcher("index.jsp").forward(request, response);
+            return;
+        }
+        request.setAttribute("verificationCheck", false);
+        request.getRequestDispatcher("index.jsp").forward(request, response);
+
     }
 }

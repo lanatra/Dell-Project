@@ -21,12 +21,20 @@ public class Controller {
         return facade.createProjectRequest(budget, project_body);
     }
 
-   //Readers
-    //User
-    public User getUser(String user_id) { return facade.getUser(user_id); }
-    //Project
-    public ArrayList getProjectsByState(String state) { return  facade.getProjectsByState(state); }
 
+   //Readers
+    //User related
+    public User getUser(String user_id) { return facade.getUser(user_id); }
+
+
+    //Project related
+    public ArrayList getProjectsByState(String state) { return  facade.getProjectsByState(state); }
+    public boolean verifyProjectRequest(String project_id) { return facade.verifyProjectRequest(project_id); }
+
+    // Readers
+    public User getUser(String user_id) {
+        return facade.getUser(user_id);
+    }
 
 
 

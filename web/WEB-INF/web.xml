@@ -16,7 +16,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DefaultServlet</servlet-name>
-        <url-pattern>/res/*</url-pattern>
+        <url-pattern>/img/*</url-pattern>
     </servlet-mapping>
 
 

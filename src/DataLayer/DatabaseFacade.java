@@ -26,6 +26,10 @@ public class DatabaseFacade {
     public ArrayList getProjectsByState(String state) {
         return new ProjectMapper().getProjectsByState(state, DatabaseConnection.getInstance().getConnection());
     }
+    public boolean verifyProjectRequest(String project_id) {
+        return new ProjectMapper().verifyProjectRequest(project_id, con);
+    }
+
 
     // USER
     public User getUserByEmail(String email) {
