@@ -1,5 +1,6 @@
 package DataLayer;
 
+import Domain.DisplayProject;
 import Domain.Project;
 
 import java.sql.*;
@@ -138,7 +139,12 @@ public class ProjectMapper {
             System.out.println("Error in UserMapper");
         }
 
-        return projects;
+        ArrayList<DisplayProject> DisplayProjects = new ArrayList<>();
+        for (Project proj : projects) {
+            DisplayProjects.add(DisplayProject.projectToDisplay(proj));
+        }
+
+        return DisplayProjects;
     }
 
     public void updateChangeDate(int parsedId, String usertype, Connection con) {
