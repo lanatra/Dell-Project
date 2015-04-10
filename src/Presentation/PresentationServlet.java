@@ -43,18 +43,19 @@ public class PresentationServlet extends HttpServlet {
                         request.getRequestDispatcher("index.jsp").forward(request, response);
                 }
 
-            } else {
-                if (action.equals("login")) {
-                    Object user = cont.login(request.getParameter("email"), request.getParameter("password"));
-                    if (user != null) {
-                        request.getSession().setAttribute("User", user);
-                        request.getRequestDispatcher("index.jsp").forward(request, response);
-                    } else {
-                        request.setAttribute("message", "Incorrect password");
-                    }
+        } else {
+            if (action.equals("login")) {
+                Object user = cont.login(request.getParameter("email"), request.getParameter("password"));
+                if (user != null) {
+                    request.getSession().setAttribute("User", user);
+                    request.getRequestDispatcher("index.jsp").forward(request, response);
+                } else {
+                    request.setAttribute("message", "Email or password is incorrect.<br/>Please try again.");
+                    request.getRequestDispatcher("login.jsp").forward(request, response);
                 }
-                response.sendRedirect("/login.jsp");
             }
+            response.sendRedirect("/login.jsp");
+        }
     }
 
     private Controller AssignController(HttpServletRequest request) {
