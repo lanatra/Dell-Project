@@ -6,6 +6,21 @@
     <listener>
         <listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
     </listener>
+    <servlet>
+        <servlet-name>DefaultServlet</servlet-name>
+        <servlet-class>org.apache.catalina.servlets.DefaultServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DefaultServlet</servlet-name>
+        <url-pattern>/css/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DefaultServlet</servlet-name>
+        <url-pattern>/res/*</url-pattern>
+    </servlet-mapping>
+
+
+
 
     <servlet-mapping>
         <servlet-name>PresentationServlet</servlet-name>
@@ -15,9 +30,8 @@
         <servlet-name>PresentationServlet</servlet-name>
         <servlet-class>Presentation.PresentationServlet</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>PresentationServlet</servlet-name>
-        <url-pattern>/submit</url-pattern>
-    </servlet-mapping>
+
+
+
 
 </web-app>

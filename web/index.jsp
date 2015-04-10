@@ -10,6 +10,7 @@
 <html>
   <head>
     <title></title>
+      <link rel="stylesheet" type="text/css" href="/css/normalize.css">
   </head>
   <body>
 hest
@@ -33,6 +34,9 @@ hest
 
 <%= request.getAttribute("submitCheck")%>
 
+
+    <p>URL is: <%= request.getAttribute("url") %></p>
+    <a href="/myaction">Action!</a>
 
   </body>
 </html>
