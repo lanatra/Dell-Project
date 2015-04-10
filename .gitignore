@@ -4,7 +4,7 @@
 .AppleDB
 .AppleDesktop
 .apdisk
-.idea/
+.idea
 workspace.xml
 misc.xml
 out/
