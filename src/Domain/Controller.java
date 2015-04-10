@@ -4,9 +4,6 @@ import DataLayer.DatabaseFacade;
 
 import java.util.ArrayList;
 
-/**
- * Created by Lasse on 09-04-2015.
- */
 public class Controller {
 
     DatabaseFacade facade;
@@ -30,12 +27,6 @@ public class Controller {
     //Project related
     public ArrayList getProjectsByState(String state) { return  facade.getProjectsByState(state); }
     public boolean verifyProjectRequest(String project_id) { return facade.verifyProjectRequest(project_id); }
-
-    // Readers
-    public User getUser(String user_id) {
-        return facade.getUser(user_id);
-    }
-
 
 
     //User Login / Registration
