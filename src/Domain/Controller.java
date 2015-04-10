@@ -14,6 +14,10 @@ public class Controller {
         this.facade = new DatabaseFacade();
 
     }
+    // Writers
+    public boolean createProjectRequest(String budget, String project_body) {
+        return facade.createProjectRequest(budget, project_body);
+    }
 
     // Readers
     public User getUser(String user_id) {

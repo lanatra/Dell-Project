@@ -19,9 +19,19 @@ hest
     <input name="user_id">
     <input type="submit">
 </form>
+
   <%= "<p>" + request.getAttribute("testHole") + "</p>" %>
 
   <%= request.getAttribute("userInfo") %>
+
+<form action="submit" method="get">
+    <input hidden name="action" value="createProjectRequest">
+    <input name="budget">
+    <input type="project_body">
+    <input type="submit">
+</form>
+
+<%= request.getAttribute("submitCheck")%>
 
 
   </body>

@@ -31,6 +31,9 @@ public class PresentationServlet extends HttpServlet {
                 case "getUser":
                     getUser(request, response, cont);
                     break;
+                case "createProjectRequest":
+                    createProjectRequest(request, response, cont);
+                    break;
                 /*
                 // It's good to put actions into separate methods like this, it would be mess in little while otherwise.
                 case "anotherAction":
@@ -88,5 +91,18 @@ public class PresentationServlet extends HttpServlet {
         String user_info = user.toString();
         request.setAttribute("userInfo", user_info);
         request.getRequestDispatcher("index.jsp").forward(request, response);
+    }
+
+    void createProjectRequest(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        String project_body = request.getParameter("project_body");
+        String budget = request.getParameter("budget");
+
+        if (cont.createProjectRequest(budget, project_body)) {
+            request.setAttribute("submitCheck", true);
+            request.getRequestDispatcher("index.jsp").forward(request, response);
+        }
+        request.setAttribute("submitCheck", false);
+        request.getRequestDispatcher("index.jsp").forward(request, response);
+
     }
 }

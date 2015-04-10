@@ -11,7 +11,7 @@ public class UserMapper {
     public User getUser(String user_id, Connection con) {
 
         User user = null;
-        String SQL = "select * from intellij where user_id=?";
+        String SQL = "select * from intellij where userid=?";
 
 
         PreparedStatement statement = null;

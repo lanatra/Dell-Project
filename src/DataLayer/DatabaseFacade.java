@@ -17,6 +17,10 @@ public class DatabaseFacade {
         return u;
     }
 
+    public boolean createProjectRequest(String budget, String project_body) {
+        return new ProjectMapper().createProjectRequest(budget, project_body, con);
+    }
+
 
     public User getUserByEmail(String email) {
         return new UserMapper().getUserByEmail(email, DatabaseConnection.getInstance().getConnection());
