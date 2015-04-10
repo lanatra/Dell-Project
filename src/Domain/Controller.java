@@ -19,6 +19,10 @@ public class Controller {
         return facade.createProjectRequest(budget, project_body);
     }
 
+    public boolean verifyProjectRequest(String project_id) {
+        return facade.verifyProjectRequest(project_id);
+    }
+
     // Readers
     public User getUser(String user_id) {
         return facade.getUser(user_id);

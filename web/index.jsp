@@ -25,15 +25,30 @@ hest
 
   <%= request.getAttribute("userInfo") %>
 
+<br><br><br>
+Project Request form:
 <form action="submit" method="get">
     <input hidden name="action" value="createProjectRequest">
-    <input name="budget">
-    <input type="project_body">
+    Budget:<input name="budget">
+    Description:<input type="text" name="project_body">
     <input type="submit">
 </form>
-
+Request complete:
 <%= request.getAttribute("submitCheck")%>
 
+<br><br><br>
+
+
+Project verification form:
+<form action="submit" method="get">
+    <input hidden name="action" value="verifyProjectRequestByProjectId">
+    Project ID: <input name="project_id">
+    <input type="submit">
+</form>
+Verification complete:
+<%= request.getAttribute("verificationCheck")%>
+
+<br><br><br>
 
     <p>URL is: <%= request.getAttribute("url") %></p>
     <a href="/myaction">Action!</a>

@@ -30,6 +30,9 @@ public class PresentationServlet extends HttpServlet {
                 case "createProjectRequest":
                     createProjectRequest(request, response, cont);
                     break;
+                case "verifyProjectRequestByProjectId":
+                    verifyProjectRequestByProjectId(request, response, cont);
+                    break;
 
                 /*
                 // It's good to put actions into separate methods like this, it would be mess in little while otherwise.
@@ -99,8 +102,21 @@ public class PresentationServlet extends HttpServlet {
         if (cont.createProjectRequest(budget, project_body)) {
             request.setAttribute("submitCheck", true);
             request.getRequestDispatcher("index.jsp").forward(request, response);
+            return;
         }
         request.setAttribute("submitCheck", false);
+        request.getRequestDispatcher("index.jsp").forward(request, response);
+
+    }
+
+    void verifyProjectRequestByProjectId(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        String project_id = request.getParameter("project_id");
+        if (cont.verifyProjectRequest(project_id)) {
+            request.setAttribute("verificationCheck", true);
+            request.getRequestDispatcher("index.jsp").forward(request, response);
+            return;
+        }
+        request.setAttribute("verificationCheck", false);
         request.getRequestDispatcher("index.jsp").forward(request, response);
 
     }

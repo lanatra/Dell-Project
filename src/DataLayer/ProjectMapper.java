@@ -39,11 +39,12 @@ public class ProjectMapper {
             statement.setString(8, project_body);
             statement.setTimestamp(9, null);
             statement.setTimestamp(10, null);
-            statement.setTimestamp(11, null);
+            statement.setTimestamp(11, timestamp);
             statement.setBoolean(12, true);
             statement.setBoolean(13, false);
 
             statement.executeUpdate();
+
 
             return true;
 
@@ -76,26 +77,70 @@ public class ProjectMapper {
     }
 
 
-
-
-    public boolean verifyProjectRequest(int project_id, Connection con) {
+    public boolean verifyProjectRequest(String project_id, Connection con) {
         PreparedStatement statement = null;
+        java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
+        Timestamp timestamp = new Timestamp(date.getTime());
         String SQL = "UPDATE projects SET status = 'Verified' where id = ?";
 
+        int parsedId;
         try {
-            statement.setInt(1, project_id);
+            parsedId = Integer.parseInt(project_id);
+        } catch (NumberFormatException e) {
+            return false;
+        }
 
-            statement.executeQuery();
+
+        try {
+            statement = con.prepareStatement(SQL);
+
+            statement.setInt(1, parsedId);
+            statement.executeUpdate();
+
+            updateChangeDate(parsedId, "Dell", con);
 
             return true;
         } catch (Exception e) {
-            System.out.println("Error in verifyProjectRequest");
+            System.out.println("Zzzzz");
         }
         return false;
 
-
     }
 
+    public void updateChangeDate(int parsedId, String usertype, Connection con) {
+        if (usertype.equals("Dell")) {
+            java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
+            Timestamp timestamp = new Timestamp(date.getTime());
+            PreparedStatement statement = null;
+            String SQL = "UPDATE projects SET last_change_admin = ? where id = ? ";
+            try {
+                statement = con.prepareStatement(SQL);
+                statement.setTimestamp(1, timestamp);
+                statement.setInt(2, parsedId);
+                statement.executeUpdate();
 
+            } catch (Exception e) {
+                System.out.println("Error in updateChangeDate()");
+            }
+        }
+        else {
+            java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
+            Timestamp timestamp = new Timestamp(date.getTime());
+            PreparedStatement statement = null;
+            String SQL = "UPDATE projects SET last_change_partner = ? where id = ? ";
+            try {
+                statement = con.prepareStatement(SQL);
+                statement.setTimestamp(1, timestamp);
+                statement.setInt(2, parsedId);
+                statement.executeUpdate();
+
+            } catch (Exception e) {
+                System.out.println("Error in updateChangeDate()");
+            }
+
+        }
+
+
+    }
 
 }

@@ -21,6 +21,9 @@ public class DatabaseFacade {
         return new ProjectMapper().createProjectRequest(budget, project_body, con);
     }
 
+    public boolean verifyProjectRequest(String project_id) {
+        return new ProjectMapper().verifyProjectRequest(project_id, con);
+    }
 
     public User getUserByEmail(String email) {
         return new UserMapper().getUserByEmail(email, DatabaseConnection.getInstance().getConnection());
