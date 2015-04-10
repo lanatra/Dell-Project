@@ -3,9 +3,6 @@ package Domain;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
-/**
- * Created by Andreas Poulsen on 10-Apr-15.
- */
 public class DisplayProject {
 
     public int id;
@@ -21,6 +18,7 @@ public class DisplayProject {
     public Timestamp last_change_partner;
     public boolean unread_admin;
     public boolean unread_partner;
+
 
     public int f_start_time;
     public int f_end_time;

@@ -48,7 +48,6 @@ public class PresentationServlet extends HttpServlet {
                 else
                     response.sendRedirect("/login.jsp");
             }
-            response.sendRedirect("/login.jsp");
     }
 
     private Controller AssignController(HttpServletRequest request) {
