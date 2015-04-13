@@ -158,7 +158,10 @@ public class ProjectMapper {
                         rs.getTimestamp(10),
                         rs.getTimestamp(11),
                         rs.getBoolean(12),
-                        rs.getBoolean(13)));
+                        rs.getBoolean(13),
+                        rs.getString(14),
+                        rs.getString(15)
+                        ));
             }
 
         } catch (Exception e) {
@@ -194,13 +197,9 @@ public class ProjectMapper {
         System.out.println(SQL);
 
         try {
-            System.out.println("wehere1");
             statement = con.prepareStatement(SQL);
-            System.out.println("wehere2");
             ResultSet rs = statement.executeQuery();
-            System.out.println("wehere3");
             if (rs.next()) {
-                System.out.println("hasnext");
                 res[0] = rs.getInt(1);
                 res[1] = rs.getInt(2);
                 res[2] = rs.getInt(3);

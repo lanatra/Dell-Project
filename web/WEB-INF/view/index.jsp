@@ -40,19 +40,19 @@
 
 
   <div class="container" style="margin-top: 40px;">
-    <a href="/"">
+    <a href="/dashboard"">
       <div class="filter">
         <div class="circle waiting"><c:out value="${statusCount[0]}" /> </div>
         <span>Waiting<br/>for action</span>
       </div>
     </a>
-    <a href="/?state=In Execution">
+    <a href="?state=In Execution">
       <div class="filter">
         <div class="circle execution"><c:out value="${statusCount[1]}" /></div>
         <span>In execution</span>
       </div>
     </a>
-    <a href="/?state=Claim approved">
+    <a href="?state=Claim approved">
       <div class="filter">
         <div class="circle finished"><c:out value="${statusCount[2]}" /></div>
         <span>Finished</span>
@@ -74,6 +74,7 @@
                   <div><c:out value="${project.getCompanyName()}" /></div>
                   <div><c:out value="${project.getBudget()}" /></div>
                   <div><c:out value="${project.getStatus()}" /></div>
+                  <div><c:out value="${project.getNotification()}" /></div>
               </li>
           </c:forEach>
 

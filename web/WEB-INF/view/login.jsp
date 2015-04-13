@@ -6,9 +6,9 @@
     <meta name="description" content="Dell campaign management system">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,500&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-    <link href="css/normalize.css" rel="stylesheet" media="all">
-    <link href="css/skeleton.css" rel="stylesheet" media="all">
-    <link href="css/style.css" rel="stylesheet" media="all">
+    <link href="/css/normalize.css" rel="stylesheet" media="all">
+    <link href="/css/skeleton.css" rel="stylesheet" media="all">
+    <link href="/css/style.css" rel="stylesheet" media="all">
 </head>
 <body>
   <div class="login-background u-pull-left">
@@ -27,7 +27,7 @@
                 <p><%= request.getAttribute("message") %></p>
               <%};%>
           </div>
-          <form action="/login" method="post" class="u-full-width" autocomplete="off">
+          <form action="/api/login" method="post" class="u-full-width" autocomplete="off">
             <input type="hidden" name="action" value="login">
             <input class="u-full-width just-line" type="text" name="email" placeholder="email">
             <input class="u-full-width just-line" type="password" name="password" placeholder="password">

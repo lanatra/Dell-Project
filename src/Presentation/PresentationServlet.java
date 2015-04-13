@@ -12,49 +12,66 @@ import java.io.PrintWriter;
 
 public class PresentationServlet extends HttpServlet {
 
+
     protected void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-            Controller cont = AssignController(request);
-            String action = ""; // The action parameter is a hidden field in html/jsp that designates where the servlet should redirect
-            if (request.getParameter("action") != null)
-                action = request.getParameter("action");
+        Controller cont = AssignController(request);
+
+        System.out.println(request.getRequestURI());
 
         // if logged in
         Object userObj = request.getSession().getAttribute("User");
         if (userObj != null) {
             request.setAttribute("User", userObj); // passing user object to request
 
-            switch (action) {
-                case "getUser":
-                    getUser(request, response, cont);
+            String userPath = request.getServletPath();
+
+            switch(userPath) {
+                case "/dashboard":
+                    getDashboard(request, response, cont);
                     break;
-                case "createProjectRequest":
-                    createProjectRequest(request, response, cont);
-                    break;
-                case "getProjectsByState":
-                    getProjectsByState(request, response, cont);
-                    break;
-                case "verifyProjectRequestByProjectId":
-                    verifyProjectRequestByProjectId(request, response, cont);
+                case "/logout":
+                    logout(request, response, cont);
                     break;
                 default:
-                    String url = request.getRequestURI();
-
-                    if(url.equals("/logout")) {
-                        HttpSession session = request.getSession(false);
-                        if (session != null) {
-                            session.invalidate();
-                            request.getRequestDispatcher("login.jsp").forward(request, response);
-                        }
-                    } else {
-                        getDashboard(request, response, cont);
-                    }
-                }
-            } else {
-                if (action.equals("login"))
-                    login(request, response, cont);
-                else
-                    response.sendRedirect("/login.jsp");
+                    response.sendRedirect("/dashboard");
+                    break;
             }
+
+        } else {
+            System.out.println(request.getRequestURI());
+            if(request.getRequestURI().equals("/login"))
+                request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+            else
+                response.sendRedirect("/login");
+        }
+    }
+
+
+    protected void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Controller cont = AssignController(request);
+        String path = request.getRequestURI();
+
+        System.out.println(path);
+
+        switch (path) {
+            case "/api/login":
+                login(request, response, cont);
+                break;
+            case "/api/getUser":
+                getUser(request, response, cont);
+                break;
+            case "/api/createProjectRequest":
+                createProjectRequest(request, response, cont);
+                break;
+            case "/api/getProjectsByState":
+                getProjectsByState(request, response, cont);
+                break;
+            case "/api/verifyProjectRequestByProjectId":
+                verifyProjectRequestByProjectId(request, response, cont);
+                break;
+            default:
+                getDashboard(request, response, cont);
+        }
     }
 
     private Controller AssignController(HttpServletRequest request) {
@@ -77,7 +94,7 @@ public class PresentationServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        process(request, response);
+        processPost(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -88,7 +105,9 @@ public class PresentationServlet extends HttpServlet {
         Object user = cont.login(request.getParameter("email"), request.getParameter("password"));
         if (user != null) {
             request.getSession().setAttribute("User", user);
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            response.sendRedirect("/dashboard");
+            //request.setAttribute("User", user);
+            //getDashboard(request, response, cont);
         } else {
             request.setAttribute("message", "Incorrect password");
             request.getRequestDispatcher("login.jsp").forward(request, response);
@@ -105,7 +124,7 @@ public class PresentationServlet extends HttpServlet {
 
         request.setAttribute("statusCount", cont.getStatusCounts(user.getCompany_id()));
 
-        request.getRequestDispatcher("index.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/view/index.jsp").forward(request, response);
     }
 
     void getUser (HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
@@ -142,5 +161,13 @@ public class PresentationServlet extends HttpServlet {
         request.setAttribute("verificationCheck", false);
         request.getRequestDispatcher("index.jsp").forward(request, response);
 
+    }
+
+    void logout(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+            response.sendRedirect("/login");
+        }
     }
 }
