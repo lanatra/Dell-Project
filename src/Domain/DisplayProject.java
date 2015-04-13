@@ -32,6 +32,12 @@ public class DisplayProject {
     public String f_start_time;
     public String f_start_time;*/
 
+    public long f_start_time;
+    public long f_end_time;
+    public long f_execution_date;
+    public long f_last_change_admin;
+    public long f_last_change_partner;
+
     public String companyName;
     public String companyLogoUrl;
 
@@ -67,7 +73,7 @@ public class DisplayProject {
         f_last_change_partner*/
         return DP;
 
-        /*if(project.start_time != null) DP.f_start_time = project.start_time.getTime();
+        if(project.start_time != null) DP.f_start_time = project.start_time.getTime();
         if(project.end_time != null) DP.f_end_time = project.end_time.getTime();
         if(project.execution_date != null) DP.f_execution_date = project.execution_date.getTime();
         if(project.last_change_admin != null) DP.f_last_change_admin = project.last_change_admin.getTime();
@@ -77,7 +83,7 @@ public class DisplayProject {
         DP.companyName = cp.name;
         DP.companyLogoUrl = cp.img_filename;
 
-        return DP;*/
+        return DP;
     }
 
     public int getId() {
