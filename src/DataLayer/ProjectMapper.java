@@ -109,15 +109,40 @@ public class ProjectMapper {
 
     }
 
-    public ArrayList getProjectsByState(String state, Connection con) {
+    public ArrayList getProjectsByState(String state, int companyId, Connection con) {
         ArrayList<Project> projects = new ArrayList<>();
-        String SQL = "select * from projects where status= ? ";
+
+        String SQL;
+        if(companyId == 1) { // Request from Dell user
+            if(state.equals("waitingForAction"))
+                SQL = "select * from projects where status='Waiting Project Verification' or status='Waiting Claim Verification'";
+            else
+                SQL = "select * from projects where status= ?";
+        } else {
+            if(state.equals("waitingForAction"))
+                SQL = "select * from projects where status='Project Verified' and company_id=?";
+            else
+                SQL = "select * from projects where status= ? and company_id=?";
+        }
+
+        System.out.println(SQL);
+        System.out.println(companyId);
+        System.out.println(state);
 
         PreparedStatement statement = null;
 
         try {
             statement = con.prepareStatement(SQL);
-            statement.setString(1, state);
+            if(companyId != 1) {
+                if(state.equals("waitingForAction"))
+                    statement.setInt(1, companyId);
+                else {
+                    statement.setString(1, state);
+                    statement.setInt(2, companyId);
+                }
+            } else if(!state.equals("waitingForAction"))
+                statement.setString(1, state);
+
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 projects.add(new Project(rs.getInt(1),
@@ -146,6 +171,37 @@ public class ProjectMapper {
 
         return DisplayProjects;
     }
+
+    public int getStatusCounts(int companyId, Connection con) {
+        PreparedStatement statement = null;
+        // Waiting for action
+        String SQL = "select COUNT(*) from projects where status='Waiting Project Verification' or status='Waiting Claim Verification'";
+
+        // In Execution
+        String SQL = "select COUNT(*) from projects where status='Waiting Project Verification'";
+
+        // Finished
+        String SQL = "select COUNT(*) from projects where status='Waiting Project Verification' or status='Waiting Claim Verification'";
+
+
+        int id = 0;
+        try {
+            statement = con.prepareStatement(SQL);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                id = rs.getInt(1);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error in ProjectMapper - getNextProjectId()");
+        }
+
+        return id + 1;
+    }
+
+
+
+
 
     public void updateChangeDate(int parsedId, String usertype, Connection con) {
         if (usertype.equals("Dell")) {

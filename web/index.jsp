@@ -1,4 +1,9 @@
 <%@ page import="Domain.User" %>
+<%@ page import="Domain.DisplayProject" %>
+<%@ page import="java.util.ArrayList" %>
+
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
   <% if (request.getSession().getAttribute("User") == null) {response.sendRedirect("login.jsp");} %>
   <head>
@@ -35,30 +40,44 @@
 
 
   <div class="container" style="margin-top: 40px;">
-    <a href="#">
-      <div class="filter">
-        <div class="circle unread">2</div>
-        <span>Unread<br/>changes</span>
-      </div>
-    </a>
-    <a href="#">
+    <a href="/"">
       <div class="filter">
         <div class="circle waiting">6</div>
         <span>Waiting<br/>for action</span>
       </div>
     </a>
-    <a href="#">
+    <a href="/?state=In Execution">
       <div class="filter">
         <div class="circle execution">17</div>
         <span>In execution</span>
       </div>
     </a>
-    <a href="#">
+    <a href="/?state=Claim approved">
       <div class="filter">
         <div class="circle finished">38</div>
         <span>Finished</span>
       </div>
     </a>
+  </div>
+  <div class="project-list">
+      <ul>
+          <c:forEach var="project" items="${projects}">
+              <li class='
+              <%
+              if(user.getCompany_id() == 1) {%>
+              <c:if test="${project.isUnread_admin()}">unread</c:if>
+              <%} else {%>
+              <c:if test="${project.isUnread_partner()}">unread</c:if>
+              <%}%>
+              '>
+                  <div><c:out value="${project.getId()}" /></div>
+                  <div><c:out value="${project.getCompanyName()}" /></div>
+                  <div><c:out value="${project.getBudget()}" /></div>
+                  <div><c:out value="${project.getStatus()}" /></div>
+              </li>
+          </c:forEach>
+
+      </ul>
   </div>
 
   <!-- <form action="submit" method="get">

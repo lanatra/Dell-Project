@@ -46,7 +46,7 @@ public class PresentationServlet extends HttpServlet {
                             request.getRequestDispatcher("login.jsp").forward(request, response);
                         }
                     } else {
-                        request.getRequestDispatcher("index.jsp").forward(request, response);
+                        getDashboard(request, response, cont);
                     }
                 }
             } else {
@@ -95,6 +95,17 @@ public class PresentationServlet extends HttpServlet {
         }
     }
 
+    void getDashboard(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        System.out.println("getDashboard");
+        User user = (User) request.getAttribute("User");
+        if(request.getParameter("state") == null)
+            request.setAttribute("projects", cont.getProjectsByState("waitingForAction", user.getCompany_id()));
+        else
+            request.setAttribute("projects", cont.getProjectsByState(request.getParameter("state"), user.getCompany_id()));;
+
+        request.getRequestDispatcher("index.jsp").forward(request, response);
+    }
+
     void getUser (HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
         String user_id = request.getParameter("user_id");
         User user = cont.getUser(user_id);
@@ -114,7 +125,8 @@ public class PresentationServlet extends HttpServlet {
         }
     }
     void getProjectsByState(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
-        request.setAttribute("projects", cont.getProjectsByState(request.getParameter("state")));
+        User user = (User) request.getAttribute("User");
+        request.setAttribute("projects", cont.getProjectsByState(request.getParameter("state"), user.getCompany_id()));
         request.getRequestDispatcher("index.jsp").forward(request, response);
     }
 

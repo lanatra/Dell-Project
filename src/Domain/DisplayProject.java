@@ -19,18 +19,11 @@ public class DisplayProject {
     public boolean unread_admin;
     public boolean unread_partner;
 
-    public int f_start_time;
-    public int f_end_time;
-    public int f_execution_date;
-    public int f_last_change_admin;
-    public int f_last_change_partner;
-
-    /*public String f_end_time;
-    public String f_start_time;
-    public String f_start_time;
-    public String f_start_time;
-    public String f_start_time;
-    public String f_start_time;*/
+    public long f_start_time;
+    public long f_end_time;
+    public long f_execution_date;
+    public long f_last_change_admin;
+    public long f_last_change_partner;
 
     public String companyName;
     public String companyLogoUrl;
@@ -60,14 +53,8 @@ public class DisplayProject {
         DP.unread_admin = project.unread_admin;
         DP.unread_partner = project.unread_partner;
 
-        /*f_start_time
-        f_end_time
-        f_execution_date
-        f_last_change_admin
-        f_last_change_partner*/
-        return DP;
 
-        /*if(project.start_time != null) DP.f_start_time = project.start_time.getTime();
+        if(project.start_time != null) DP.f_start_time = project.start_time.getTime();
         if(project.end_time != null) DP.f_end_time = project.end_time.getTime();
         if(project.execution_date != null) DP.f_execution_date = project.execution_date.getTime();
         if(project.last_change_admin != null) DP.f_last_change_admin = project.last_change_admin.getTime();
@@ -77,7 +64,7 @@ public class DisplayProject {
         DP.companyName = cp.name;
         DP.companyLogoUrl = cp.img_filename;
 
-        return DP;*/
+        return DP;
     }
 
     public int getId() {
