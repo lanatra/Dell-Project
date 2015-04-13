@@ -103,6 +103,8 @@ public class PresentationServlet extends HttpServlet {
         else
             request.setAttribute("projects", cont.getProjectsByState(request.getParameter("state"), user.getCompany_id()));;
 
+        request.setAttribute("statusCount", cont.getStatusCounts(user.getCompany_id()));
+
         request.getRequestDispatcher("index.jsp").forward(request, response);
     }
 

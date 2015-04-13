@@ -30,6 +30,9 @@ public class DatabaseFacade {
     public boolean verifyProjectRequest(String project_id) {
         return new ProjectMapper().verifyProjectRequest(project_id, con);
     }
+    public int[] getStatusCounts(int companyId) {
+        return new ProjectMapper().getStatusCounts(companyId, con);
+    }
 
     // COMPANY
     public Company getCompanyById(int id) {

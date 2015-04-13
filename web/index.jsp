@@ -42,19 +42,19 @@
   <div class="container" style="margin-top: 40px;">
     <a href="/"">
       <div class="filter">
-        <div class="circle waiting">6</div>
+        <div class="circle waiting"><c:out value="${statusCount[0]}" /> </div>
         <span>Waiting<br/>for action</span>
       </div>
     </a>
     <a href="/?state=In Execution">
       <div class="filter">
-        <div class="circle execution">17</div>
+        <div class="circle execution"><c:out value="${statusCount[1]}" /></div>
         <span>In execution</span>
       </div>
     </a>
     <a href="/?state=Claim approved">
       <div class="filter">
-        <div class="circle finished">38</div>
+        <div class="circle finished"><c:out value="${statusCount[2]}" /></div>
         <span>Finished</span>
       </div>
     </a>

@@ -3,6 +3,7 @@ package DataLayer;
 import Domain.DisplayProject;
 import Domain.Project;
 
+import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -172,31 +173,44 @@ public class ProjectMapper {
         return DisplayProjects;
     }
 
-    public int getStatusCounts(int companyId, Connection con) {
+    public int[] getStatusCounts(int companyId, Connection con) {
         PreparedStatement statement = null;
-        // Waiting for action
-        String SQL = "select COUNT(*) from projects where status='Waiting Project Verification' or status='Waiting Claim Verification'";
-
-        // In Execution
-        String SQL = "select COUNT(*) from projects where status='Waiting Project Verification'";
-
-        // Finished
-        String SQL = "select COUNT(*) from projects where status='Waiting Project Verification' or status='Waiting Claim Verification'";
-
-
-        int id = 0;
-        try {
-            statement = con.prepareStatement(SQL);
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                id = rs.getInt(1);
-            }
-
-        } catch (Exception e) {
-            System.out.println("Error in ProjectMapper - getNextProjectId()");
+        String SQL = "";
+        if(companyId == 1) {
+            SQL = "select " +
+                    "  sum(case when status='Waiting Project Verification' or status='Waiting Claim Verification' then 1 else 0 end) WaitingForAction," +
+                    "  sum(case when status='In Execution' then 1 else 0 end) InExecution," +
+                    "  sum(case when status='Finished' then 1 else 0 end) Finished" +
+                    " from projects";
+        } else {
+            SQL = "select \n" +
+                    "  sum(case when (status='Waiting Project Verification' or status='Waiting Claim Verification') and company_id=" + companyId + " then 1 else 0 end) WaitingForAction,\n" +
+                    "  sum(case when status='In Execution' and company_id=" + companyId + "  then 1 else 0 end) InExecution,\n" +
+                    "  sum(case when status='Finished' and company_id=" + companyId + "   then 1 else 0 end) Finished\n" +
+                    " from projects";
         }
 
-        return id + 1;
+        int[] res = new int[3];
+        System.out.println(SQL);
+
+        try {
+            System.out.println("wehere1");
+            statement = con.prepareStatement(SQL);
+            System.out.println("wehere2");
+            ResultSet rs = statement.executeQuery();
+            System.out.println("wehere3");
+            if (rs.next()) {
+                System.out.println("hasnext");
+                res[0] = rs.getInt(1);
+                res[1] = rs.getInt(2);
+                res[2] = rs.getInt(3);
+            }
+            System.out.println(res[0]);
+        } catch (Exception e) {
+            System.out.println("Error in ProjectMapper - getStatusCounts()");
+        }
+
+        return res;
     }
 
 
