@@ -59,6 +59,64 @@
       </div>
     </a>
   </div>
+
+  <div class="container" style="margin-top: 30px;">
+
+      <div class="table-head">
+          <span class="id">ID</span>
+          <span class="partner">Partner</span>
+          <span class="type">Type</span>
+          <span class="state">State</span>
+          <span class="execution-date">Execution date</span>
+      </div>
+
+      <a href="#">
+          <div class="project-item">
+              <span class="id"><strong>#</strong>11</span>
+              <span class="partner">Fona</span>
+              <span class="type">Web advertisement</span>
+              <span class="state small">Waiting for project approval</span>
+              <span class="execution-date small">13.6.2015</span>
+          </div>
+      </a>
+      <a href="#">
+          <div class="project-item">
+              <span class="id"><strong>#</strong>11</span>
+              <span class="partner">Fona</span>
+              <span class="type">Web advertisement</span>
+              <span class="state small">Waiting for project approval</span>
+              <span class="execution-date small">13.6.2015</span>
+          </div>
+      </a>
+      <a href="#">
+          <div class="project-item">
+              <span class="id"><strong>#</strong>11</span>
+              <span class="partner">Fona</span>
+              <span class="type">Web advertisement</span>
+              <span class="state small">Waiting for project approval</span>
+              <span class="execution-date small">13.6.2015</span>
+          </div>
+      </a>
+      <a href="#">
+          <div class="project-item">
+              <span class="id"><strong>#</strong>11</span>
+              <span class="partner">Fona</span>
+              <span class="type">Web advertisement</span>
+              <span class="state small">Waiting for project approval</span>
+              <span class="execution-date small">13.6.2015</span>
+          </div>
+      </a>
+      <a href="#">
+          <div class="project-item unread">
+              <span class="id"><strong>#</strong>11</span>
+              <span class="partner">Fona</span>
+              <span class="type">Web advertisement</span>
+              <span class="state small">Waiting for project approval</span>
+              <span class="execution-date small">13.6.2015</span>
+          </div>
+      </a>
+  </div>
+
   <div class="project-list">
       <ul>
           <c:forEach var="project" items="${projects}">
