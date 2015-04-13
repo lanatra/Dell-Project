@@ -59,42 +59,36 @@
       </div>
     </a>
   </div>
-  <div class="project-list">
-      <ul>
-          <c:forEach var="project" items="${projects}">
-              <li class='
-              <%
+
+  <div class="container" style="margin-top: 30px;">
+
+      <div class="table-head">
+          <span class="id">ID</span>
+          <span class="partner">Partner</span>
+          <span class="type">Type</span>
+          <span class="state">State</span>
+          <span class="execution-date">Execution date</span>
+      </div>
+
+      <c:forEach var="project" items="${projects}">
+
+          <a href="#">
+              <div class="project-item <%
               if(user.getCompany_id() == 1) {%>
               <c:if test="${project.isUnread_admin()}">unread</c:if>
               <%} else {%>
               <c:if test="${project.isUnread_partner()}">unread</c:if>
-              <%}%>
-              '>
-                  <div><c:out value="${project.getId()}" /></div>
-                  <div><c:out value="${project.getCompanyName()}" /></div>
-                  <div><c:out value="${project.getBudget()}" /></div>
-                  <div><c:out value="${project.getStatus()}" /></div>
-                  <div><c:out value="${project.getNotification()}" /></div>
-              </li>
-          </c:forEach>
 
-      </ul>
+              <%}%>">
+                  <span class="id"><strong>#</strong><c:out value="${project.getId()}" /></span>
+                  <span class="partner"><c:out value="${project.getCompanyName()}" /></span>
+                  <span class="type">NO-TYPE</span>
+                  <span class="state small"><c:out value="${project.getStatus()}" /></span>
+                  <span class="execution-date small"><c:out value="${project.getStart_time()}" /></span>
+              </div>
+          </a>
+      </c:forEach>
   </div>
-
-  <!-- <form action="submit" method="get">
-      <input hidden name="action" value="getUser">
-      <input name="user_id">
-      <input type="submit">
-  </form>
-  <form action="submit" method="get">
-      <input hidden name="action" value="createProjectRequest">
-      <input name="budget">
-      <input type="project_body">
-      <input type="submit">
-  </form>
-  null
-  /
-  null -->
 
   </body>
 </html>
