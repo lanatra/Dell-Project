@@ -66,7 +66,7 @@ public class UserMapper {
 
         return user;
     }
-
+    
     public boolean createUser(String name, String user_role, String user_email, String password, int company_id, Connection con) {
         String SQL = "insert into users values (?, ?, ?, ?, ? ,?)";
 
@@ -110,6 +110,8 @@ public class UserMapper {
 
         return id + 1;
     }
+
+
 
 
 }

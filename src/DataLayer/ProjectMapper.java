@@ -13,9 +13,9 @@ import java.util.ArrayList;
  */
 public class ProjectMapper {
 
-    public boolean createProjectRequest(String budget, String project_body, String user Connection con) {
+    public boolean createProjectRequest(String budget, String project_body, int user_id, Connection con) {
 
-        String SQL = "insert into projects values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String SQL = "insert into projects values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         double parsedBudget;
         try {
@@ -24,6 +24,7 @@ public class ProjectMapper {
             return false;
         }
         PreparedStatement statement = null;
+        int companyId = getCompanyIdByUserId(user_id, con);
 
         try {
             statement = con.prepareStatement(SQL);
@@ -32,11 +33,12 @@ public class ProjectMapper {
             java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
             Timestamp timestamp = new Timestamp(date.getTime());
 
+
             statement.setInt(1, nextProjectID);
             statement.setTimestamp(2, timestamp);
             statement.setTimestamp(3, null);
-            statement.setInt(4, 1); // company id, gotta find a solution here, putting 1 temporarily
-            statement.setInt(5, 1); // owner_id, same as above
+            statement.setInt(4, companyId);
+            statement.setInt(5, user_id);
             statement.setString(6, "Pending");
             statement.setDouble(7, parsedBudget);
             statement.setString(8, project_body);
@@ -45,6 +47,8 @@ public class ProjectMapper {
             statement.setTimestamp(11, timestamp);
             statement.setBoolean(12, true);
             statement.setBoolean(13, false);
+            statement.setString(14, null);
+            statement.setString(15, null);
 
             statement.executeUpdate();
 
@@ -80,11 +84,11 @@ public class ProjectMapper {
     }
 
     // Will make following function more generic; should be able to change status depending on parameter to reduce amount of methods needed
-    public boolean verifyProjectRequest(String project_id, Connection con) {
+    public boolean changeProjectStatus(String project_id, String new_status, String user_role, Connection con) {
         PreparedStatement statement = null;
         java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
         Timestamp timestamp = new Timestamp(date.getTime());
-        String SQL = "UPDATE projects SET status = 'Verified' where id = ?";
+        String SQL = "UPDATE projects SET status = '+ newStatus +' where id = ?";
 
         int parsedId;
         try {
@@ -100,7 +104,7 @@ public class ProjectMapper {
             statement.setInt(1, parsedId);
             statement.executeUpdate();
 
-            updateChangeDate(parsedId, "Dell", con);
+            updateChangeDate(parsedId, user_role, con);
 
             return true;
         } catch (Exception e) {
@@ -231,8 +235,7 @@ public class ProjectMapper {
             } catch (Exception e) {
                 System.out.println("Error in updateChangeDate()");
             }
-        }
-        else {
+        } else {
             java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
             Timestamp timestamp = new Timestamp(date.getTime());
             PreparedStatement statement = null;
@@ -248,6 +251,29 @@ public class ProjectMapper {
             }
 
         }
+        }
+
+        public int getCompanyIdByUserId(int user_id, Connection con) {
+
+            PreparedStatement statement = null;
+            String SQL = "select companies.id from companies, users where users.company_id = companies.id and users.id = ?";
+
+            try {
+                statement = con.prepareStatement(SQL);
+                statement.setInt(1, user_id);
+
+                ResultSet rs = statement.executeQuery(SQL);
+
+                while (rs.next()) {
+                    return rs.getInt(1);
+                }
+
+            } catch (Exception e) {
+                System.out.println("Error in getCompanyIdByUserId() in projectMapper");
+
+        }
+
+            return 0;
 
 
     }
