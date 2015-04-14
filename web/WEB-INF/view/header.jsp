@@ -18,7 +18,7 @@
 
 <div class="header u-full-width">
   <div class="container">
-    <a href="/logout">
+    <a href="/dashboard">
       <div class="logo u-pull-left">
         <img src="img/small_dell_logo.svg" alt="Dell logo">
         <span>Campaign<br/>management<br/>system</span>
@@ -26,7 +26,10 @@
     </a>
     <div class="user-label u-pull-right">
       <img src="img/white_dropdown.svg" alt="Logout menu">
-        <span><c:out value="${User.getName()}"></c:out></span>
+      <span><c:out value="${User.getName()}"></c:out></span>
+      <ul class="submenu">
+        <li><a href="/logout">Logout</a></li>
+      </ul>
     </div>
     <c:if test="${User.getCompany_id() == 1}">
     <div class="budget-label u-pull-right">
