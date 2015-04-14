@@ -8,12 +8,9 @@ import java.sql.*;
 import java.util.ArrayList;
 
 
-/**
- * Created by Lasse on 09-04-2015.
- */
 public class ProjectMapper {
 
-    public boolean createProjectRequest(String budget, String project_body, String user Connection con) {
+    public boolean createProjectRequest(String budget, String project_body, Connection con) {
 
         String SQL = "insert into projects values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 

@@ -19,9 +19,9 @@ h1 {
 .button {
 	transition: -webkit-box-shadow .3s, -moz-box-shadow .3s, box-shadow .3s;
 	&:hover {
-		-webkit-box-shadow: 0px 3px 10px 0px rgba(50, 50, 50, 0.3);
-		-moz-box-shadow:    0px 3px 10px 0px rgba(50, 50, 50, 0.3);
-		box-shadow:         0px 3px 10px 0px rgba(50, 50, 50, 0.3);
+		-webkit-box-shadow: 0px 2px 6px 0px rgba(50, 50, 50, 0.3);
+		-moz-box-shadow:    0px 2px 6px 0px rgba(50, 50, 50, 0.3);
+		box-shadow:         0px 2px 6px 0px rgba(50, 50, 50, 0.3);
 	}
 }
 
@@ -113,6 +113,7 @@ div.header{
 	background-color: $color-blue;
 	height: 80px;
 	color: white;
+  	font-size: 1em;
 
 	div.logo {
 		margin-top: 20px;
@@ -158,6 +159,18 @@ div.header{
 			clear: left;
 		}
 	}
+
+  	.button {
+	  float: right;
+	  border-radius: 15px;
+	  height: 30px;
+	  background-color: white;
+	  border: none;
+	  margin-top: 23px;
+	  line-height: 2;
+	  margin-right: 30px;
+	  color: $color-blue;
+	}
 }
 
 div.filter {
@@ -193,9 +206,9 @@ div.filter {
 			border: 2px solid #5B5B5B;
 		}
 		&.unread {
-			color: white;
-			background-color: #5B5B5B;
-			border: 2px solid #5B5B5B;
+			color: $color-blue;
+			background-color: transparent;
+			border: 2px solid $color-blue;
 		}
 	}
 
@@ -215,6 +228,7 @@ div.table-head {
 div.project-item {
   font-size: 1em;
   color: #4F4F4F;
+  box-sizing: border-box;
   background-color: #FAFAFA;
   -webkit-box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
   -moz-box-shadow:    0px 1px 3px 0px rgba(0, 0, 0, 0.1);
@@ -231,6 +245,7 @@ div.project-item {
 
   &.unread {
 	color: $color-blue;
+	background-color: white;
   }
 }
 
@@ -291,5 +306,83 @@ table {
   
   span.small {
 	font-size: 0.8em;
+  }
+}
+
+div.actions {
+  a {
+	float: left;
+  }
+
+  .searchbox {
+	width: auto;
+	overflow: hidden;
+	display: block;
+
+	input {
+	  width: 100%;
+	  float: left;
+	  height: 60px;
+	  border-radius: 30px;
+	  margin-bottom: 0px;
+	  border: none;
+	  padding: 10px 20px 10px 56px;
+	  background: #EBEBEB url("../img/search_icon.svg") no-repeat 20px 18px;
+	}
+  }
+}
+
+.project {
+  h1 {
+	font-size: 2.5em;
+	font-weight: lighter;
+	margin-bottom: 30px;
+  }
+  span {
+	font-size: 1.2em;
+	font-weight: lighter;
+	float: left;
+  }
+  input.amount {
+	float: left;
+	height: 40px;
+	border-radius: 20px;
+	background-color: #ECECEC;
+	border: none;
+	margin-left: 20px;
+	margin-right: 20px;
+	margin-top: -5px;
+	padding-left: 20px;
+	font-size: 1.2em;
+	font-weight: lighter;
+  }
+  textarea {
+	float: left;
+	clear: left;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	border-radius: 20px;
+	background-color: #ECECEC;
+	border: none;
+	padding: 16px;
+	width: 100%;
+	max-width: 600px;
+	min-height: 300px;
+	box-sizing: border-box;
+  }
+  button {
+	float: left;
+	clear: left;
+	height: 40px;
+	border-radius: 20px;
+	background-color: $color-blue;
+	color: white;
+	text-transform: none;
+	border: none;
+	font-size: 1em;
+	font-weight: normal;
+	&:hover {
+	  color: white;
+	}
   }
 }

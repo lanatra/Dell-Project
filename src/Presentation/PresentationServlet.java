@@ -29,6 +29,9 @@ public class PresentationServlet extends HttpServlet {
                 case "/dashboard":
                     getDashboard(request, response, cont);
                     break;
+                case "/project-request":
+                    request.getRequestDispatcher("/WEB-INF/view/createproject.jsp").forward(request, response);
+                    break;
                 case "/logout":
                     logout(request, response, cont);
                     break;
