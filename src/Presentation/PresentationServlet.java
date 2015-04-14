@@ -24,10 +24,18 @@ public class PresentationServlet extends HttpServlet {
             request.setAttribute("User", userObj); // passing user object to request
 
             String userPath = request.getServletPath();
-
+            System.out.println(userPath);
+            System.out.println(request.getRequestURI());
+            System.out.println(request.getRequestURL());
             switch(userPath) {
                 case "/dashboard":
                     getDashboard(request, response, cont);
+                    break;
+                case "/project":
+                    getProjectView(request, response, cont);
+                    break;
+                case "/createProjectRequest":
+                    request.getRequestDispatcher("/WEB-INF/view/createProjectRequest.jsp").forward(request, response);
                     break;
                 case "/logout":
                     logout(request, response, cont);
@@ -54,14 +62,17 @@ public class PresentationServlet extends HttpServlet {
         System.out.println(path);
 
         switch (path) {
-            case "/api/login":
+            case "/login":
                 login(request, response, cont);
                 break;
-            case "/api/getUser":
-                getUser(request, response, cont);
+            case "/api/getUserById":
+                getUserById(request, response, cont);
                 break;
             case "/api/createProjectRequest":
-                createProjectRequest(request, response, cont);
+                request.getRequestDispatcher("/WEB-INF/view/createProjectRequest.jsp").forward(request, response);
+                break;
+            case "/api/postMessage":
+                postMessage(request, response, cont);
                 break;
             case "/api/getProjectsByState":
                 getProjectsByState(request, response, cont);
@@ -109,8 +120,8 @@ public class PresentationServlet extends HttpServlet {
             //request.setAttribute("User", user);
             //getDashboard(request, response, cont);
         } else {
-            request.setAttribute("message", "Incorrect password");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            request.setAttribute("message", "Incorrect login");
+            request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
         }
     }
 
@@ -127,9 +138,30 @@ public class PresentationServlet extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/view/index.jsp").forward(request, response);
     }
 
-    void getUser (HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
-        String user_id = request.getParameter("user_id");
-        User user = cont.getUser(user_id);
+    void getProjectView(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        System.out.println("getProjectView");
+        User user = (User) request.getAttribute("User");
+        int projId = Integer.parseInt(request.getParameter("id"));
+        request.setAttribute("project", cont.getProjectById(projId, user.getCompany_id()));;
+        request.setAttribute("messages", cont.getMessagesByProjectId(projId));
+        request.getRequestDispatcher("/WEB-INF/view/project.jsp").forward(request, response);
+    }
+
+    void postMessage(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        System.out.println("postMessage");
+
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        int userId = Integer.parseInt(request.getParameter("userId"));
+        int projectId = Integer.parseInt(request.getParameter("projectId"));
+        String body = request.getParameter("body");
+        out.println(cont.postMessage(userId, projectId, body));
+    }
+
+    void getUserById (HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        int user_id = Integer.parseInt(request.getParameter("user_id"));
+        User user = cont.getUserById(user_id);
         String user_info = user.toString();
         request.setAttribute("userInfo", user_info);
         request.getRequestDispatcher("index.jsp").forward(request, response);

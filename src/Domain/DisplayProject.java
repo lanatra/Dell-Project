@@ -13,6 +13,8 @@ public class DisplayProject extends Project{
     public String companyName;
     public String companyLogoUrl;
 
+    public String message;
+
     //public ArrayList<Message> messages;
 
     //public ArrayList<POE> poes;

@@ -26,8 +26,8 @@ public class ProjectMapper {
         PreparedStatement statement = null;
 
         try {
-            statement = con.prepareStatement(SQL);
             int nextProjectID = getNextProjectId(con);
+            statement = con.prepareStatement(SQL);
 
             java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
             Timestamp timestamp = new Timestamp(date.getTime());
@@ -110,6 +110,73 @@ public class ProjectMapper {
 
     }
 
+    public DisplayProject getProjectById(int id, int companyId, Connection con) {
+        String SQL = "select * from projects where id=?";
+        DisplayProject project = null;
+        PreparedStatement statement = null;
+
+        try {
+            statement = con.prepareStatement(SQL);
+            statement.setInt(1, id);
+
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                project = DisplayProject.projectToDisplay(new Project(rs.getInt(1),
+                        rs.getTimestamp(2),
+                        rs.getTimestamp(3),
+                        rs.getInt(4),
+                        rs.getInt(5),
+                        rs.getString(6),
+                        rs.getInt(7),
+                        rs.getString(8),
+                        rs.getTimestamp(9),
+                        rs.getTimestamp(10),
+                        rs.getTimestamp(11),
+                        rs.getBoolean(12),
+                        rs.getBoolean(13),
+                        rs.getString(14),
+                        rs.getString(15)
+                ));
+            } else {
+                project.message = "A project with the id " + id + "doesn't exist.";
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error in UserMapper");
+        }
+
+        if(project != null)
+            if(companyId != 1)
+                if(project.getCompany_id() != companyId) { //unauthorized access
+                    project = new DisplayProject();
+                    project.message = "You do not have permission to view this project";
+                }
+        return project;
+    }
+
+    public void markRead(int id, int companyId, Connection con) {
+        String SQL = "";
+        if(companyId == 1)
+             SQL = "update projects set unread_admin=0 where id=?";
+        else
+            SQL = "update projects set unread_partner=0 where id=? and company_id=?";
+
+        PreparedStatement statement = null;
+        int res = 0;
+        try {
+            statement = con.prepareStatement(SQL);
+            statement.setInt(1, id);
+            if(companyId != 1)
+                statement.setInt(2, companyId);
+
+            res = statement.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("Error in markRead");
+        }
+
+    }
+
     public ArrayList getProjectsByState(String state, int companyId, Connection con) {
         ArrayList<Project> projects = new ArrayList<>();
 
@@ -126,9 +193,6 @@ public class ProjectMapper {
                 SQL = "select * from projects where status= ? and company_id=?";
         }
 
-        System.out.println(SQL);
-        System.out.println(companyId);
-        System.out.println(state);
 
         PreparedStatement statement = null;
 

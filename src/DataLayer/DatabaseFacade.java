@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.util.ArrayList;
 
 import Domain.Company;
+import Domain.DisplayProject;
 import Domain.User;
+import Domain.Message;
 
 public class DatabaseFacade {
 
@@ -14,15 +16,19 @@ public class DatabaseFacade {
         con = DatabaseConnection.getInstance().getConnection();
     }
 
-    public User getUser(String user_id) {
-        User u;
-        u = new UserMapper().getUser(user_id, con);
-        return u;
-    }
+    public User getUserById(int user_id) { return new UserMapper().getUserById(user_id, con); }
 
     // PROJECT
     public boolean createProjectRequest(String budget, String project_body) {
         return new ProjectMapper().createProjectRequest(budget, project_body, con);
+    }
+    public DisplayProject getProjectById(int id, int companyId) {
+        return new ProjectMapper().getProjectById(id, companyId, con);
+    }
+    public ArrayList getMessagesByProjectId(int projId) { return new MessageMapper().getMessagesByProjectId(projId, con); }
+    public Message postMessage(int userId, int projId, String body) { return new MessageMapper().postMessage(userId, projId, body, con);}
+    public void markRead(int id, int companyId) {
+        new ProjectMapper().markRead(id, companyId, con);
     }
     public ArrayList getProjectsByState(String state, int companyId) {
         return new ProjectMapper().getProjectsByState(state, companyId, DatabaseConnection.getInstance().getConnection());

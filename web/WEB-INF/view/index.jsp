@@ -5,38 +5,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
-  <% if (request.getSession().getAttribute("User") == null) {response.sendRedirect("login.jsp");} %>
-  <head>
-    <meta charset="utf-8">
-    <title>Dell</title>
-    <meta name="description" content="Dell campaign management system">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,500&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-    <link href="css/normalize.css" rel="stylesheet" media="all">
-    <link href="css/skeleton.css" rel="stylesheet" media="all">
-    <link href="css/style.css" rel="stylesheet" media="all">
-  </head>
-  <body>
-
-  <div class="header u-full-width">
-    <div class="container">
-      <a href="/logout">
-        <div class="logo u-pull-left">
-          <img src="img/small_dell_logo.svg" alt="Dell logo">
-          <span>Campaign<br/>management<br/>system</span>
-        </div>
-      </a>
-      <div class="user-label u-pull-right">
-        <img src="img/white_dropdown.svg" alt="Logout menu">
-        <span><% User user = (User) request.getSession().getAttribute("User");
-          out.print(user.name); %></span>
-      </div>
-      <div class="budget-label u-pull-right">
-        <span class="big">834 039 DKK</span>
-        <span class="desc">is left available in this quarter (1.1.2015 - 31.3.2015)</span>
-      </div>
-    </div>
-  </div>
+    <%@ include file="header.jsp" %>
 
 
   <div class="container" style="margin-top: 40px;">
@@ -73,19 +42,24 @@
       <c:forEach var="project" items="${projects}">
 
           <a href="#">
-              <div class="project-item <%
-              if(user.getCompany_id() == 1) {%>
-              <c:if test="${project.isUnread_admin()}">unread</c:if>
-              <%} else {%>
-              <c:if test="${project.isUnread_partner()}">unread</c:if>
+              <div class="project-item
+              <c:if test="${User.getCompany_id() == 1}">
+                <c:if test="${project.isUnread_admin()}">unread</c:if>
+              </c:if>
+              <c:if test="${User.getCompany_id() != 1}">
+                <c:if test="${project.isUnread_partner()}">unread</c:if>
+              </c:if>
 
-              <%}%>">
+              "><a href="/project?id=<c:out value="${project.getId()}" />">
                   <span class="id"><strong>#</strong><c:out value="${project.getId()}" /></span>
                   <span class="partner"><c:out value="${project.getCompanyName()}" /></span>
-                  <span class="type">NO-TYPE</span>
+                  <span class="type"><c:out value="${project.getType()}" /></span>
+                  <span class="notification small"><c:out value="${project.getNotification()}" /></span>
                   <span class="state small"><c:out value="${project.getStatus()}" /></span>
-                  <span class="execution-date small"><c:out value="${project.getStart_time()}" /></span>
-              </div>
+
+
+                  <span class="execution-date small">Jan. 12 2014</span>
+              </a></div>
           </a>
       </c:forEach>
   </div>
