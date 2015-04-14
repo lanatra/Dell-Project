@@ -2,9 +2,7 @@ package DataLayer;
 
 import Domain.Company;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 
 /**
  * Created by Lasse on 10-04-2015.
@@ -33,6 +31,50 @@ public class CompanyMapper {
 
         return company;
     }
+
+    public boolean createCompany(String company_name, Connection con) {
+        String SQL = "insert into companies values (?,?,?)";
+
+        PreparedStatement statement = null;
+        try {
+            statement = con.prepareStatement(SQL);
+
+            int nextCompanyId = getNextCompanyId(con);
+
+            statement.setInt(1, nextCompanyId);
+            statement.setString(2, company_name);
+            statement.setString(3, "N/A");
+
+            statement.executeUpdate();
+
+            return true;
+
+        } catch (Exception e) {
+            System.out.println("Error in createCompany");
+        }
+
+        return false;
+    }
+
+     public int getNextCompanyId(Connection con) {
+        PreparedStatement statement = null;
+        String SQL = "select MAX(id) from companies";
+        int id = 0;
+        try {
+            statement = con.prepareStatement(SQL);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                id = rs.getInt(1);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error in CompanyMapper - getNextCompanyId()");
+        }
+
+        return id + 1;
+    }
+
+
 
 
 }

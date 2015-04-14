@@ -17,14 +17,22 @@ public class Controller {
 
     }
     // Writers
-    public boolean createProjectRequest(String budget, String project_body) {
-        return facade.createProjectRequest(budget, project_body);
+    public boolean createProjectRequest(String budget, String project_body, int user_id) {
+        return facade.createProjectRequest(budget, project_body, user_id);
+    }
+    public boolean createCompany(String company_name) {
+        return facade.createCompany(company_name);
     }
 
+    //User related
+    public boolean createUser(String name, String user_role, String user_email, String password, int company_id) {
+        return facade.createUser(name, user_role, user_email, password, company_id);
+    }
 
    //Readers
     //User related
     public User getUserById(int user_id) { return facade.getUserById(user_id); }
+
 
 
     //Project related
@@ -36,7 +44,7 @@ public class Controller {
     public ArrayList getMessagesByProjectId(int projId) { return processMessages(facade.getMessagesByProjectId(projId)); }
     public String postMessage(int userId, int projId, String body) { return processMessage(facade.postMessage(userId, projId, body)).toHTML();}
     public ArrayList getProjectsByState(String state, int companyId) { return  facade.getProjectsByState(state, companyId); }
-    public boolean verifyProjectRequest(String project_id) { return facade.verifyProjectRequest(project_id); }
+    public boolean changeProjectStatus(String project_id, String new_status, String usertype) { return facade.verifyProjectRequest(project_id, new_status, usertype); }
     public int[] getStatusCounts(int companyId) { return facade.getStatusCounts(companyId); }
 
     public Company getCompanyById(int id) { return facade.getCompanyById(id); }

@@ -61,6 +61,7 @@ public class PresentationServlet extends HttpServlet {
 
         System.out.println(path);
 
+
         switch (path) {
             case "/login":
                 login(request, response, cont);
@@ -77,8 +78,14 @@ public class PresentationServlet extends HttpServlet {
             case "/api/getProjectsByState":
                 getProjectsByState(request, response, cont);
                 break;
-            case "/api/verifyProjectRequestByProjectId":
-                verifyProjectRequestByProjectId(request, response, cont);
+            case "/api/changeProjectStatus":
+                changeProjectStatus(request, response, cont);
+                break;
+            case "/api/createCompany":
+                createCompany(request, response, cont);
+                break;
+            case "/api/createUser":
+                createUser(request, response, cont);
                 break;
             default:
                 getDashboard(request, response, cont);
@@ -170,11 +177,11 @@ public class PresentationServlet extends HttpServlet {
     void createProjectRequest(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
         String project_body = request.getParameter("project_body");
         String budget = request.getParameter("budget");
+        User user = (User) request.getAttribute("User");
 
-        if (cont.createProjectRequest(budget, project_body)) {
+        if (cont.createProjectRequest(budget, project_body, user.id)) {
             request.setAttribute("submitCheck", true);
             request.getRequestDispatcher("index.jsp").forward(request, response);
-            return;
         }
     }
     void getProjectsByState(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
@@ -183,9 +190,15 @@ public class PresentationServlet extends HttpServlet {
         request.getRequestDispatcher("index.jsp").forward(request, response);
     }
 
-    void verifyProjectRequestByProjectId(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+
+
+    void changeProjectStatus(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
         String project_id = request.getParameter("project_id");
-        if (cont.verifyProjectRequest(project_id)) {
+        String new_status = request.getParameter("new_status");
+        User user = (User) request.getAttribute("User");
+
+
+        if (cont.changeProjectStatus(project_id, new_status, user.role)) {
             request.setAttribute("verificationCheck", true);
             request.getRequestDispatcher("index.jsp").forward(request, response);
             return;
@@ -202,4 +215,37 @@ public class PresentationServlet extends HttpServlet {
             response.sendRedirect("/login");
         }
     }
+
+
+    void createCompany(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        String company_name = request.getParameter("company_name");
+
+        if (cont.createCompany(company_name)) {
+            request.setAttribute("createCompanyResult", true);
+            request.getRequestDispatcher("index.jsp").forward(request, response);
+            return;
+        }
+        request.setAttribute("createCompanyResult", false);
+        request.getRequestDispatcher("index.jsp").forward(request, response);
+    }
+
+
+    // Creates a new user; if a given company name already exists, assign user to that company - otherwise make new company with that name.
+    void createUser(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        String name = request.getParameter("name");
+        String user_role = request.getParameter("user_role");
+        String user_email = request.getParameter("user_email");
+        String password = request.getParameter("password");
+        // String company_name = request.getParameter("company_name");
+
+                if (cont.createUser(name, user_role, user_email, password, 1)) {
+                    request.setAttribute("createUserResult", true);
+                    request.getRequestDispatcher("index.jsp").forward(request, response);
+                    return;
+                }
+
+        request.setAttribute("createUserResult", false);
+        request.getRequestDispatcher("index.jsp").forward(request, response);
+    }
+
 }
