@@ -14,4 +14,16 @@ public class Company {
         this.name = name;
         this.img_filename = img_filename;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getImg_filename() {
+        return img_filename;
+    }
 }

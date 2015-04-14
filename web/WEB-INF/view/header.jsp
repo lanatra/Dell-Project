@@ -1,5 +1,8 @@
 <%@ page import="Domain.User" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
 <head>
   <meta charset="utf-8">
@@ -23,19 +26,19 @@
     </a>
     <div class="user-label u-pull-right">
       <img src="img/white_dropdown.svg" alt="Logout menu">
-        <span><% User user = (User) request.getSession().getAttribute("User");
-          out.print(user.name); %></span>
+        <span><c:out value="${User.getName()}"></c:out></span>
     </div>
-    <% if(user.getCompany_id() == 1) {%>
+    <c:if test="${User.getCompany_id() == 1}">
     <div class="budget-label u-pull-right">
       <span class="big">834 039 DKK</span>
       <span class="desc">is left available in this quarter (1.1.2015 - 31.3.2015)</span>
     </div>
-    <%} else {%>
+    </c:if>
+    <c:if test="${User.getCompany_id() != 1}">
     <div class="u-pull-right">
       <a href="/project-request" class="project-request button">Project request</a>
     </div>
-    <%}%>
+    </c:if>
 
   </div>
 </div>

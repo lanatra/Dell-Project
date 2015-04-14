@@ -27,7 +27,7 @@
                 <p><%= request.getAttribute("message") %></p>
               <%};%>
           </div>
-          <form action="/api/login" method="post" class="u-full-width" autocomplete="off">
+          <form action="/login" method="post" class="u-full-width" autocomplete="off">
             <input type="hidden" name="action" value="login">
             <input class="u-full-width just-line" type="text" name="email" placeholder="email">
             <input class="u-full-width just-line" type="password" name="password" placeholder="password">

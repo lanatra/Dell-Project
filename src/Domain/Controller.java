@@ -3,6 +3,9 @@ package Domain;
 import DataLayer.DatabaseFacade;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 
 public class Controller {
 
@@ -14,19 +17,34 @@ public class Controller {
 
     }
     // Writers
-    public boolean createProjectRequest(String budget, String project_body) {
-        return facade.createProjectRequest(budget, project_body);
+    public boolean createProjectRequest(String budget, String project_body, int user_id) {
+        return facade.createProjectRequest(budget, project_body, user_id);
+    }
+    public boolean createCompany(String company_name) {
+        return facade.createCompany(company_name);
     }
 
+    //User related
+    public boolean createUser(String name, String user_role, String user_email, String password, int company_id) {
+        return facade.createUser(name, user_role, user_email, password, company_id);
+    }
 
    //Readers
     //User related
-    public User getUser(String user_id) { return facade.getUser(user_id); }
+    public User getUserById(int user_id) { return facade.getUserById(user_id); }
+
 
 
     //Project related
+    public DisplayProject getProjectById(int id, int companyId) {
+        DisplayProject dp = facade.getProjectById(id, companyId);
+        if((companyId == 1 && dp.isUnread_admin()) || (companyId != 1 && dp.isUnread_partner()))
+            facade.markRead(id, companyId);
+        return  dp; }
+    public ArrayList getMessagesByProjectId(int projId) { return processMessages(facade.getMessagesByProjectId(projId)); }
+    public String postMessage(int userId, int projId, String body) { return processMessage(facade.postMessage(userId, projId, body)).toHTML();}
     public ArrayList getProjectsByState(String state, int companyId) { return  facade.getProjectsByState(state, companyId); }
-    public boolean verifyProjectRequest(String project_id) { return facade.verifyProjectRequest(project_id); }
+    public boolean changeProjectStatus(String project_id, String new_status, String usertype) { return facade.verifyProjectRequest(project_id, new_status, usertype); }
     public int[] getStatusCounts(int companyId) { return facade.getStatusCounts(companyId); }
 
     public Company getCompanyById(int id) { return facade.getCompanyById(id); }
@@ -34,10 +52,57 @@ public class Controller {
     //User Login / Registration
     public User login(String email, String password) {
         User user = facade.getUserByEmail(email);
+        if(user != null) {
             if (Login.testPassword(password, user.password))
                 return user;
             else
                 return null;
+        }
+        return null;
+    }
+
+
+
+
+
+
+    public ArrayList processMessages(ArrayList messages) {
+        HashMap companyMap = new HashMap();
+        HashMap userMap = new HashMap();
+        User user = null;
+        Company company = null;
+        for (Message m : (ArrayList<Message>) messages) {
+            if(userMap.containsKey(m.author_id))
+                m.user = (User) userMap.get(m.author_id);
+            else {
+                user = facade.getUserById(m.author_id);
+                m.user = user;
+                userMap.put(m.author_id, user);
+                company = facade.getCompanyById(user.getCompany_id());
+                companyMap.put(user.getCompany_id(), company);
+            }
+            if(m.company == null) {
+                if(companyMap.containsKey(m.user.getCompany_id()))
+                    m.company = (Company) companyMap.get(m.user.getCompany_id());
+                else {
+                    company = facade.getCompanyById(m.user.getCompany_id());
+                    m.company = company;
+                    companyMap.put(company.id, company);
+                }
+
+            }
+        }
+
+        Collections.sort(messages, Comparators.TIME);
+
+        return messages;
+
+    }
+
+    public Message processMessage(Message m) {
+        m.user = facade.getUserById(m.getAuthor_id());
+        m.company = facade.getCompanyById(m.user.getCompany_id());
+        return m;
     }
 
 }

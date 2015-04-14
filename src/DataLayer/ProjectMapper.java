@@ -10,9 +10,10 @@ import java.util.ArrayList;
 
 public class ProjectMapper {
 
-    public boolean createProjectRequest(String budget, String project_body, Connection con) {
 
-        String SQL = "insert into projects values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    public boolean createProjectRequest(String budget, String project_body, int user_id, Connection con) {
+
+        String SQL = "insert into projects values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         double parsedBudget;
         try {
@@ -21,19 +22,21 @@ public class ProjectMapper {
             return false;
         }
         PreparedStatement statement = null;
+        int companyId = getCompanyIdByUserId(user_id, con);
 
         try {
-            statement = con.prepareStatement(SQL);
             int nextProjectID = getNextProjectId(con);
+            statement = con.prepareStatement(SQL);
 
             java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
             Timestamp timestamp = new Timestamp(date.getTime());
 
+
             statement.setInt(1, nextProjectID);
             statement.setTimestamp(2, timestamp);
             statement.setTimestamp(3, null);
-            statement.setInt(4, 1); // company id, gotta find a solution here, putting 1 temporarily
-            statement.setInt(5, 1); // owner_id, same as above
+            statement.setInt(4, companyId);
+            statement.setInt(5, user_id);
             statement.setString(6, "Pending");
             statement.setDouble(7, parsedBudget);
             statement.setString(8, project_body);
@@ -42,6 +45,8 @@ public class ProjectMapper {
             statement.setTimestamp(11, timestamp);
             statement.setBoolean(12, true);
             statement.setBoolean(13, false);
+            statement.setString(14, null);
+            statement.setString(15, null);
 
             statement.executeUpdate();
 
@@ -77,11 +82,11 @@ public class ProjectMapper {
     }
 
     // Will make following function more generic; should be able to change status depending on parameter to reduce amount of methods needed
-    public boolean verifyProjectRequest(String project_id, Connection con) {
+    public boolean changeProjectStatus(String project_id, String new_status, String user_role, Connection con) {
         PreparedStatement statement = null;
         java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
         Timestamp timestamp = new Timestamp(date.getTime());
-        String SQL = "UPDATE projects SET status = 'Verified' where id = ?";
+        String SQL = "UPDATE projects SET status = '+ newStatus +' where id = ?";
 
         int parsedId;
         try {
@@ -97,13 +102,80 @@ public class ProjectMapper {
             statement.setInt(1, parsedId);
             statement.executeUpdate();
 
-            updateChangeDate(parsedId, "Dell", con);
+            updateChangeDate(parsedId, user_role, con);
 
             return true;
         } catch (Exception e) {
             System.out.println("Zzzzz");
         }
         return false;
+
+    }
+
+    public DisplayProject getProjectById(int id, int companyId, Connection con) {
+        String SQL = "select * from projects where id=?";
+        DisplayProject project = null;
+        PreparedStatement statement = null;
+
+        try {
+            statement = con.prepareStatement(SQL);
+            statement.setInt(1, id);
+
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                project = DisplayProject.projectToDisplay(new Project(rs.getInt(1),
+                        rs.getTimestamp(2),
+                        rs.getTimestamp(3),
+                        rs.getInt(4),
+                        rs.getInt(5),
+                        rs.getString(6),
+                        rs.getInt(7),
+                        rs.getString(8),
+                        rs.getTimestamp(9),
+                        rs.getTimestamp(10),
+                        rs.getTimestamp(11),
+                        rs.getBoolean(12),
+                        rs.getBoolean(13),
+                        rs.getString(14),
+                        rs.getString(15)
+                ));
+            } else {
+                project.message = "A project with the id " + id + "doesn't exist.";
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error in UserMapper");
+        }
+
+        if(project != null)
+            if(companyId != 1)
+                if(project.getCompany_id() != companyId) { //unauthorized access
+                    project = new DisplayProject();
+                    project.message = "You do not have permission to view this project";
+                }
+        return project;
+    }
+
+    public void markRead(int id, int companyId, Connection con) {
+        String SQL = "";
+        if(companyId == 1)
+             SQL = "update projects set unread_admin=0 where id=?";
+        else
+            SQL = "update projects set unread_partner=0 where id=? and company_id=?";
+
+        PreparedStatement statement = null;
+        int res = 0;
+        try {
+            statement = con.prepareStatement(SQL);
+            statement.setInt(1, id);
+            if(companyId != 1)
+                statement.setInt(2, companyId);
+
+            res = statement.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("Error in markRead");
+        }
 
     }
 
@@ -123,9 +195,6 @@ public class ProjectMapper {
                 SQL = "select * from projects where status= ? and company_id=?";
         }
 
-        System.out.println(SQL);
-        System.out.println(companyId);
-        System.out.println(state);
 
         PreparedStatement statement = null;
 
@@ -228,8 +297,7 @@ public class ProjectMapper {
             } catch (Exception e) {
                 System.out.println("Error in updateChangeDate()");
             }
-        }
-        else {
+        } else {
             java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
             Timestamp timestamp = new Timestamp(date.getTime());
             PreparedStatement statement = null;
@@ -245,6 +313,29 @@ public class ProjectMapper {
             }
 
         }
+        }
+
+        public int getCompanyIdByUserId(int user_id, Connection con) {
+
+            PreparedStatement statement = null;
+            String SQL = "select companies.id from companies, users where users.company_id = companies.id and users.id = ?";
+
+            try {
+                statement = con.prepareStatement(SQL);
+                statement.setInt(1, user_id);
+
+                ResultSet rs = statement.executeQuery(SQL);
+
+                while (rs.next()) {
+                    return rs.getInt(1);
+                }
+
+            } catch (Exception e) {
+                System.out.println("Error in getCompanyIdByUserId() in projectMapper");
+
+        }
+
+            return 0;
 
 
     }

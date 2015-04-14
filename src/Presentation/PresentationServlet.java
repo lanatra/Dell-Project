@@ -24,13 +24,18 @@ public class PresentationServlet extends HttpServlet {
             request.setAttribute("User", userObj); // passing user object to request
 
             String userPath = request.getServletPath();
-
+            System.out.println(userPath);
+            System.out.println(request.getRequestURI());
+            System.out.println(request.getRequestURL());
             switch(userPath) {
                 case "/dashboard":
                     getDashboard(request, response, cont);
                     break;
                 case "/project-request":
                     request.getRequestDispatcher("/WEB-INF/view/createproject.jsp").forward(request, response);
+                    break;
+                case "/project":
+                    getProjectView(request, response, cont);
                     break;
                 case "/logout":
                     logout(request, response, cont);
@@ -56,21 +61,31 @@ public class PresentationServlet extends HttpServlet {
 
         System.out.println(path);
 
+
         switch (path) {
-            case "/api/login":
+            case "/login":
                 login(request, response, cont);
                 break;
-            case "/api/getUser":
-                getUser(request, response, cont);
+            case "/api/getUserById":
+                getUserById(request, response, cont);
                 break;
             case "/api/createProjectRequest":
-                createProjectRequest(request, response, cont);
+                request.getRequestDispatcher("/WEB-INF/view/createProjectRequest.jsp").forward(request, response);
+                break;
+            case "/api/postMessage":
+                postMessage(request, response, cont);
                 break;
             case "/api/getProjectsByState":
                 getProjectsByState(request, response, cont);
                 break;
-            case "/api/verifyProjectRequestByProjectId":
-                verifyProjectRequestByProjectId(request, response, cont);
+            case "/api/changeProjectStatus":
+                changeProjectStatus(request, response, cont);
+                break;
+            case "/api/createCompany":
+                createCompany(request, response, cont);
+                break;
+            case "/api/createUser":
+                createUser(request, response, cont);
                 break;
             default:
                 getDashboard(request, response, cont);
@@ -112,8 +127,8 @@ public class PresentationServlet extends HttpServlet {
             //request.setAttribute("User", user);
             //getDashboard(request, response, cont);
         } else {
-            request.setAttribute("message", "Incorrect password");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            request.setAttribute("message", "Incorrect login");
+            request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
         }
     }
 
@@ -130,9 +145,30 @@ public class PresentationServlet extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/view/index.jsp").forward(request, response);
     }
 
-    void getUser (HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
-        String user_id = request.getParameter("user_id");
-        User user = cont.getUser(user_id);
+    void getProjectView(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        System.out.println("getProjectView");
+        User user = (User) request.getAttribute("User");
+        int projId = Integer.parseInt(request.getParameter("id"));
+        request.setAttribute("project", cont.getProjectById(projId, user.getCompany_id()));;
+        request.setAttribute("messages", cont.getMessagesByProjectId(projId));
+        request.getRequestDispatcher("/WEB-INF/view/project.jsp").forward(request, response);
+    }
+
+    void postMessage(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        System.out.println("postMessage");
+
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        int userId = Integer.parseInt(request.getParameter("userId"));
+        int projectId = Integer.parseInt(request.getParameter("projectId"));
+        String body = request.getParameter("body");
+        out.println(cont.postMessage(userId, projectId, body));
+    }
+
+    void getUserById (HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        int user_id = Integer.parseInt(request.getParameter("user_id"));
+        User user = cont.getUserById(user_id);
         String user_info = user.toString();
         request.setAttribute("userInfo", user_info);
         request.getRequestDispatcher("index.jsp").forward(request, response);
@@ -141,11 +177,11 @@ public class PresentationServlet extends HttpServlet {
     void createProjectRequest(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
         String project_body = request.getParameter("project_body");
         String budget = request.getParameter("budget");
+        User user = (User) request.getAttribute("User");
 
-        if (cont.createProjectRequest(budget, project_body)) {
+        if (cont.createProjectRequest(budget, project_body, user.id)) {
             request.setAttribute("submitCheck", true);
             request.getRequestDispatcher("index.jsp").forward(request, response);
-            return;
         }
     }
     void getProjectsByState(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
@@ -154,9 +190,15 @@ public class PresentationServlet extends HttpServlet {
         request.getRequestDispatcher("index.jsp").forward(request, response);
     }
 
-    void verifyProjectRequestByProjectId(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+
+
+    void changeProjectStatus(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
         String project_id = request.getParameter("project_id");
-        if (cont.verifyProjectRequest(project_id)) {
+        String new_status = request.getParameter("new_status");
+        User user = (User) request.getAttribute("User");
+
+
+        if (cont.changeProjectStatus(project_id, new_status, user.role)) {
             request.setAttribute("verificationCheck", true);
             request.getRequestDispatcher("index.jsp").forward(request, response);
             return;
@@ -173,4 +215,37 @@ public class PresentationServlet extends HttpServlet {
             response.sendRedirect("/login");
         }
     }
+
+
+    void createCompany(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        String company_name = request.getParameter("company_name");
+
+        if (cont.createCompany(company_name)) {
+            request.setAttribute("createCompanyResult", true);
+            request.getRequestDispatcher("index.jsp").forward(request, response);
+            return;
+        }
+        request.setAttribute("createCompanyResult", false);
+        request.getRequestDispatcher("index.jsp").forward(request, response);
+    }
+
+
+    // Creates a new user; if a given company name already exists, assign user to that company - otherwise make new company with that name.
+    void createUser(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        String name = request.getParameter("name");
+        String user_role = request.getParameter("user_role");
+        String user_email = request.getParameter("user_email");
+        String password = request.getParameter("password");
+        // String company_name = request.getParameter("company_name");
+
+                if (cont.createUser(name, user_role, user_email, password, 1)) {
+                    request.setAttribute("createUserResult", true);
+                    request.getRequestDispatcher("index.jsp").forward(request, response);
+                    return;
+                }
+
+        request.setAttribute("createUserResult", false);
+        request.getRequestDispatcher("index.jsp").forward(request, response);
+    }
+
 }
