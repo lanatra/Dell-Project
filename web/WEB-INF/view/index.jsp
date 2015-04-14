@@ -55,7 +55,7 @@
 
       <c:forEach var="project" items="${projects}">
 
-          <a href="#">
+          <a href="/project?id=<c:out value="${project.getId()}" />">
               <div class="project-item
               <c:if test="${User.getCompany_id() == 1}">
                 <c:if test="${project.isUnread_admin()}">unread</c:if>
@@ -64,7 +64,7 @@
                 <c:if test="${project.isUnread_partner()}">unread</c:if>
               </c:if>
 
-              "><a href="/project?id=<c:out value="${project.getId()}" />">
+              ">
                   <span class="id"><strong>#</strong><c:out value="${project.getId()}" /></span>
                   <span class="partner"><c:out value="${project.getCompanyName()}" /></span>
                   <span class="type"><c:out value="${project.getType()}" /></span>
@@ -73,7 +73,7 @@
 
 
                   <span class="execution-date small">Jan. 12 2014</span>
-              </a></div>
+              </div>
           </a>
       </c:forEach>
   </div>
