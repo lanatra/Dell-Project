@@ -25,8 +25,9 @@ public class Controller {
 
 
     //Project related
-    public ArrayList getProjectsByState(String state) { return  facade.getProjectsByState(state); }
+    public ArrayList getProjectsByState(String state, int companyId) { return  facade.getProjectsByState(state, companyId); }
     public boolean verifyProjectRequest(String project_id) { return facade.verifyProjectRequest(project_id); }
+    public int[] getStatusCounts(int companyId) { return facade.getStatusCounts(companyId); }
 
     public Company getCompanyById(int id) { return facade.getCompanyById(id); }
 

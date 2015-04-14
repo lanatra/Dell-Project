@@ -3,6 +3,7 @@ package DataLayer;
 import Domain.DisplayProject;
 import Domain.Project;
 
+import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -109,15 +110,40 @@ public class ProjectMapper {
 
     }
 
-    public ArrayList getProjectsByState(String state, Connection con) {
+    public ArrayList getProjectsByState(String state, int companyId, Connection con) {
         ArrayList<Project> projects = new ArrayList<>();
-        String SQL = "select * from projects where status= ? ";
+
+        String SQL;
+        if(companyId == 1) { // Request from Dell user
+            if(state.equals("waitingForAction"))
+                SQL = "select * from projects where status='Waiting Project Verification' or status='Waiting Claim Verification'";
+            else
+                SQL = "select * from projects where status= ?";
+        } else {
+            if(state.equals("waitingForAction"))
+                SQL = "select * from projects where status='Project Verified' and company_id=?";
+            else
+                SQL = "select * from projects where status= ? and company_id=?";
+        }
+
+        System.out.println(SQL);
+        System.out.println(companyId);
+        System.out.println(state);
 
         PreparedStatement statement = null;
 
         try {
             statement = con.prepareStatement(SQL);
-            statement.setString(1, state);
+            if(companyId != 1) {
+                if(state.equals("waitingForAction"))
+                    statement.setInt(1, companyId);
+                else {
+                    statement.setString(1, state);
+                    statement.setInt(2, companyId);
+                }
+            } else if(!state.equals("waitingForAction"))
+                statement.setString(1, state);
+
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 projects.add(new Project(rs.getInt(1),
@@ -132,7 +158,10 @@ public class ProjectMapper {
                         rs.getTimestamp(10),
                         rs.getTimestamp(11),
                         rs.getBoolean(12),
-                        rs.getBoolean(13)));
+                        rs.getBoolean(13),
+                        rs.getString(14),
+                        rs.getString(15)
+                        ));
             }
 
         } catch (Exception e) {
@@ -146,6 +175,46 @@ public class ProjectMapper {
 
         return DisplayProjects;
     }
+
+    public int[] getStatusCounts(int companyId, Connection con) {
+        PreparedStatement statement = null;
+        String SQL = "";
+        if(companyId == 1) {
+            SQL = "select " +
+                    "  sum(case when status='Waiting Project Verification' or status='Waiting Claim Verification' then 1 else 0 end) WaitingForAction," +
+                    "  sum(case when status='In Execution' then 1 else 0 end) InExecution," +
+                    "  sum(case when status='Finished' then 1 else 0 end) Finished" +
+                    " from projects";
+        } else {
+            SQL = "select \n" +
+                    "  sum(case when (status='Waiting Project Verification' or status='Waiting Claim Verification') and company_id=" + companyId + " then 1 else 0 end) WaitingForAction,\n" +
+                    "  sum(case when status='In Execution' and company_id=" + companyId + "  then 1 else 0 end) InExecution,\n" +
+                    "  sum(case when status='Finished' and company_id=" + companyId + "   then 1 else 0 end) Finished\n" +
+                    " from projects";
+        }
+
+        int[] res = new int[3];
+        System.out.println(SQL);
+
+        try {
+            statement = con.prepareStatement(SQL);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                res[0] = rs.getInt(1);
+                res[1] = rs.getInt(2);
+                res[2] = rs.getInt(3);
+            }
+            System.out.println(res[0]);
+        } catch (Exception e) {
+            System.out.println("Error in ProjectMapper - getStatusCounts()");
+        }
+
+        return res;
+    }
+
+
+
+
 
     public void updateChangeDate(int parsedId, String usertype, Connection con) {
         if (usertype.equals("Dell")) {

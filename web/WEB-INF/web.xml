@@ -20,17 +20,17 @@
         <url-pattern>/img/*</url-pattern>
     </servlet-mapping>
 
-
-
-
-    <servlet-mapping>
-        <servlet-name>PresentationServlet</servlet-name>
-        <url-pattern>/</url-pattern>
-    </servlet-mapping>
     <servlet>
         <servlet-name>PresentationServlet</servlet-name>
         <servlet-class>Presentation.PresentationServlet</servlet-class>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>PresentationServlet</servlet-name>
+        <url-pattern>/</url-pattern>
+        <url-pattern>/api/*</url-pattern>
+    </servlet-mapping>
+
+
 
 
 

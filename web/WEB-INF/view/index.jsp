@@ -1,4 +1,9 @@
 <%@ page import="Domain.User" %>
+<%@ page import="Domain.DisplayProject" %>
+<%@ page import="java.util.ArrayList" %>
+
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
   <% if (request.getSession().getAttribute("User") == null) {response.sendRedirect("login.jsp");} %>
   <head>
@@ -35,46 +40,55 @@
 
 
   <div class="container" style="margin-top: 40px;">
-    <a href="#">
+    <a href="/dashboard"">
       <div class="filter">
-        <div class="circle unread">2</div>
-        <span>Unread<br/>changes</span>
-      </div>
-    </a>
-    <a href="#">
-      <div class="filter">
-        <div class="circle waiting">6</div>
+        <div class="circle waiting"><c:out value="${statusCount[0]}" /> </div>
         <span>Waiting<br/>for action</span>
       </div>
     </a>
-    <a href="#">
+    <a href="?state=In Execution">
       <div class="filter">
-        <div class="circle execution">17</div>
+        <div class="circle execution"><c:out value="${statusCount[1]}" /></div>
         <span>In execution</span>
       </div>
     </a>
-    <a href="#">
+    <a href="?state=Claim approved">
       <div class="filter">
-        <div class="circle finished">38</div>
+        <div class="circle finished"><c:out value="${statusCount[2]}" /></div>
         <span>Finished</span>
       </div>
     </a>
   </div>
 
-  <!-- <form action="submit" method="get">
-      <input hidden name="action" value="getUser">
-      <input name="user_id">
-      <input type="submit">
-  </form>
-  <form action="submit" method="get">
-      <input hidden name="action" value="createProjectRequest">
-      <input name="budget">
-      <input type="project_body">
-      <input type="submit">
-  </form>
-  null
-  /
-  null -->
+  <div class="container" style="margin-top: 30px;">
+
+      <div class="table-head">
+          <span class="id">ID</span>
+          <span class="partner">Partner</span>
+          <span class="type">Type</span>
+          <span class="state">State</span>
+          <span class="execution-date">Execution date</span>
+      </div>
+
+      <c:forEach var="project" items="${projects}">
+
+          <a href="#">
+              <div class="project-item <%
+              if(user.getCompany_id() == 1) {%>
+              <c:if test="${project.isUnread_admin()}">unread</c:if>
+              <%} else {%>
+              <c:if test="${project.isUnread_partner()}">unread</c:if>
+
+              <%}%>">
+                  <span class="id"><strong>#</strong><c:out value="${project.getId()}" /></span>
+                  <span class="partner"><c:out value="${project.getCompanyName()}" /></span>
+                  <span class="type">NO-TYPE</span>
+                  <span class="state small"><c:out value="${project.getStatus()}" /></span>
+                  <span class="execution-date small"><c:out value="${project.getStart_time()}" /></span>
+              </div>
+          </a>
+      </c:forEach>
+  </div>
 
   </body>
 </html>

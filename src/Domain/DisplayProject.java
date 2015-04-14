@@ -3,34 +3,12 @@ package Domain;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
-public class DisplayProject {
-
-    public int id;
-    public Timestamp start_time;
-    public Timestamp end_time;
-    public int company_id;
-    public int owner_id;
-    public String status;
-    public double budget;
-    public String body;
-    public Timestamp execution_date;
-    public Timestamp last_change_admin;
-    public Timestamp last_change_partner;
-    public boolean unread_admin;
-    public boolean unread_partner;
-
-    public int f_start_time;
-    public int f_end_time;
-    public int f_execution_date;
-    public int f_last_change_admin;
-    public int f_last_change_partner;
-
-    /*public String f_end_time;
-    public String f_start_time;
-    public String f_start_time;
-    public String f_start_time;
-    public String f_start_time;
-    public String f_start_time;*/
+public class DisplayProject extends Project{
+        public long f_start_time;
+    public long f_end_time;
+    public long f_execution_date;
+    public long f_last_change_admin;
+    public long f_last_change_partner;
 
     public String companyName;
     public String companyLogoUrl;
@@ -60,14 +38,8 @@ public class DisplayProject {
         DP.unread_admin = project.unread_admin;
         DP.unread_partner = project.unread_partner;
 
-        /*f_start_time
-        f_end_time
-        f_execution_date
-        f_last_change_admin
-        f_last_change_partner*/
-        return DP;
 
-        /*if(project.start_time != null) DP.f_start_time = project.start_time.getTime();
+        if(project.start_time != null) DP.f_start_time = project.start_time.getTime();
         if(project.end_time != null) DP.f_end_time = project.end_time.getTime();
         if(project.execution_date != null) DP.f_execution_date = project.execution_date.getTime();
         if(project.last_change_admin != null) DP.f_last_change_admin = project.last_change_admin.getTime();
@@ -77,59 +49,7 @@ public class DisplayProject {
         DP.companyName = cp.name;
         DP.companyLogoUrl = cp.img_filename;
 
-        return DP;*/
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public Timestamp getStart_time() {
-        return start_time;
-    }
-
-    public Timestamp getEnd_time() {
-        return end_time;
-    }
-
-    public int getCompany_id() {
-        return company_id;
-    }
-
-    public int getOwner_id() {
-        return owner_id;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public double getBudget() {
-        return budget;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public Timestamp getExecution_date() {
-        return execution_date;
-    }
-
-    public Timestamp getLast_change_admin() {
-        return last_change_admin;
-    }
-
-    public Timestamp getLast_change_partner() {
-        return last_change_partner;
-    }
-
-    public boolean isUnread_admin() {
-        return unread_admin;
-    }
-
-    public boolean isUnread_partner() {
-        return unread_partner;
+        return DP;
     }
 
     public long getF_start_time() {

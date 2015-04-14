@@ -20,8 +20,14 @@ public class Project {
     public Timestamp last_change_partner;
     public boolean unread_admin;
     public boolean unread_partner;
+    public String notification;
+    public String type;
 
-    public Project(int id, Timestamp start_time, Timestamp end_time, int company_id, int owner_id, String status, double budget, String body, Timestamp execution_date, Timestamp last_change_admin, Timestamp last_change_partner, boolean unread_admin, boolean unread_partner) {
+    public Project() {
+
+    };
+
+    public Project(int id, Timestamp start_time, Timestamp end_time, int company_id, int owner_id, String status, double budget, String body, Timestamp execution_date, Timestamp last_change_admin, Timestamp last_change_partner, boolean unread_admin, boolean unread_partner, String notification, String type) {
 
         this.id = id;
         this.start_time = start_time;
@@ -36,6 +42,8 @@ public class Project {
         this.last_change_partner = last_change_partner;
         this.unread_admin = unread_admin;
         this.unread_partner = unread_partner;
+        this.notification = notification;
+        this.type = type;
 
     }
     public boolean isUnread_partner() {
@@ -86,9 +94,13 @@ public class Project {
         return last_change_partner;
     }
 
-    public boolean isUnread_admin() {
-        return unread_admin;
-    }
+    public boolean isUnread_admin() { return unread_admin; }
+
+    public String getNotification() { return notification; }
+
+    public String getType() { return type; }
+
+
     @Override
     public String toString() {
         return "" + id + ": " + body;

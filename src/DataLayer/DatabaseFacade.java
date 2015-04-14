@@ -24,11 +24,14 @@ public class DatabaseFacade {
     public boolean createProjectRequest(String budget, String project_body) {
         return new ProjectMapper().createProjectRequest(budget, project_body, con);
     }
-    public ArrayList getProjectsByState(String state) {
-        return new ProjectMapper().getProjectsByState(state, DatabaseConnection.getInstance().getConnection());
+    public ArrayList getProjectsByState(String state, int companyId) {
+        return new ProjectMapper().getProjectsByState(state, companyId, DatabaseConnection.getInstance().getConnection());
     }
     public boolean verifyProjectRequest(String project_id) {
         return new ProjectMapper().verifyProjectRequest(project_id, con);
+    }
+    public int[] getStatusCounts(int companyId) {
+        return new ProjectMapper().getStatusCounts(companyId, con);
     }
 
     // COMPANY
