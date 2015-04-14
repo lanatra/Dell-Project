@@ -12,7 +12,7 @@ import java.util.ArrayList;
  */
 public class ProjectMapper {
 
-    public boolean createProjectRequest(String budget, String project_body, Connection con) {
+    public boolean createProjectRequest(String budget, String project_body, String user Connection con) {
 
         String SQL = "insert into projects values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
@@ -78,7 +78,7 @@ public class ProjectMapper {
         return id + 1;
     }
 
-
+    // Will make following function more generic; should be able to change status depending on parameter to reduce amount of methods needed
     public boolean verifyProjectRequest(String project_id, Connection con) {
         PreparedStatement statement = null;
         java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
