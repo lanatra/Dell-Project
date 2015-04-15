@@ -4,6 +4,7 @@ import Domain.DisplayProject;
 import Domain.Project;
 
 import javax.xml.transform.Result;
+import java.security.interfaces.RSAKey;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -58,6 +59,9 @@ public class ProjectMapper {
         }
         catch (Exception e) {
             System.out.println("Error in ProjectMapper - createProjectRequest()");
+        } finally {
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
         }
 
         return false;
@@ -65,17 +69,23 @@ public class ProjectMapper {
 
     public int getNextProjectId(Connection con) {
         PreparedStatement statement = null;
+        ResultSet rs = null;
         String SQL = "select MAX(id) from projects";
         int id = 0;
+
         try {
             statement = con.prepareStatement(SQL);
-            ResultSet rs = statement.executeQuery();
+            rs = statement.executeQuery();
             while (rs.next()) {
                 id = rs.getInt(1);
             }
 
         } catch (Exception e) {
             System.out.println("Error in ProjectMapper - getNextProjectId()");
+        } finally {
+            if (rs != null) try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
         }
 
         return id + 1;
@@ -107,6 +117,9 @@ public class ProjectMapper {
             return true;
         } catch (Exception e) {
             System.out.println("Zzzzz");
+        } finally {
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
         }
         return false;
 
@@ -116,12 +129,13 @@ public class ProjectMapper {
         String SQL = "select * from projects where id=?";
         DisplayProject project = null;
         PreparedStatement statement = null;
+        ResultSet rs = null;
 
         try {
             statement = con.prepareStatement(SQL);
             statement.setInt(1, id);
 
-            ResultSet rs = statement.executeQuery();
+            rs = statement.executeQuery();
             if (rs.next()) {
                 project = DisplayProject.projectToDisplay(new Project(rs.getInt(1),
                         rs.getTimestamp(2),
@@ -145,6 +159,10 @@ public class ProjectMapper {
 
         } catch (Exception e) {
             System.out.println("Error in UserMapper");
+        } finally {
+            if (rs != null) try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
         }
 
         if(project != null)
@@ -175,6 +193,9 @@ public class ProjectMapper {
 
         } catch (Exception e) {
             System.out.println("Error in markRead");
+        } finally {
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
         }
 
     }
@@ -197,6 +218,7 @@ public class ProjectMapper {
 
 
         PreparedStatement statement = null;
+        ResultSet rs = null;
 
         try {
             statement = con.prepareStatement(SQL);
@@ -210,7 +232,7 @@ public class ProjectMapper {
             } else if(!state.equals("waitingForAction"))
                 statement.setString(1, state);
 
-            ResultSet rs = statement.executeQuery();
+            rs = statement.executeQuery();
             while (rs.next()) {
                 projects.add(new Project(rs.getInt(1),
                         rs.getTimestamp(2),
@@ -232,6 +254,10 @@ public class ProjectMapper {
 
         } catch (Exception e) {
             System.out.println("Error in UserMapper");
+        } finally {
+            if (rs != null) try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
         }
 
         ArrayList<DisplayProject> DisplayProjects = new ArrayList<>();
@@ -244,6 +270,7 @@ public class ProjectMapper {
 
     public int[] getStatusCounts(int companyId, Connection con) {
         PreparedStatement statement = null;
+        ResultSet rs = null;
         String SQL = "";
         if(companyId == 1) {
             SQL = "select " +
@@ -264,7 +291,7 @@ public class ProjectMapper {
 
         try {
             statement = con.prepareStatement(SQL);
-            ResultSet rs = statement.executeQuery();
+            rs = statement.executeQuery();
             if (rs.next()) {
                 res[0] = rs.getInt(1);
                 res[1] = rs.getInt(2);
@@ -273,6 +300,10 @@ public class ProjectMapper {
             System.out.println(res[0]);
         } catch (Exception e) {
             System.out.println("Error in ProjectMapper - getStatusCounts()");
+        } finally {
+            if (rs != null) try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
         }
 
         return res;
@@ -296,6 +327,9 @@ public class ProjectMapper {
 
             } catch (Exception e) {
                 System.out.println("Error in updateChangeDate()");
+            } finally {
+                if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+                if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
             }
         } else {
             java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
@@ -310,6 +344,9 @@ public class ProjectMapper {
 
             } catch (Exception e) {
                 System.out.println("Error in updateChangeDate()");
+            } finally {
+                if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+                if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
             }
 
         }
@@ -318,13 +355,14 @@ public class ProjectMapper {
         public int getCompanyIdByUserId(int user_id, Connection con) {
 
             PreparedStatement statement = null;
+            ResultSet rs = null;
             String SQL = "select companies.id from companies, users where users.company_id = companies.id and users.id = ?";
 
             try {
                 statement = con.prepareStatement(SQL);
                 statement.setInt(1, user_id);
 
-                ResultSet rs = statement.executeQuery(SQL);
+                rs = statement.executeQuery(SQL);
 
                 while (rs.next()) {
                     return rs.getInt(1);
@@ -332,8 +370,11 @@ public class ProjectMapper {
 
             } catch (Exception e) {
                 System.out.println("Error in getCompanyIdByUserId() in projectMapper");
-
-        }
+            } finally {
+                if (rs != null) try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+                if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+                if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
+            }
 
             return 0;
 

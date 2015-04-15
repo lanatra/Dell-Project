@@ -11,11 +11,11 @@ public class MessageMapper {
         String SQL = "select * from messages where project_id =" + id;
 
         PreparedStatement statement = null;
-
+        ResultSet rs = null;
         try {
             statement = con.prepareStatement(SQL);
 
-            ResultSet rs = statement.executeQuery();
+            rs = statement.executeQuery();
             while (rs.next()) {
                 messages.add(new Message(rs.getInt(1),
                         rs.getInt(2),
@@ -27,6 +27,10 @@ public class MessageMapper {
 
         } catch (Exception e) {
             System.out.println("Error in MessageMapper.getMessagesByProjectId");
+        } finally {
+            if (rs != null) try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
         }
 
         return messages;
@@ -37,11 +41,11 @@ public class MessageMapper {
         String SQL = "select * from messages where id =" + id;
 
         PreparedStatement statement = null;
-
+        ResultSet rs = null;
         try {
             statement = con.prepareStatement(SQL);
 
-            ResultSet rs = statement.executeQuery();
+            rs = statement.executeQuery();
             if (rs.next()) {
                 message = new Message(rs.getInt(1),
                         rs.getInt(2),
@@ -53,6 +57,10 @@ public class MessageMapper {
 
         } catch (Exception e) {
             System.out.println("Error in MessageMapper.getMessagesByProjectId");
+        } finally {
+            if (rs != null) try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
         }
 
         return message;
@@ -90,6 +98,9 @@ public class MessageMapper {
         }
         catch (Exception e) {
             System.out.println("Error in Messagemapper - postMessage()");
+        } finally {
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
         }
 
         return getMessageById(nextMessageId, con);
@@ -97,17 +108,22 @@ public class MessageMapper {
 
     public int getNextMessageId(Connection con) {
         PreparedStatement statement = null;
+        ResultSet rs = null;
         String SQL = "select MAX(id) from messages";
         int id = 0;
         try {
             statement = con.prepareStatement(SQL);
-            ResultSet rs = statement.executeQuery();
+            rs = statement.executeQuery();
             while (rs.next()) {
                 id = rs.getInt(1);
             }
 
         } catch (Exception e) {
             System.out.println("Error in MessageMapper - getNextMessageId()");
+        } finally {
+            if (rs != null) try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
         }
 
         return id + 1;
