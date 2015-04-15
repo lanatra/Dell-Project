@@ -114,26 +114,19 @@ public class ProjectMapper {
     }
 
     // Will make following function more generic; should be able to change status depending on parameter to reduce amount of methods needed
-    public boolean changeProjectStatus(String project_id, String new_status, User user, Connection con) {
+    public boolean changeProjectStatus(int project_id, String new_status, int companyId, Connection con) {
         PreparedStatement statement = null;
 
         String SQL = "UPDATE projects SET status = ? where id = ?";
 
 
-        int parsedId;
-        try {
-            parsedId = Integer.parseInt(project_id);
-        } catch (NumberFormatException e) {
-            return false;
-        }
-
         try {
             statement = con.prepareStatement(SQL);
             statement.setString(1, new_status);
-            statement.setInt(2, parsedId);
+            statement.setInt(2, project_id);
             statement.executeUpdate();
 
-            updateChangeDate(parsedId, user.getRole());
+            updateChangeDate(project_id, companyId);
 
             return true;
         } catch (Exception e) {
@@ -423,7 +416,7 @@ public class ProjectMapper {
 
 
 
-    public void updateChangeDate(int parsedId, String usertype) {
+    public void updateChangeDate(int parsedId, int companyId) {
 
         Connection con = null;
         try {
@@ -432,7 +425,7 @@ public class ProjectMapper {
 
         }
 
-        if (usertype.equals("Dell")) {
+        if (companyId == 1) {
             java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
             Timestamp timestamp = new Timestamp(date.getTime());
             PreparedStatement statement = null;

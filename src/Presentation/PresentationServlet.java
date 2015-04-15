@@ -61,6 +61,9 @@ public class PresentationServlet extends HttpServlet {
 
         System.out.println(path);
 
+        Object userObj = request.getSession().getAttribute("User");
+        if (userObj != null)
+            request.setAttribute("User", userObj); // passing user object to request
 
         switch (path) {
             case "/login":
@@ -208,24 +211,15 @@ public class PresentationServlet extends HttpServlet {
 
 
     void changeProjectStatus(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
-        String project_id = request.getParameter("project_id");
-        String new_status = request.getParameter("new_status");
+        int projectId = Integer.parseInt(request.getParameter("projectId"));
+        String currentType = request.getParameter("currentType");
+        String answer = request.getParameter("answer");
+        User u = (User) request.getAttribute("User");
+        int companyId = u.getCompany_id();
 
-        Object userObj = request.getSession().getAttribute("User");
-        if (userObj != null) {
-            request.setAttribute("User", userObj);}
+        cont.changeProjectStatus(projectId, currentType, answer, companyId);
 
-        User user = (User) request.getAttribute("User");
-
-        if (cont.changeProjectStatus("8", "In Execution", user)) {
-            request.setAttribute("check", true);
-            response.sendRedirect("/dashboard");
-            return;
-        }
-        request.setAttribute("check", false);
         response.sendRedirect("/dashboard");
-
-
     }
 
     void logout(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
