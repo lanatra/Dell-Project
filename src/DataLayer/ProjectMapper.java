@@ -2,7 +2,10 @@ package DataLayer;
 
 import Domain.DisplayProject;
 import Domain.Project;
+import Domain.Stage;
 import Domain.User;
+
+import javax.xml.crypto.Data;
 import javax.xml.transform.Result;
 import java.security.interfaces.RSAKey;
 import java.sql.*;
@@ -137,6 +140,95 @@ public class ProjectMapper {
         }
         return false;
 
+    }
+
+    public boolean addStage(int user_id, int project_id, String type, Connection con) {
+        PreparedStatement statement = null;
+        java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
+        Timestamp timestamp = new Timestamp(date.getTime());
+        int id = getNextStageId();
+        String SQL = "insert into stages values(?,?,?,?,?)";
+
+        try {
+            statement = con.prepareStatement(SQL);
+
+            statement.setInt(1, id);
+            statement.setInt(2, user_id);
+            statement.setInt(3, project_id);
+            statement.setTimestamp(4, timestamp);
+            statement.setString(5, type);
+
+            statement.executeUpdate();
+
+            return true;
+        } catch (Exception e) {
+            System.out.println("Exception in addStage()");
+        } finally {
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
+        }
+        return false;
+
+    }
+
+    public ArrayList getStagesByProjectId(int project_id, Connection con) {
+        String SQL = "select * from stages where project_id=?";
+        ArrayList<Stage> stages = new ArrayList<>();
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+
+        try {
+            statement = con.prepareStatement(SQL);
+            statement.setInt(1, project_id);
+
+            rs = statement.executeQuery();
+            while(rs.next()) {
+                stages.add(new Stage(rs.getInt(1),
+                        rs.getInt(2),
+                        rs.getInt(3),
+                        rs.getTimestamp(4),
+                        rs.getString(5)));
+
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error in UserMapper");
+        } finally {
+            if (rs != null) try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
+        }
+
+
+        return stages;
+    }
+
+    public int getNextStageId() {
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        Connection con = null;
+        try {
+            con = DatabaseConnection.getInstance().getConnection();
+        } catch (Exception e) {};
+        String SQL = "select MAX(id) from stages";
+        int id = 0;
+
+        try {
+            statement = con.prepareStatement(SQL);
+            rs = statement.executeQuery();
+            while (rs.next()) {
+                id = rs.getInt(1);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error in ProjectMapper - getNextStageId()");
+        } finally {
+            if (rs != null) try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
+        }
+
+        return id + 1;
     }
 
     public DisplayProject getProjectById(int id, int companyId, Connection con) {

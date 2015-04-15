@@ -32,10 +32,10 @@
       </ul>
     </div>
     <c:if test="${User.getCompany_id() == 1}">
-    <div class="budget-label u-pull-right">
-      <span class="big">834 039 DKK</span>
-      <span class="desc">is left available in this quarter (1.1.2015 - 31.3.2015)</span>
-    </div>
+        <div class="budget-label u-pull-right">
+            <span class="big">834 039 DKK</span>
+            <span class="desc">is left available in this quarter (1.1.2015 - 31.3.2015)</span>
+        </div>
     </c:if>
     <c:if test="${User.getCompany_id() != 1}">
     <div class="u-pull-right">

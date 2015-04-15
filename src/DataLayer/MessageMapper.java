@@ -73,25 +73,18 @@ public class MessageMapper {
         PreparedStatement statement = null;
         int nextMessageId = 0;
         try {
-            System.out.println("wehere1");
             statement = con.prepareStatement(SQL);
-            System.out.println("wehere2");
             nextMessageId = getNextMessageId(con);
-            System.out.println("wehere3");
 
             java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
-            System.out.println("wehere4");
             Timestamp timestamp = new Timestamp(date.getTime());
-            System.out.println("wehere5");
 
             statement.setInt(1, nextMessageId);
             statement.setInt(2, userId);
             statement.setInt(3, projectId);
             statement.setString(4, body);
             statement.setTimestamp(5, timestamp);
-            System.out.println("wehere6");
             statement.executeUpdate();
-            System.out.println("wehere7");
 
         } catch (SQLException t) {
             System.out.println("SQLException in Messagemapper() - postMessage*(");
@@ -102,7 +95,9 @@ public class MessageMapper {
             if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
             if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
         }
-
+        try {
+              con = DatabaseConnection.getInstance().getConnection();
+        } catch (Exception e) {};
         return getMessageById(nextMessageId, con);
     }
 

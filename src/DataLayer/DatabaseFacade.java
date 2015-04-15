@@ -42,6 +42,9 @@ public class DatabaseFacade {
     public int[] getStatusCounts(int companyId) {
         return new ProjectMapper().getStatusCounts(companyId, getCon());
     }
+    public ArrayList getStagesByProjectId(int project_id) {
+        return  new ProjectMapper().getStagesByProjectId(project_id, getCon());
+    }
 
     // COMPANY
     public Company getCompanyById(int id) {

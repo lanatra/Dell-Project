@@ -2,6 +2,7 @@ package Domain;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Message {
 
@@ -40,6 +41,8 @@ public class Message {
         return html;
     }
 
+    public static final Comparator<Message> TIME = (Message o1, Message o2) -> o1.creation_date_millis.compareTo(o2.creation_date_millis);
+
     public int getId() {
         return id;
     }
@@ -70,9 +73,5 @@ public class Message {
 
     public Company getCompany() {
         return company;
-    }
-
-    public int compareTo(Message o) {
-        return Comparators.TIME.compare(this, o);
     }
 }

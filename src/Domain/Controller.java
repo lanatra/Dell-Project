@@ -44,6 +44,7 @@ public class Controller {
         if((companyId == 1 && dp.isUnread_admin()) || (companyId != 1 && dp.isUnread_partner()))
             facade.markRead(id, companyId);
         return  dp; }
+    public ArrayList getStagesByProjectId(int project_id) { return proccessStages(facade.getStagesByProjectId(project_id)); }
     public ArrayList getMessagesByProjectId(int projId) { return processMessages(facade.getMessagesByProjectId(projId)); }
     public String postMessage(int userId, int projId, String body) { return processMessage(facade.postMessage(userId, projId, body)).toHTML();}
     public ArrayList getProjectsByState(String state, int companyId) { return  facade.getProjectsByState(state, companyId); }
@@ -65,7 +66,25 @@ public class Controller {
     }
 
 
+    public ArrayList proccessStages(ArrayList stages) {
+        HashMap userMap = new HashMap();
+        User user = null;
+        for (Stage s : (ArrayList<Stage>) stages) {
 
+            if(userMap.containsKey(s.user_id))
+                s.user = (User) userMap.get(s.user_id);
+            else {
+                user = facade.getUserById(s.user_id);
+                s.user = user;
+                userMap.put(s.user_id, user);
+            }
+        }
+
+        Collections.sort(stages, Stage.TIME);
+
+        return stages;
+
+    }
 
 
 
@@ -96,7 +115,7 @@ public class Controller {
             }
         }
 
-        Collections.sort(messages, Comparators.TIME);
+        Collections.sort(messages, Message.TIME);
 
         return messages;
 

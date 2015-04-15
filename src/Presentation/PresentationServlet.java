@@ -152,6 +152,7 @@ public class PresentationServlet extends HttpServlet {
         int projId = Integer.parseInt(request.getParameter("id"));
         request.setAttribute("project", cont.getProjectById(projId, user.getCompany_id()));;
         request.setAttribute("messages", cont.getMessagesByProjectId(projId));
+        request.setAttribute("stages", cont.getStagesByProjectId(projId));
         request.getRequestDispatcher("/WEB-INF/view/project.jsp").forward(request, response);
     }
 
