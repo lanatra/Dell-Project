@@ -57,8 +57,10 @@ public class Controller {
     public User login(String email, String password) {
         User user = facade.getUserByEmail(email);
         if(user != null) {
-            if (Login.testPassword(password, user.password))
+            if (Login.testPassword(password, user.password)) {
+                user.company = facade.getCompanyById(user.getCompany_id()); // Assign company to user
                 return user;
+            }
             else
                 return null;
         }

@@ -7,8 +7,6 @@
 
   <jsp:include page="header.jsp" />
 
-  <% User user = (User) request.getSession().getAttribute("User"); %>
-
   <div class="container actions" style="margin-top: 40px;">
       <a href="/dashboard">
       <div class="filter">

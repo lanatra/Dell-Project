@@ -497,6 +497,9 @@ div.project-items {
   div.item {
 	float: left;
 	width: 90%;
+	&.pull-right {
+	  float: right;
+	}
 
 	span.date {
 	  float: left;
@@ -508,6 +511,7 @@ div.project-items {
 	div.bubble {
 	  float: left;
 	  clear: both;
+	  width: 100%;
 	  background-color: white;
 	  border-radius: 20px;
 	  box-sizing: border-box;

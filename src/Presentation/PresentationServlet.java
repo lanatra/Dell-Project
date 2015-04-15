@@ -177,10 +177,14 @@ public class PresentationServlet extends HttpServlet {
     }
 
     void createProjectRequest(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
-        String project_body = request.getParameter("project_body");
+        String project_body = request.getParameter("body");
         String budget = request.getParameter("budget");
         String project_type = request.getParameter("type");
-        String execution_date = request.getParameter("execution_date");
+
+        int execution_year = Integer.parseInt(request.getParameter("execution_year"));
+        int execution_month = Integer.parseInt(request.getParameter("execution_month"));
+        int execution_day = Integer.parseInt(request.getParameter("execution_day"));
+
         Object userObj = request.getSession().getAttribute("User");
         if (userObj != null) {
             request.setAttribute("User", userObj);}

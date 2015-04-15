@@ -9,6 +9,8 @@ public class User {
     public String email;
     public int company_id;
 
+    public Company company;
+
     public int getId() {
         return id;
     }
@@ -30,6 +32,8 @@ public class User {
     }
 
     public int getCompany_id() { return company_id; }
+
+    public Company getCompany() { return company; }
 
     public User(int id1, String name1, String role1, String email1, String password1, int company_id1) {
 
