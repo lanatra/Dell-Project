@@ -7,6 +7,7 @@ public class User {
     public String password;
     public String role;
     public String email;
+    public int company_id;
 
     public int getId() {
         return id;
@@ -28,11 +29,7 @@ public class User {
         return email;
     }
 
-    public int getCompany_id() {
-        return company_id;
-    }
-
-    public int company_id;
+    public int getCompany_id() { return company_id; }
 
     public User(int id1, String name1, String role1, String email1, String password1, int company_id1) {
 

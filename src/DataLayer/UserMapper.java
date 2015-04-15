@@ -16,11 +16,12 @@ public class UserMapper {
 
         PreparedStatement statement = null;
 
+        ResultSet rs = null;
         try {
             statement = con.prepareStatement(SQL);
 
             statement.setInt(1, user_id);
-            ResultSet rs = statement.executeQuery();
+            rs = statement.executeQuery();
             if (rs.next())
             {
 
@@ -35,6 +36,10 @@ public class UserMapper {
 
         } catch (Exception e) {
             System.out.println("Error in UserMapper");
+        } finally {
+            if (rs != null) try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
         }
 
         return user;
@@ -62,20 +67,16 @@ public class UserMapper {
                         rs.getInt(6));
             }
 
-        } catch (SQLException e) {
-            System.out.println("sql error");
+
+        } catch (Exception e) {
+            System.out.println("Error in UserMapper");
+        } finally {
+            if (rs != null) try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
         }
 
-        catch (Exception e) {
-            System.out.println("Error in UserMapper");
-        }
-        /*
-        finally {
-            try { if (rs != null) rs.close(); } catch (Exception e) {};
-            try { if (statement != null) statement.close(); } catch (Exception e) {};
-            try { if (con != null) con.close(); } catch (Exception e) {};
-        }
-    */
+
         return user;
     }
     
@@ -100,6 +101,9 @@ public class UserMapper {
             return true;
         } catch (Exception e) {
             System.out.println("error in user creation");
+        } finally {
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
         }
 
         return false;
@@ -109,15 +113,21 @@ public class UserMapper {
         PreparedStatement statement = null;
         String SQL = "select MAX(id) from users";
         int id = 0;
+
+        ResultSet rs = null;
         try {
             statement = con.prepareStatement(SQL);
-            ResultSet rs = statement.executeQuery();
+            rs = statement.executeQuery();
             while (rs.next()) {
                 id = rs.getInt(1);
             }
 
         } catch (Exception e) {
             System.out.println("Error in UserMapper - getNextUserId()");
+        } finally {
+            if (rs != null) try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
         }
 
         return id + 1;

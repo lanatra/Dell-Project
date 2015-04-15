@@ -14,11 +14,11 @@ public class CompanyMapper {
         String SQL = "select * from companies where id= ? ";
 
         PreparedStatement statement = null;
-
+        ResultSet rs = null;
         try {
             statement = con.prepareStatement(SQL);
             statement.setInt(1, id);
-            ResultSet rs = statement.executeQuery();
+            rs = statement.executeQuery();
             if (rs.next()) {
                 company = new Company(rs.getInt(1),
                         rs.getString(2),
@@ -27,6 +27,10 @@ public class CompanyMapper {
 
         } catch (Exception e) {
             System.out.println("Error in CompanyMapper");
+        } finally {
+            if (rs != null) try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
         }
 
         return company;
@@ -51,24 +55,34 @@ public class CompanyMapper {
 
         } catch (Exception e) {
             System.out.println("Error in createCompany");
+        } finally {
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
         }
 
         return false;
     }
 
      public int getNextCompanyId(Connection con) {
-        PreparedStatement statement = null;
-        String SQL = "select MAX(id) from companies";
-        int id = 0;
+         PreparedStatement statement = null;
+         ResultSet rs = null;
+
+         String SQL = "select MAX(id) from companies";
+         int id = 0;
+
         try {
             statement = con.prepareStatement(SQL);
-            ResultSet rs = statement.executeQuery();
+            rs = statement.executeQuery();
             while (rs.next()) {
                 id = rs.getInt(1);
             }
 
         } catch (Exception e) {
             System.out.println("Error in CompanyMapper - getNextCompanyId()");
+        } finally {
+            if (rs != null) try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
         }
 
         return id + 1;
