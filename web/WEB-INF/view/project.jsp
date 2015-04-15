@@ -10,6 +10,7 @@
 <h2><c:out value="${project.getCompanyName()}" /></h2>
 <c:set var="stageIndex" value="0"></c:set>
 <c:set var="messageIndex" value="0"></c:set>
+<c:if test="${(stages.size() + messages.size() - 1) > 0}">
 <c:forEach var="i" begin="0" end="${stages.size() + messages.size() - 1}">
     <c:choose>
         <c:when test="${stageIndex == -1}">
@@ -40,6 +41,7 @@
         </c:otherwise>
     </c:choose>
 </c:forEach>
+</c:if>
 
 
 
