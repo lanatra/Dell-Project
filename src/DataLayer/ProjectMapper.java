@@ -112,6 +112,7 @@ public class ProjectMapper {
 
         String SQL = "UPDATE projects SET status = ? where id = ?";
 
+
         int parsedId;
         try {
             parsedId = Integer.parseInt(project_id);
