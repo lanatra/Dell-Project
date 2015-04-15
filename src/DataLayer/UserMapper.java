@@ -45,11 +45,13 @@ public class UserMapper {
         String SQL = "select * from users where email= ? ";
 
         PreparedStatement statement = null;
+        System.out.println(SQL);
 
+        ResultSet rs = null;
         try {
             statement = con.prepareStatement(SQL);
             statement.setString(1, email);
-            ResultSet rs = statement.executeQuery();
+            rs = statement.executeQuery();
             if (rs.next())
             {
                 user = new User(rs.getInt(1),
@@ -60,10 +62,20 @@ public class UserMapper {
                         rs.getInt(6));
             }
 
-        } catch (Exception e) {
-            System.out.println("Error in UserMapper");
+        } catch (SQLException e) {
+            System.out.println("sql error");
         }
 
+        catch (Exception e) {
+            System.out.println("Error in UserMapper");
+        }
+        /*
+        finally {
+            try { if (rs != null) rs.close(); } catch (Exception e) {};
+            try { if (statement != null) statement.close(); } catch (Exception e) {};
+            try { if (con != null) con.close(); } catch (Exception e) {};
+        }
+    */
         return user;
     }
     

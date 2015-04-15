@@ -19,8 +19,8 @@ public class DatabaseFacade {
     public User getUserById(int user_id) { return new UserMapper().getUserById(user_id, con); }
 
     // PROJECT
-    public boolean createProjectRequest(String budget, String project_body, int user_id) {
-        return new ProjectMapper().createProjectRequest(budget, project_body, user_id, con);
+    public boolean createProjectRequest(String budget, String project_body, User user, String project_type, String execution_date) {
+        return new ProjectMapper().createProjectRequest(budget, project_body, user, project_type, execution_date, con);
     }
     public DisplayProject getProjectById(int id, int companyId) {
         return new ProjectMapper().getProjectById(id, companyId, con);

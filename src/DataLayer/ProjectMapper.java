@@ -2,7 +2,7 @@ package DataLayer;
 
 import Domain.DisplayProject;
 import Domain.Project;
-
+import Domain.User;
 import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class ProjectMapper {
 
 
-    public boolean createProjectRequest(String budget, String project_body, int user_id, Connection con) {
+    public boolean createProjectRequest(String budget, String project_body, User user, String project_type, String execution_date, Connection con) {
 
         String SQL = "insert into projects values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
@@ -21,8 +21,16 @@ public class ProjectMapper {
         } catch (NumberFormatException e) {
             return false;
         }
+/* Figure out how to handle dates from frontend; would be ideal if we could have input such that we can convert it to timestamp instead of int
+        int execDateParsed;
+        try {
+            execDateParsed = Integer.parseInt(execution_date);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+*/
+        System.out.println("IM HERE");
         PreparedStatement statement = null;
-        int companyId = getCompanyIdByUserId(user_id, con);
 
         try {
             int nextProjectID = getNextProjectId(con);
@@ -35,9 +43,9 @@ public class ProjectMapper {
             statement.setInt(1, nextProjectID);
             statement.setTimestamp(2, timestamp);
             statement.setTimestamp(3, null);
-            statement.setInt(4, companyId);
-            statement.setInt(5, user_id);
-            statement.setString(6, "Pending");
+            statement.setInt(4, 2);
+            statement.setInt(5, user.id);
+            statement.setString(6, "Waiting Project Verification");
             statement.setDouble(7, parsedBudget);
             statement.setString(8, project_body);
             statement.setTimestamp(9, null);
@@ -46,7 +54,7 @@ public class ProjectMapper {
             statement.setBoolean(12, true);
             statement.setBoolean(13, false);
             statement.setString(14, null);
-            statement.setString(15, null);
+            statement.setString(15, project_type);
 
             statement.executeUpdate();
 
@@ -315,29 +323,6 @@ public class ProjectMapper {
         }
         }
 
-        public int getCompanyIdByUserId(int user_id, Connection con) {
 
-            PreparedStatement statement = null;
-            String SQL = "select companies.id from companies, users where users.company_id = companies.id and users.id = ?";
-
-            try {
-                statement = con.prepareStatement(SQL);
-                statement.setInt(1, user_id);
-
-                ResultSet rs = statement.executeQuery(SQL);
-
-                while (rs.next()) {
-                    return rs.getInt(1);
-                }
-
-            } catch (Exception e) {
-                System.out.println("Error in getCompanyIdByUserId() in projectMapper");
-
-        }
-
-            return 0;
-
-
-    }
 
 }

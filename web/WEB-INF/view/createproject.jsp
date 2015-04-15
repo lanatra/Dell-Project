@@ -10,16 +10,16 @@
 <div class="container project" style="margin-top: 60px;">
   <H1>Project request</H1>
 
-  <form action="request">
+  <form action="/project-request" method="post">
     <span>Fona company is requesting</span>
-    <input class="amount" name="amount" type="text" value="$"/>
+    <input class="amount" name="budget" type="text" value="$"/>
     <span>for</span>
     <select name="type" id="type">
       <option value="web-campaign">Web campaign</option>
       <option value="billboard-ad">Billboard ad</option>
       <option value="tv-promotion">TV promotion</option>
     </select>
-    <textarea name="description" id="description" placeholder="Describe your project here."></textarea>
+    <textarea name="project_body" id="description" placeholder="Describe your project here."></textarea>
     <button type="submit" class="button">Send request</button>
   </form>
 </div>

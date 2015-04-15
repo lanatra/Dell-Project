@@ -84,6 +84,9 @@ public class PresentationServlet extends HttpServlet {
             case "/api/createUser":
                 createUser(request, response, cont);
                 break;
+            case "/project-request":
+                createProjectRequest(request, response, cont);
+                break;
             default:
                 getDashboard(request, response, cont);
         }
@@ -174,12 +177,21 @@ public class PresentationServlet extends HttpServlet {
     void createProjectRequest(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
         String project_body = request.getParameter("project_body");
         String budget = request.getParameter("budget");
-        User user = (User) request.getAttribute("User");
+        String project_type = request.getParameter("type");
+        String execution_date = request.getParameter("execution_date");
+        Object userObj = request.getSession().getAttribute("User");
+        if (userObj != null) {
+            request.setAttribute("User", userObj);}
 
-        if (cont.createProjectRequest(budget, project_body, user.id)) {
-            request.setAttribute("submitCheck", true);
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            User user = (User) request.getAttribute("User");
+
+
+        if (cont.createProjectRequest(budget, project_body, user, project_type, "placeholder")) {
+            //request.setAttribute("submitCheck", true);
+            request.getRequestDispatcher("/WEB-INF/view/createproject.jsp").forward(request, response);
         }
+        request.getRequestDispatcher("/WEB-INF/view/createproject.jsp").forward(request, response);
+
     }
     void getProjectsByState(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
         User user = (User) request.getAttribute("User");
