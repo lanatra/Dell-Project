@@ -17,9 +17,8 @@
     <span class="state">State</span>
 
     <div class="project-items">
-    <c:if test="${(stages.size() + messages.size() - 1) > 0}">
+    <c:if test="${(stages.size() + messages.size()) > 0}">
         <c:forEach var="i" begin="0" end="${stages.size() + messages.size() - 1}">
-
             <c:choose>
                 <c:when test="${stageIndex == -1}">
                     <%@ include file="shortcodes/messageItemByIndex.jsp" %>
@@ -30,6 +29,7 @@
                     <c:set var="stageIndex" value="${stageIndex + 1}"></c:set>
                 </c:when>
                 <c:otherwise>
+                    <c:if test="${stages.size() > 0 && messages.size() > 0}">
                     <c:choose>
                         <c:when test="${stages.get(stageIndex).getDate() < messages.get(messageIndex).getCreation_date_millis()}">
                             <%@ include file="shortcodes/stageItemByIndex.jsp" %>
@@ -46,6 +46,14 @@
                             </c:if>
                         </c:otherwise>
                     </c:choose>
+                    </c:if>
+                    <c:if test="${message == null}">
+                        <%@ include file="shortcodes/stageItemByIndex.jsp" %>
+                        <c:set var="stageIndex" value="${stageIndex + 1}"></c:set>
+                    </c:if><c:if test="${stages.size() == null}">
+                        <%@ include file="shortcodes/messageItemByIndex.jsp" %>
+                        <c:set var="messageIndex" value="${messageIndex + 1}"></c:set>
+                    </c:if>
                 </c:otherwise>
             </c:choose>
         </c:forEach>
