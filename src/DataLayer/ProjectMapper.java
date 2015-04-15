@@ -62,8 +62,12 @@ public class ProjectMapper {
 
             statement.executeUpdate();
 
+            
+            addStage(user.id, nextProjectID, "Waiting Project Verification", DatabaseConnection.getInstance().getConnection());
 
             return true;
+
+
 
         } catch (SQLException t) {
             System.out.println("SQLException in createProjectRequest()");
