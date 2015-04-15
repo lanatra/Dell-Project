@@ -86,6 +86,7 @@ public class PresentationServlet extends HttpServlet {
                 break;
             case "/project-request":
                 createProjectRequest(request, response, cont);
+                //changeProjectStatus(request, response, cont);
                 break;
             default:
                 getDashboard(request, response, cont);
@@ -187,12 +188,12 @@ public class PresentationServlet extends HttpServlet {
 
 
         if (cont.createProjectRequest(budget, project_body, user, project_type, "placeholder")) {
-            //request.setAttribute("submitCheck", true);
             request.getRequestDispatcher("/WEB-INF/view/createproject.jsp").forward(request, response);
         }
-        request.getRequestDispatcher("/WEB-INF/view/createproject.jsp").forward(request, response);
+        response.sendRedirect("/");
 
     }
+
     void getProjectsByState(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
         User user = (User) request.getAttribute("User");
         request.setAttribute("projects", cont.getProjectsByState(request.getParameter("state"), user.getCompany_id()));
@@ -204,16 +205,21 @@ public class PresentationServlet extends HttpServlet {
     void changeProjectStatus(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
         String project_id = request.getParameter("project_id");
         String new_status = request.getParameter("new_status");
+
+        Object userObj = request.getSession().getAttribute("User");
+        if (userObj != null) {
+            request.setAttribute("User", userObj);}
+
         User user = (User) request.getAttribute("User");
 
-
-        if (cont.changeProjectStatus(project_id, new_status, user.role)) {
-            request.setAttribute("verificationCheck", true);
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+        if (cont.changeProjectStatus("8", "In Execution", user)) {
+            request.setAttribute("check", true);
+            response.sendRedirect("/dashboard");
             return;
         }
-        request.setAttribute("verificationCheck", false);
-        request.getRequestDispatcher("index.jsp").forward(request, response);
+        request.setAttribute("check", false);
+        response.sendRedirect("/dashboard");
+
 
     }
 

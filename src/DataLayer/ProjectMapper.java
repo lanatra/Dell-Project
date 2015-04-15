@@ -34,7 +34,7 @@ public class ProjectMapper {
         PreparedStatement statement = null;
 
         try {
-            int nextProjectID = getNextProjectId(con);
+            int nextProjectID = getNextProjectId();
             statement = con.prepareStatement(SQL);
 
             java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
@@ -44,7 +44,7 @@ public class ProjectMapper {
             statement.setInt(1, nextProjectID);
             statement.setTimestamp(2, timestamp);
             statement.setTimestamp(3, null);
-            statement.setInt(4, 2);
+            statement.setInt(4, user.company_id);
             statement.setInt(5, user.id);
             statement.setString(6, "Waiting Project Verification");
             statement.setDouble(7, parsedBudget);
@@ -75,7 +75,14 @@ public class ProjectMapper {
         return false;
     }
 
-    public int getNextProjectId(Connection con) {
+    public int getNextProjectId() {
+        Connection con = null;
+        try {
+            con = DatabaseConnection.getInstance().getConnection();
+        } catch (Exception e) {
+
+        }
+
         PreparedStatement statement = null;
         ResultSet rs = null;
         String SQL = "select MAX(id) from projects";
@@ -100,11 +107,10 @@ public class ProjectMapper {
     }
 
     // Will make following function more generic; should be able to change status depending on parameter to reduce amount of methods needed
-    public boolean changeProjectStatus(String project_id, String new_status, String user_role, Connection con) {
+    public boolean changeProjectStatus(String project_id, String new_status, User user, Connection con) {
         PreparedStatement statement = null;
-        java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
-        Timestamp timestamp = new Timestamp(date.getTime());
-        String SQL = "UPDATE projects SET status = '+ newStatus +' where id = ?";
+
+        String SQL = "UPDATE projects SET status = ? where id = ?";
 
         int parsedId;
         try {
@@ -113,14 +119,13 @@ public class ProjectMapper {
             return false;
         }
 
-
         try {
             statement = con.prepareStatement(SQL);
-
-            statement.setInt(1, parsedId);
+            statement.setString(1, new_status);
+            statement.setInt(2, parsedId);
             statement.executeUpdate();
 
-            updateChangeDate(parsedId, user_role, con);
+            updateChangeDate(parsedId, user.getRole());
 
             return true;
         } catch (Exception e) {
@@ -321,7 +326,15 @@ public class ProjectMapper {
 
 
 
-    public void updateChangeDate(int parsedId, String usertype, Connection con) {
+    public void updateChangeDate(int parsedId, String usertype) {
+
+        Connection con = null;
+        try {
+            con = DatabaseConnection.getInstance().getConnection();
+        } catch (Exception e) {
+
+        }
+
         if (usertype.equals("Dell")) {
             java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
             Timestamp timestamp = new Timestamp(date.getTime());
