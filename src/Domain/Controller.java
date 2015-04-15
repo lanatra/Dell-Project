@@ -24,7 +24,7 @@ public class Controller {
         return facade.createCompany(company_name);
     }
 
-    public boolean changeProjectStatus(int project_id, String current_status, String answer, int companyId) {
+    public boolean changeProjectStatus(int project_id, String current_status, String answer, int companyId, int userId) {
         String new_status = "";
         if(answer.equals("approved")) {
             if(current_status.equals("Waiting Project Verification"))
@@ -43,7 +43,7 @@ public class Controller {
         } else if(answer.equals("cancelled")) {
             new_status = "Cancelled";
         }
-        return facade.changeProjectStatus(project_id, new_status, companyId);
+        return facade.changeProjectStatus(project_id, new_status, companyId, userId);
     }
     //User related
     public boolean createUser(String name, String user_role, String user_email, String password, int company_id) {

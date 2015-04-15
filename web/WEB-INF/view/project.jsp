@@ -47,10 +47,10 @@
                         </c:otherwise>
                     </c:choose>
                     </c:if>
-                    <c:if test="${message == null}">
+                    <c:if test="${messages == null || messages.size() == 0}">
                         <%@ include file="shortcodes/stageItemByIndex.jsp" %>
                         <c:set var="stageIndex" value="${stageIndex + 1}"></c:set>
-                    </c:if><c:if test="${stages.size() == null}">
+                    </c:if><c:if test="${stages == null || stages.size() == 0}">
                         <%@ include file="shortcodes/messageItemByIndex.jsp" %>
                         <c:set var="messageIndex" value="${messageIndex + 1}"></c:set>
                     </c:if>

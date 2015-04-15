@@ -24,8 +24,8 @@ public class DatabaseFacade {
         return new ProjectMapper().createProjectRequest(budget, project_body, user, project_type, execution_date, getCon());
 
     }
-    public boolean changeProjectStatus(int project_id, String new_status, int companyId) {
-        return new ProjectMapper().changeProjectStatus(project_id, new_status, companyId, getCon());
+    public boolean changeProjectStatus(int project_id, String new_status, int companyId, int userId) {
+        return new ProjectMapper().changeProjectStatus(project_id, new_status, companyId, userId, getCon());
     }
 
     public DisplayProject getProjectById(int id, int companyId) {

@@ -21,7 +21,7 @@
               <span>Waiting<br/>for action</span>
           </div>
       </a>
-      <a href="?state=In Execution">
+      <a href="?state=Project Approved">
           <div class="filter">
               <div class="circle execution"><c:out value="${statusCount[1]}" /></div>
               <span>In execution</span>

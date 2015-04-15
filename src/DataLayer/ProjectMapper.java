@@ -114,7 +114,7 @@ public class ProjectMapper {
     }
 
     // Will make following function more generic; should be able to change status depending on parameter to reduce amount of methods needed
-    public boolean changeProjectStatus(int project_id, String new_status, int companyId, Connection con) {
+    public boolean changeProjectStatus(int project_id, String new_status, int companyId, int userId,  Connection con) {
         PreparedStatement statement = null;
 
         String SQL = "UPDATE projects SET status = ? where id = ?";
@@ -127,6 +127,7 @@ public class ProjectMapper {
             statement.executeUpdate();
 
             updateChangeDate(project_id, companyId);
+            addStage(userId, project_id, new_status, DatabaseConnection.getInstance().getConnection());
 
             return true;
         } catch (Exception e) {

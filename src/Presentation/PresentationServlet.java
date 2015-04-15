@@ -216,8 +216,9 @@ public class PresentationServlet extends HttpServlet {
         String answer = request.getParameter("answer");
         User u = (User) request.getAttribute("User");
         int companyId = u.getCompany_id();
+        int userId = u.getId();
 
-        cont.changeProjectStatus(projectId, currentType, answer, companyId);
+        cont.changeProjectStatus(projectId, currentType, answer, companyId, userId);
 
         response.sendRedirect("/dashboard");
     }
