@@ -4,7 +4,7 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
+
 <%@ include file="header.jsp" %>
 <h1>Project #<c:out value="${project.getId()}" /></h1>
 <h2><c:out value="${project.getCompanyName()}" /></h2>
@@ -43,20 +43,37 @@
 </c:forEach>
 </c:if>
 
+<div class="container project-container">
+    <h1>Project name</h1>
+    <div class="project-state">Project waiting for approval</div>
+    <span class="state">State</span>
 
-
-    <h2>Messages</h2>
-    ${messages.size() == 0 ? '<small>No messages</small>' : '' }
-<c:forEach var="message" items="${messages}">
-        <div class="message-item">
-            <span class="id"><strong>#</strong><c:out value="${message.getId()}" /></span>
-            <span class="partner"><c:out value="${message.getUser().getName()}" /></span>
-            <span class="partner"><c:out value="${message.getCompany().getName()}" /></span>
-            <span class="partner"><c:out value="${message.getCompany().getImg_filename()}" /></span>
-            <span class="type"><c:out value="${message.getBody()}" /></span>
-            <span class="notification small"><c:out value="${message.getCreation_date_millis()}" /></span>
+    <div class="project-items">
+        <div class="item push-left">
+            <span class="date">2. July 2015</span>
+            <div class="bubble">
+                <h3>Fona company is requesting 10 000 DKK for this campaign.</h3>
+                <p>Ut molestie venenatis semper. Aliquam erat volutpat. Morbi tincidunt volutpat sapien, sit amet tempus enim vehicula ut.
+                    Sed blandit mauris ut tempor ultricies. Donec a molestie purus. Praesent justo metus, porta eu dui et, tempus hendrerit
+                    odio. In vitae eros in diam mattis facilisis. Etiam dignissim felis nec leo feugiat volutpat sodales id lorem.
+                    Integer et mollis lectus.</p>
+                <button class="green">Approve</button>
+                <button class="red">Reject</button>
+            </div>
         </div>
-</c:forEach>
+    </div>
+
+    <form action="project-message">
+        <textarea name="message" id="message" placeholder="Start writing a message here…"></textarea>
+        <button type="submit" class="submit">Send message</button>
+    </form>
+
+</div>
+
+<!--
+<h1>Project #<c:out value="${project.getId()}" /></h1>
+<h2><c:out value="${project.getCompanyName()}" /></h2>
+
 
 <!-- Buttons for admin -->
 <c:if test="${User.getCompany_id() == 1}">
