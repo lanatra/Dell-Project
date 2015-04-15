@@ -18,6 +18,7 @@
 
     <div class="project-items">
         <c:forEach var="i" begin="0" end="${stages.size() + messages.size() - 1}">
+
             <c:choose>
                 <c:when test="${stageIndex == -1}">
                     <%@ include file="shortcodes/messageItemByIndex.jsp" %>
@@ -47,7 +48,6 @@
                 </c:otherwise>
             </c:choose>
         </c:forEach>
-
     </div>
 
     <form method="post" action="/api/postMessage">
