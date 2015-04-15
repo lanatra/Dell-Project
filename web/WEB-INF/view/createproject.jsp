@@ -12,7 +12,7 @@
 
   <form action="/project-request" method="post">
     <span><c:out value="${User.getCompany().getName()}" /> is requesting</span>
-    <input class="amount" name="budget" type="text" value="$"/>
+    <input class="amount" name="budget" type="text" placeholder="Amount"/>
     <span>for</span>
     <select name="type" id="type">
       <option value="web-campaign">Web campaign</option>
