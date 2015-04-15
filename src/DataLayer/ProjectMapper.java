@@ -190,7 +190,7 @@ public class ProjectMapper {
                 SQL = "select * from projects where status= ?";
         } else {
             if(state.equals("waitingForAction"))
-                SQL = "select * from projects where (status='Waiting Project Verification' or status='Waiting Claim Verification') and company_id=?";
+                SQL = "select * from projects where (status='Project Verified' or status='Waiting Project Verification' or status='Waiting Claim Verification') and company_id=?";
             else
                 SQL = "select * from projects where status= ? and company_id=?";
         }

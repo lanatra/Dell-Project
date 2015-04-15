@@ -131,10 +131,13 @@ div.header{
 		}
 	}
 	div.user-label {
-		margin-top: 22px;
-		cursor: pointer;
+	  border-radius: 15px;
+	  padding-left: 20px;
+	  margin-top: 22px;
+	  min-width: 110px;
 		span {
 			margin-top: 4px;
+		  	margin-bottom: 10px;
 			float: right;
 		}
 		img {
@@ -142,11 +145,33 @@ div.header{
 			margin-top: 14px;
 			margin-left: 10px;
 		}
+	  ul.submenu {
+		display: none;
+	  }
+
+	  &:hover {
+		background-color: white;
+		color: $color-blue;
+		ul {
+		  display: block;
+		  list-style: none;
+		  margin-bottom: 15px;
+		  li {
+			margin-bottom: 0px;
+			a {
+			  color: $color-blue;
+			}
+		  }
+		}
+		span {
+		  color: $color-dark;
+		}
+	  }
 	}
 	div.budget-label {
 		float: right;
 		margin-top: 20px;
-		margin-right: 50px;
+		margin-right: 20px;
 		span.big {
 			float: left;
 			font-size: 1.5em;
@@ -222,6 +247,7 @@ div.filter {
 }
 
 div.table-head {
+  box-sizing: border-box;
   font-size: 0.8em;
   color: #9F9F9F;
 }
@@ -385,5 +411,19 @@ div.actions {
 	&:hover {
 	  color: white;
 	}
+  }
+  select {
+	float: left;
+	height: 40px;
+	border-radius: 20px;
+	border: none;
+	margin-left: 20px;
+	margin-top: -5px;
+	font-size: 1.2em;
+	font-weight: lighter;
+	-webkit-appearance: none;
+	padding-left: 20px;
+	padding-right: 40px;
+	background: #ECECEC url(../img/dark_dropdown.svg) no-repeat right 20px center;
   }
 }

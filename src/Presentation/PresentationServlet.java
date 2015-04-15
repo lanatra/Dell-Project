@@ -69,9 +69,6 @@ public class PresentationServlet extends HttpServlet {
             case "/api/getUserById":
                 getUserById(request, response, cont);
                 break;
-            case "/api/createProjectRequest":
-                request.getRequestDispatcher("/WEB-INF/view/createProjectRequest.jsp").forward(request, response);
-                break;
             case "/api/postMessage":
                 postMessage(request, response, cont);
                 break;

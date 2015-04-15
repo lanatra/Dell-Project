@@ -16,20 +16,28 @@
           <span>Unread</span>
       </div>
       </a>
-      <% if(user.getCompany_id() == 1) {%>
+      <c:if test="${User.getCompany_id() == 1}">
       <a href="/dashboard">
           <div class="filter">
               <div class="circle waiting"><c:out value="${statusCount[0]}" /> </div>
               <span>Waiting<br/>for action</span>
           </div>
       </a>
-      <%} %>
-    <a href="?state=In Execution">
-      <div class="filter">
-        <div class="circle execution"><c:out value="${statusCount[1] + statusCount[0]}" /></div>
-        <span>Active</span>
-      </div>
-    </a>
+      <a href="?state=In Execution">
+          <div class="filter">
+              <div class="circle execution"><c:out value="${statusCount[1]}" /></div>
+              <span>In execution</span>
+          </div>
+      </a>
+      </c:if>
+      <c:if test="${User.getCompany_id() != 1}">
+        <a href="/dashboard">
+          <div class="filter">
+            <div class="circle execution"><c:out value="${statusCount[1] + statusCount[0]}" /></div>
+            <span>Active</span>
+          </div>
+        </a>
+      </c:if>
     <a href="?state=Claim approved">
       <div class="filter">
         <div class="circle finished"><c:out value="${statusCount[2]}" /></div>

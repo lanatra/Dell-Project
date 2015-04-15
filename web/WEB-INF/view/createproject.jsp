@@ -13,7 +13,12 @@
   <form action="request">
     <span>Fona company is requesting</span>
     <input class="amount" name="amount" type="text" value="$"/>
-    <span>for advertisement described below.</span>
+    <span>for</span>
+    <select name="type" id="type">
+      <option value="web-campaign">Web campaign</option>
+      <option value="billboard-ad">Billboard ad</option>
+      <option value="tv-promotion">TV promotion</option>
+    </select>
     <textarea name="description" id="description" placeholder="Describe your project here."></textarea>
     <button type="submit" class="button">Send request</button>
   </form>
