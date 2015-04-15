@@ -12,11 +12,12 @@
 
 
 <div class="container project-container">
-    <h1>Project #<c:out value="${project.getId()}" /></h1>
+    <h1><c:out value="${project.getType()}" /></h1>
     <div class="project-state"><c:out value="${project.getStatus()}" /></div>
     <span class="state">State</span>
 
     <div class="project-items">
+    <c:if test="${(stages.size() + messages.size() - 1) > 0}">
         <c:forEach var="i" begin="0" end="${stages.size() + messages.size() - 1}">
 
             <c:choose>
@@ -48,6 +49,7 @@
                 </c:otherwise>
             </c:choose>
         </c:forEach>
+    </c:if>
     </div>
 
     <form method="post" action="/api/postMessage">
