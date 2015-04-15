@@ -70,6 +70,7 @@
 </div>
 
 <!-- Buttons for admin -->
+<!--
 <c:if test="${User.getCompany_id() == 1}">
     <c:if test="${project.getStatus() == 'Waiting Project Verification'}">
         <button>Approve Project</button>
@@ -79,8 +80,9 @@
         <button>Approve and pay project</button>
         <button>Deny claim</button>
     </c:if>
-</c:if>
+</c:if>-->
 <!-- Buttons for partner -->
+<!--
 <c:if test="${User.getCompany_id() != 1}">
     <button>Cancel Project</button>
     <c:if test="${project.getStatus() == 'Project Denied'}">
@@ -89,7 +91,7 @@
     <c:if test="${project.getStatus() == 'Project Verified'}">
         <button>Submit claim</button>
     </c:if>
-</c:if>
+</c:if>-->
 
 </body>
 </html>
