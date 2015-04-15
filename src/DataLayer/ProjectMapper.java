@@ -104,7 +104,7 @@ public class ProjectMapper {
         PreparedStatement statement = null;
         java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
         Timestamp timestamp = new Timestamp(date.getTime());
-        String SQL = "UPDATE projects SET status = '+ newStatus +' where id = ?";
+        String SQL = "UPDATE projects SET status = " + new_status + " where id = ?";
 
         int parsedId;
         try {
