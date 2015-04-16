@@ -64,7 +64,7 @@ public class Controller {
         return  dp; }
     public ArrayList getStagesByProjectId(int project_id) { return proccessStages(facade.getStagesByProjectId(project_id)); }
     public ArrayList getMessagesByProjectId(int projId) { return processMessages(facade.getMessagesByProjectId(projId)); }
-    public String postMessage(int userId, int projId, String body) { return processMessage(facade.postMessage(userId, projId, body)).toHTML();}
+    public String postMessage(int userId, int projId, String body, int companyId) { return processMessage(facade.postMessage(userId, projId, body, companyId)).toHTML();}
     public ArrayList getProjectsByState(String state, int companyId) { return  facade.getProjectsByState(state, companyId); }
     //public boolean changeProjectStatus(String project_id, String new_status, String usertype) { return facade.verifyProjectRequest(project_id, new_status, usertype); }
     public int[] getStatusCounts(int companyId) { return facade.getStatusCounts(companyId); }

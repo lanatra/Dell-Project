@@ -32,9 +32,9 @@ public class DatabaseFacade {
         return new ProjectMapper().getProjectById(id, companyId, getCon());
     }
     public ArrayList getMessagesByProjectId(int projId) { return new MessageMapper().getMessagesByProjectId(projId, getCon()); }
-    public Message postMessage(int userId, int projId, String body) { return new MessageMapper().postMessage(userId, projId, body, getCon());}
+    public Message postMessage(int userId, int projId, String body, int companyId) { return new MessageMapper().postMessage(userId, projId, body, companyId, getCon());}
     public void markRead(int id, int companyId) {
-        new ProjectMapper().markRead(id, companyId, getCon());
+        new ProjectMapper().changeReadStatus(0, id, companyId, getCon());
     }
     public ArrayList getProjectsByState(String state, int companyId) {
         return new ProjectMapper().getProjectsByState(state, companyId, getCon());
@@ -44,6 +44,15 @@ public class DatabaseFacade {
     }
     public ArrayList getStagesByProjectId(int project_id) {
         return  new ProjectMapper().getStagesByProjectId(project_id, getCon());
+    }
+    public void updateChangeDate(int project_id, int company_id) {
+        new ProjectMapper().updateChangeDate(project_id, company_id);
+    }
+    public void updateNotification(int project_id, String notification) {
+        new ProjectMapper().updateNotification(project_id, notification);
+    }
+    public void markUnread(int project_id, int company_id) {
+        new ProjectMapper().changeReadStatus(1, project_id, company_id, getCon());
     }
 
     // COMPANY

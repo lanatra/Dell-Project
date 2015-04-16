@@ -15,9 +15,9 @@
     <input class="amount" name="budget" type="text" placeholder="Amount"/>
     <span>for</span>
     <select name="type" id="type">
-      <option value="web-campaign">Web campaign</option>
-      <option value="billboard-ad">Billboard ad</option>
-      <option value="tv-promotion">TV promotion</option>
+      <option value="Web Campaign">Web campaign</option>
+      <option value="Billboard ad">Billboard ad</option>
+      <option value="TV Promotion">TV promotion</option>
     </select>
     <span style="clear: left;">With execution scheduled</span>
     <select name="execution_year" id="year">

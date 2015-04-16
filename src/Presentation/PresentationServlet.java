@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
 
 public class PresentationServlet extends HttpServlet {
 
@@ -156,6 +157,7 @@ public class PresentationServlet extends HttpServlet {
         request.setAttribute("project", cont.getProjectById(projId, user.getCompany_id()));;
         request.setAttribute("messages", cont.getMessagesByProjectId(projId));
         request.setAttribute("stages", cont.getStagesByProjectId(projId));
+
         request.getRequestDispatcher("/WEB-INF/view/project.jsp").forward(request, response);
     }
 
@@ -166,9 +168,11 @@ public class PresentationServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         int userId = Integer.parseInt(request.getParameter("userId"));
+        int companyId = Integer.parseInt(request.getParameter("companyId"));
         int projectId = Integer.parseInt(request.getParameter("projectId"));
+
         String body = request.getParameter("body");
-        out.println(cont.postMessage(userId, projectId, body));
+        out.println(cont.postMessage(userId, projectId, body, companyId));
     }
 
     void getUserById (HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
@@ -187,6 +191,7 @@ public class PresentationServlet extends HttpServlet {
         int execution_year = Integer.parseInt(request.getParameter("execution_year"));
         int execution_month = Integer.parseInt(request.getParameter("execution_month"));
         int execution_day = Integer.parseInt(request.getParameter("execution_day"));
+
 
         Object userObj = request.getSession().getAttribute("User");
         if (userObj != null) {

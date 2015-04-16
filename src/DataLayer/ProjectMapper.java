@@ -57,7 +57,7 @@ public class ProjectMapper {
             statement.setTimestamp(11, timestamp);
             statement.setBoolean(12, true);
             statement.setBoolean(13, false);
-            statement.setString(14, null);
+            statement.setString(14, "New Project Request");
             statement.setString(15, project_type);
 
             statement.executeUpdate();
@@ -117,7 +117,13 @@ public class ProjectMapper {
     public boolean changeProjectStatus(int project_id, String new_status, int companyId, int userId,  Connection con) {
         PreparedStatement statement = null;
 
-        String SQL = "UPDATE projects SET status = ? where id = ?";
+        String SQL;
+        if(companyId == 1) {
+            SQL = "UPDATE projects SET status = ?, unread_partner = 1, notification = null where id = ?";
+        } else {
+            SQL = "UPDATE projects SET status = ?, unread_admin = 1, notification = null where id = ?";
+        }
+
 
 
         try {
@@ -128,6 +134,11 @@ public class ProjectMapper {
 
             updateChangeDate(project_id, companyId);
             addStage(userId, project_id, new_status, DatabaseConnection.getInstance().getConnection());
+            DatabaseFacade facade = new DatabaseFacade();
+            if(companyId == 1)
+                facade.markUnread(project_id, 2); // 2 is just not dell, a la partner
+            else
+                facade.markUnread(project_id, 1);
 
             return true;
         } catch (Exception e) {
@@ -241,7 +252,7 @@ public class ProjectMapper {
 
             rs = statement.executeQuery();
             if (rs.next()) {
-                project = DisplayProject.projectToDisplay(new Project(rs.getInt(1),
+                project = new DisplayProject(rs.getInt(1),
                         rs.getTimestamp(2),
                         rs.getTimestamp(3),
                         rs.getInt(4),
@@ -256,7 +267,7 @@ public class ProjectMapper {
                         rs.getBoolean(13),
                         rs.getString(14),
                         rs.getString(15)
-                ));
+                );
             } else {
                 project.message = "A project with the id " + id + "doesn't exist.";
             }
@@ -278,22 +289,21 @@ public class ProjectMapper {
         return project;
     }
 
-    public void markRead(int id, int companyId, Connection con) {
+    public void changeReadStatus(int read, int id, int companyId, Connection con) {
         String SQL = "";
+        System.out.println("Read: " + read + ", projid: " + id + ", compId: " + companyId);
         if(companyId == 1)
-             SQL = "update projects set unread_admin=0 where id=?";
+             SQL = "update projects set unread_admin=? where id=?";
         else
-            SQL = "update projects set unread_partner=0 where id=? and company_id=?";
+            SQL = "update projects set unread_partner=? where id=?";
 
         PreparedStatement statement = null;
-        int res = 0;
         try {
             statement = con.prepareStatement(SQL);
-            statement.setInt(1, id);
-            if(companyId != 1)
-                statement.setInt(2, companyId);
+            statement.setInt(1, read);
+            statement.setInt(2, id);
 
-            res = statement.executeUpdate();
+            statement.executeUpdate();
 
         } catch (Exception e) {
             System.out.println("Error in markRead");
@@ -305,19 +315,19 @@ public class ProjectMapper {
     }
 
     public ArrayList getProjectsByState(String state, int companyId, Connection con) {
-        ArrayList<Project> projects = new ArrayList<>();
+        ArrayList<DisplayProject> displayProjects = new ArrayList<>();
 
         String SQL;
         if(companyId == 1) { // Request from Dell user
             if(state.equals("waitingForAction"))
-                SQL = "select * from projects where status='Waiting Project Verification' or status='Waiting Claim Verification'";
+                SQL = "select * from projects where status='Waiting Project Verification' or status='Waiting Claim Verification' order by last_change_partner DESC, start_time DESC";
             else
-                SQL = "select * from projects where status= ?";
+                SQL = "select * from projects where status= ? order by last_change_partner DESC, start_time DESC";
         } else {
             if(state.equals("waitingForAction"))
-                SQL = "select * from projects where (status='Project Verified' or status='Waiting Project Verification' or status='Waiting Claim Verification' or status='Project Approved') and company_id=?";
+                SQL = "select * from projects where (status='Project Verified' or status='Waiting Project Verification' or status='Waiting Claim Verification' or status='Project Approved') and company_id=? order by case when last_change_admin is null then 0 else 1 end DESC, last_change_admin DESC, start_time DESC";
             else
-                SQL = "select * from projects where status= ? and company_id=?";
+                SQL = "select * from projects where status= ? and company_id=? order by case when last_change_admin is null then 0 else 1 end DESC, last_change_admin DESC, start_time DESC";
         }
 
 
@@ -338,7 +348,7 @@ public class ProjectMapper {
 
             rs = statement.executeQuery();
             while (rs.next()) {
-                projects.add(new Project(rs.getInt(1),
+                displayProjects.add(new DisplayProject(rs.getInt(1),
                         rs.getTimestamp(2),
                         rs.getTimestamp(3),
                         rs.getInt(4),
@@ -364,12 +374,8 @@ public class ProjectMapper {
             if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
         }
 
-        ArrayList<DisplayProject> DisplayProjects = new ArrayList<>();
-        for (Project proj : projects) {
-            DisplayProjects.add(DisplayProject.projectToDisplay(proj));
-        }
 
-        return DisplayProjects;
+        return displayProjects;
     }
 
     public int[] getStatusCounts(int companyId, Connection con) {
@@ -417,7 +423,7 @@ public class ProjectMapper {
 
 
 
-    public void updateChangeDate(int parsedId, int companyId) {
+    public void updateChangeDate(int project_id, int companyId) {
 
         Connection con = null;
         try {
@@ -434,7 +440,7 @@ public class ProjectMapper {
             try {
                 statement = con.prepareStatement(SQL);
                 statement.setTimestamp(1, timestamp);
-                statement.setInt(2, parsedId);
+                statement.setInt(2, project_id);
                 statement.executeUpdate();
 
             } catch (Exception e) {
@@ -451,7 +457,7 @@ public class ProjectMapper {
             try {
                 statement = con.prepareStatement(SQL);
                 statement.setTimestamp(1, timestamp);
-                statement.setInt(2, parsedId);
+                statement.setInt(2, project_id);
                 statement.executeUpdate();
 
             } catch (Exception e) {
@@ -464,6 +470,29 @@ public class ProjectMapper {
         }
         }
 
+        public void updateNotification(int project_id, String notification) {
+            Connection con = null;
+            try {
+                con = DatabaseConnection.getInstance().getConnection();
+            } catch (Exception e) {
+
+            }
+
+            PreparedStatement statement = null;
+            String SQL = "UPDATE projects SET notification = ? where id = ? ";
+            try {
+                statement = con.prepareStatement(SQL);
+                statement.setString(1, notification);
+                statement.setInt(2, project_id);
+                statement.executeUpdate();
+
+            } catch (Exception e) {
+                System.out.println("Error in updateNotification()");
+            } finally {
+                if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+                if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
+            }
+        }
 
 
 }
