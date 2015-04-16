@@ -40,7 +40,7 @@
     </select>
     <span class="add_day">Add day</span>
     <select name="execution_day" id="day"style="display: none">
-
+      <option value='0'>0</option>
     </select>
     <textarea name="body" id="description" placeholder="Describe your project here."></textarea>
     <button type="submit" class="button">Send request</button>
@@ -48,17 +48,21 @@
 </div>
 
 <script>
-  var days = 31;
-  for(var i=1; i<=days; i++) {
-    $('select#day').append("<option value='" + i + "'>" + i +".</option>");
-  }
-
   $('span.add_day').click(function() {
+    setDays();
     $('span.add_day').css('display', 'none');
     $('select#day').css('display', 'block');
+    $('select#day').addClass('visible');
   });
 
   $('select#month').change(function() {
+    if($('select#day').hasClass('visible')){
+      setDays();
+    }
+  });
+
+  function setDays() {
+    var days = 31;
     var e = document.getElementById("month");
     var strMonth = e.options[e.selectedIndex].value;
 
@@ -75,7 +79,7 @@
     for(var i=1; i<=days; i++) {
       $('select#day').append("<option value='" + i + "'>" + i +".</option>");
     }
-  });
+  }
 </script>
 
 </body>
