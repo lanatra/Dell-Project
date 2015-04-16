@@ -10,11 +10,8 @@
 <c:set var="stageIndex" value="0"></c:set>
 <c:set var="messageIndex" value="0"></c:set>
 
-<<<<<<< HEAD
 <c:if test="${project.getMessage() != null}"><c:out value="${project.getMessage()}"></c:out></c:if>
 
-=======
->>>>>>> origin/master
 <div class="container project-container">
     <h1><c:out value="${project.getType()}" /></h1>
     <div class="project-state"><c:out value="${project.getStatus()}" /></div>

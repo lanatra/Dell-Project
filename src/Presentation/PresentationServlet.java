@@ -26,8 +26,6 @@ public class PresentationServlet extends HttpServlet {
 
             String userPath = request.getServletPath();
             System.out.println(userPath);
-            System.out.println(request.getRequestURI());
-            System.out.println(request.getRequestURL());
             switch(userPath) {
                 case "/dashboard":
                     getDashboard(request, response, cont);
