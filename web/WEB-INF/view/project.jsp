@@ -10,7 +10,6 @@
 <c:set var="stageIndex" value="0"></c:set>
 <c:set var="messageIndex" value="0"></c:set>
 
-
 <div class="container project-container">
     <h1><c:out value="${project.getType()}" /></h1>
     <div class="project-state"><c:out value="${project.getStatus()}" /></div>
@@ -60,12 +59,12 @@
     </c:if>
     </div>
 
-    <form method="post" action="/api/postMessage">
-        <input type="hidden" name="userId" value="${User.getId()}" />
-        <input type="hidden" name="projectId" value="${project.getId()}" />
+
+        <input type="hidden" name="userId" id="userId" value="${User.getId()}" />
+        <input type="hidden" name="projectId" id="projectId" value="${project.getId()}" />
         <textarea name="body" id="message" placeholder="Write your message"></textarea>
-        <button type="submit" class="submit">Send message</button>
-    </form>
+        <button id="submitMessage" class="submit">Send message</button>
+
 
 </div>
 
@@ -92,6 +91,8 @@
         <button>Submit claim</button>
     </c:if>
 </c:if>-->
+
+<script type="text/javascript" src="js/project-functions.js"></script>
 
 </body>
 </html>
