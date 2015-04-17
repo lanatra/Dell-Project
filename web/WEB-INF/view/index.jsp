@@ -36,7 +36,7 @@
           </div>
         </a>
       </c:if>
-    <a href="?state=Claim approved">
+    <a href="?state=Project Finished">
       <div class="filter">
         <div class="circle finished"><c:out value="${statusCount[2]}" /></div>
         <span>Finished</span>

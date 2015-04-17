@@ -29,9 +29,9 @@ public class Controller {
         if(answer.equals("approved")) {
             if(current_status.equals("Waiting Project Verification"))
                 new_status = "Project Approved";
+            else if(current_status.equals("Project Approved"))
+                new_status = "Waiting Claim Verification";
             else if(current_status.equals("Waiting Claim Verification"))
-                new_status = "Claim Approved";
-            else if(current_status.equals("Claim Approved"))
                 new_status = "Project Finished";
 
         } else if(answer.equals("denied")) {
