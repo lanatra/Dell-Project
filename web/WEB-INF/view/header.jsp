@@ -15,6 +15,22 @@
   <link href="css/normalize.css" rel="stylesheet" media="all">
   <link href="css/skeleton.css" rel="stylesheet" media="all">
   <link href="css/style.css" rel="stylesheet" media="all">
+
+  <script>
+    function formatDates() {
+      $('span.isDate').each(function() {
+        var milis = parseInt($(this).text());
+        var time = moment(milis).format('Do MMMM YYYY, H:mm');
+        $(this).text(time);
+
+        $(this).removeClass('isDate');
+      });
+    }
+
+    $(document).ready(function() {
+      formatDates();
+    });
+  </script>
 </head>
 <body>
 

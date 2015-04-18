@@ -61,10 +61,10 @@
     </c:if>
     </div>
 
-    <form method="post" action="/api/postMessage">
+    <form>
         <input type="hidden" name="userId" id="userId" value="${User.getId()}" />
         <input type="hidden" name="projectId" id="projectId" value="${project.getId()}" />
-        <input type="hidden" name="companyId" value="${User.getCompany_id()}" />
+        <input type="hidden" name="companyId" id="companyId" value="${User.getCompany_id()}" />
         <textarea name="body" id="message" placeholder="Write your message"></textarea>
         <button id="submitMessage" class="submit">Send message</button>
     </form>

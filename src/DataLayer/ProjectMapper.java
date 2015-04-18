@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class ProjectMapper {
 
 
-    public boolean createProjectRequest(String budget, String project_body, User user, String project_type, String execution_date, Connection con) {
+    public boolean createProjectRequest(String budget, String project_body, User user, String project_type, Timestamp execution_date, Connection con) {
 
         String SQL = "insert into projects values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
@@ -52,7 +52,7 @@ public class ProjectMapper {
             statement.setString(6, "Waiting Project Verification");
             statement.setDouble(7, parsedBudget);
             statement.setString(8, project_body);
-            statement.setTimestamp(9, null);
+            statement.setTimestamp(9, execution_date);
             statement.setTimestamp(10, null);
             statement.setTimestamp(11, timestamp);
             statement.setBoolean(12, true);

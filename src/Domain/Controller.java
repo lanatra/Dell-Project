@@ -2,6 +2,7 @@ package Domain;
 
 import DataLayer.DatabaseFacade;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -17,7 +18,7 @@ public class Controller {
 
     }
     // Writers
-    public boolean createProjectRequest(String budget, String project_body, User user, String project_type, String execution_date) {
+    public boolean createProjectRequest(String budget, String project_body, User user, String project_type, Timestamp execution_date) {
         return facade.createProjectRequest(budget, project_body, user, project_type, execution_date);
     }
     public boolean createCompany(String company_name) {

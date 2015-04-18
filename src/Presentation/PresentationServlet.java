@@ -190,15 +190,22 @@ public class PresentationServlet extends HttpServlet {
         int execution_month = Integer.parseInt(request.getParameter("execution_month"));
         int execution_day = Integer.parseInt(request.getParameter("execution_day"));
 
+        Timestamp execution_time;
+
+        if (execution_day == 0) {
+            execution_time = Timestamp.valueOf(execution_year + "-" + execution_month + "-01" + " 00:00:01");
+        } else {
+            execution_time = Timestamp.valueOf(execution_year + "-" + execution_month + "-" + execution_day + " 00:00:00");
+        }
+
+
 
         Object userObj = request.getSession().getAttribute("User");
         if (userObj != null) {
             request.setAttribute("User", userObj);}
-
             User user = (User) request.getAttribute("User");
 
-
-        if (cont.createProjectRequest(budget, project_body, user, project_type, "placeholder")) {
+        if (cont.createProjectRequest(budget, project_body, user, project_type, execution_time)) {
             request.getRequestDispatcher("/WEB-INF/view/createproject.jsp").forward(request, response);
         }
         response.sendRedirect("/");

@@ -1,6 +1,7 @@
 package DataLayer;
 
 import java.sql.Connection;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import Domain.Company;
@@ -20,7 +21,7 @@ public class DatabaseFacade {
     public User getUserById(int user_id) { return new UserMapper().getUserById(user_id, getCon()); }
 
     // PROJECT
-    public boolean createProjectRequest(String budget, String project_body, User user, String project_type, String execution_date) {
+    public boolean createProjectRequest(String budget, String project_body, User user, String project_type, Timestamp execution_date) {
         return new ProjectMapper().createProjectRequest(budget, project_body, user, project_type, execution_date, getCon());
 
     }
