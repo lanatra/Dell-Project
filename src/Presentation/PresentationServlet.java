@@ -3,12 +3,17 @@ package Presentation;
 import Domain.Controller;
 import Domain.Poe;
 import Domain.User;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.Part;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
@@ -96,6 +101,9 @@ public class PresentationServlet extends HttpServlet {
                 break;
             case "/uploadFile":
                 createPoe(request, response, cont);
+                break;
+            case "/downloadFile":
+                testDownload(request, response, cont);
                 break;
             default:
                 getDashboard(request, response, cont);
@@ -283,10 +291,36 @@ public class PresentationServlet extends HttpServlet {
         Part file = request.getPart("file");
         int project_id = 1;
         int user_id = 2;
-
         if(cont.addPoeFile(project_id, file, user_id)) {
             response.sendRedirect("/");
         }
+    }
+
+    void testDownload(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        int project_id = 1;
+        ArrayList<Poe> poes = cont.getPoe(project_id);
+
+
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition",
+                "attachment;filename=" + poes.get(0).getFilename());
+
+        // testing first poe
+        String path = poes.get(0).getFilePath();
+        System.out.println(path);
+        File file = new File(path);
+        FileInputStream fileIn = new FileInputStream(file);
+        ServletOutputStream out = response.getOutputStream();
+
+        byte[] outputByte = new byte[4096];
+
+        while(fileIn.read(outputByte, 0, 4096) != -1)
+        {
+            out.write(outputByte, 0, 4096);
+        }
+        fileIn.close();
+        out.flush();
+        out.close();
     }
 
     void getPoes(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {

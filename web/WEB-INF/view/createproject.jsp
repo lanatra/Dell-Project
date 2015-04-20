@@ -53,6 +53,11 @@
   <input type="submit" name="submit" value="Submit">
 </form>
 
+<a href="C:\Users\Lasse\Desktop\File Storage Dell\1" download="ugeseddel1.pdf">click me </a>
+
+<form action="/downloadFile" method="post">
+<input type="submit" value="Submit">
+</form>
 <br>
 
 

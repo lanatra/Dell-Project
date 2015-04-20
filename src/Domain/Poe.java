@@ -49,7 +49,7 @@ public class Poe {
     }
 
     public String getFilePath() {
-        return path + "\\" +filename;
+        return System.getenv("POE_FOLDER") + "\\" + proj_id + "\\" + filename;
     }
 
 }
