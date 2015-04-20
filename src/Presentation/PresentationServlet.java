@@ -3,6 +3,8 @@ package Presentation;
 import Domain.Controller;
 import Domain.Poe;
 import Domain.User;
+
+import javax.servlet.ServletContext;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.Part;
 import javax.servlet.RequestDispatcher;
@@ -10,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -22,6 +25,7 @@ public class PresentationServlet extends HttpServlet {
         Controller cont = AssignController(request);
 
         System.out.println(request.getRequestURI());
+        System.out.println(getServletContext().getRealPath("WEB-INF/view"));
 
         // if logged in
         Object userObj = request.getSession().getAttribute("User");

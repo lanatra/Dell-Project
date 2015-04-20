@@ -321,13 +321,19 @@ public class ProjectMapper {
         if(companyId == 1) { // Request from Dell user
             if(state.equals("waitingForAction"))
                 SQL = "select * from projects where status='Waiting Project Verification' or status='Waiting Claim Verification' order by last_change_partner DESC, start_time DESC";
+            else if(state.equals("inExecution"))
+                SQL = "select * from projects where status='Project Approved' or status='Project Rejected' or status='Claim Rejected' order by last_change_partner DESC, start_time DESC";
+            else if(state.equals("finished"))
+                SQL = "select * from projects where status='Project Finished' or status='Cancelled' order by last_change_partner DESC, start_time DESC";
             else
-                SQL = "select * from projects where status= ? order by last_change_partner DESC, start_time DESC";
+                SQL = "select * from projects where status='" + state + "' order by last_change_partner DESC, start_time DESC";
         } else {
             if(state.equals("waitingForAction"))
-                SQL = "select * from projects where (status='Project Verified' or status='Waiting Project Verification' or status='Waiting Claim Verification' or status='Project Approved') and company_id=? order by case when last_change_admin is null then 0 else 1 end DESC, last_change_admin DESC, start_time DESC";
+                SQL = "select * from projects where (status='Project Verified' or status='Waiting Project Verification' or status='Waiting Claim Verification' or status='Project Approved' or status='Claim Rejected') and company_id=? order by case when last_change_admin is null then 0 else 1 end DESC, last_change_admin DESC, start_time DESC";
+            else if(state.equals("finished"))
+                SQL = "select * from projects where (status='Project Finished' or status='Cancelled') and company_id=? order by case when last_change_admin is null then 0 else 1 end DESC, last_change_admin DESC, start_time DESC";
             else
-                SQL = "select * from projects where status= ? and company_id=? order by case when last_change_admin is null then 0 else 1 end DESC, last_change_admin DESC, start_time DESC";
+                SQL = "select * from projects where status='" + state + "' and company_id=? order by case when last_change_admin is null then 0 else 1 end DESC, last_change_admin DESC, start_time DESC";
         }
 
 
@@ -336,15 +342,8 @@ public class ProjectMapper {
 
         try {
             statement = con.prepareStatement(SQL);
-            if(companyId != 1) {
-                if(state.equals("waitingForAction"))
-                    statement.setInt(1, companyId);
-                else {
-                    statement.setString(1, state);
-                    statement.setInt(2, companyId);
-                }
-            } else if(!state.equals("waitingForAction"))
-                statement.setString(1, state);
+            if(companyId != 1)
+                statement.setInt(1, companyId);
 
             rs = statement.executeQuery();
             while (rs.next()) {

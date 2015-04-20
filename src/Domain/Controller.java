@@ -39,6 +39,8 @@ public class Controller {
                 new_status = "Waiting Claim Verification";
             else if(current_status.equals("Waiting Claim Verification"))
                 new_status = "Project Finished";
+            else if(current_status.equals("Claim Rejected"))
+                new_status = "Waiting Claim Verification";
 
         } else if(answer.equals("denied")) {
             if(current_status.equals("Waiting Project Verification"))
