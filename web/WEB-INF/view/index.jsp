@@ -8,12 +8,6 @@
   <jsp:include page="header.jsp" />
 
   <div class="container actions" style="margin-top: 40px;">
-      <a href="/dashboard">
-      <div class="filter">
-          <div class="circle unread">--</div>
-          <span>Unread</span>
-      </div>
-      </a>
       <c:if test="${User.getCompany_id() == 1}">
       <a href="/dashboard">
           <div class="filter">
@@ -21,7 +15,7 @@
               <span>Waiting<br/>for action</span>
           </div>
       </a>
-      <a href="?state=Project Approved">
+      <a href="?state=inExecution">
           <div class="filter">
               <div class="circle execution"><c:out value="${statusCount[1]}" /></div>
               <span>In execution</span>
@@ -31,12 +25,12 @@
       <c:if test="${User.getCompany_id() != 1}">
         <a href="/dashboard">
           <div class="filter">
-            <div class="circle execution"><c:out value="${statusCount[1] + statusCount[0]}" /></div>
+            <div class="circle execution"><c:out value="${statusCount[0]}" /></div>
             <span>Active</span>
           </div>
         </a>
       </c:if>
-    <a href="?state=Project Finished">
+    <a href="?state=finished">
       <div class="filter">
         <div class="circle finished"><c:out value="${statusCount[2]}" /></div>
         <span>Finished</span>
@@ -82,10 +76,8 @@
                           <span class="state small"><c:out value="${project.getStatus()}" /></span>
                       </c:otherwise>
                   </c:choose>
+                  <span class="execution-date small isShortDate"><c:out value="${project.getF_execution_date()}"></c:out> </span>
 
-
-
-                  <span class="execution-date small">Jan. 12 2014</span>
               </div>
           </a>
       </c:forEach>

@@ -1,4 +1,4 @@
-$('button#submitMessage').click(function () {
+$('button#submitMessage').click(function (event) {
     event.preventDefault();
     $.ajax({
         type: "post",

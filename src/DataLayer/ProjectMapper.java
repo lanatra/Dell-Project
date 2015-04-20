@@ -321,13 +321,19 @@ public class ProjectMapper {
         if(companyId == 1) { // Request from Dell user
             if(state.equals("waitingForAction"))
                 SQL = "select * from projects where status='Waiting Project Verification' or status='Waiting Claim Verification' order by last_change_partner DESC, start_time DESC";
+            else if(state.equals("inExecution"))
+                SQL = "select * from projects where status='Project Approved' or status='Project Rejected' or status='Claim Rejected' order by last_change_partner DESC, start_time DESC";
+            else if(state.equals("finished"))
+                SQL = "select * from projects where status='Project Finished' or status='Cancelled' order by last_change_partner DESC, start_time DESC";
             else
-                SQL = "select * from projects where status= ? order by last_change_partner DESC, start_time DESC";
+                SQL = "select * from projects where status='" + state + "' order by last_change_partner DESC, start_time DESC";
         } else {
             if(state.equals("waitingForAction"))
-                SQL = "select * from projects where (status='Project Verified' or status='Waiting Project Verification' or status='Waiting Claim Verification' or status='Project Approved') and company_id=? order by case when last_change_admin is null then 0 else 1 end DESC, last_change_admin DESC, start_time DESC";
+                SQL = "select * from projects where (status='Project Verified' or status='Waiting Project Verification' or status='Waiting Claim Verification' or status='Project Approved' or status='Claim Rejected') and company_id=? order by case when last_change_admin is null then 0 else 1 end DESC, last_change_admin DESC, start_time DESC";
+            else if(state.equals("finished"))
+                SQL = "select * from projects where (status='Project Finished' or status='Cancelled') and company_id=? order by case when last_change_admin is null then 0 else 1 end DESC, last_change_admin DESC, start_time DESC";
             else
-                SQL = "select * from projects where status= ? and company_id=? order by case when last_change_admin is null then 0 else 1 end DESC, last_change_admin DESC, start_time DESC";
+                SQL = "select * from projects where status='" + state + "' and company_id=? order by case when last_change_admin is null then 0 else 1 end DESC, last_change_admin DESC, start_time DESC";
         }
 
 
@@ -336,15 +342,8 @@ public class ProjectMapper {
 
         try {
             statement = con.prepareStatement(SQL);
-            if(companyId != 1) {
-                if(state.equals("waitingForAction"))
-                    statement.setInt(1, companyId);
-                else {
-                    statement.setString(1, state);
-                    statement.setInt(2, companyId);
-                }
-            } else if(!state.equals("waitingForAction"))
-                statement.setString(1, state);
+            if(companyId != 1)
+                statement.setInt(1, companyId);
 
             rs = statement.executeQuery();
             while (rs.next()) {
@@ -385,14 +384,14 @@ public class ProjectMapper {
         if(companyId == 1) {
             SQL = "select " +
                     "  sum(case when status='Waiting Project Verification' or status='Waiting Claim Verification' then 1 else 0 end) WaitingForAction," +
-                    "  sum(case when status='In Execution' then 1 else 0 end) InExecution," +
-                    "  sum(case when status='Finished' then 1 else 0 end) Finished" +
+                    "  sum(case when status='Project Approved'  then 1 else 0 end) InExecution," +
+                    "  sum(case when status='Project Finished' then 1 else 0 end) Finished" +
                     " from projects";
         } else {
             SQL = "select \n" +
-                    "  sum(case when (status='Waiting Project Verification' or status='Waiting Claim Verification') and company_id=" + companyId + " then 1 else 0 end) WaitingForAction,\n" +
-                    "  sum(case when status='In Execution' and company_id=" + companyId + "  then 1 else 0 end) InExecution,\n" +
-                    "  sum(case when status='Finished' and company_id=" + companyId + "   then 1 else 0 end) Finished\n" +
+                    "  sum(case when (status not in ('Project Finished', 'Cancelled')) and company_id=" + companyId + " then 1 else 0 end) WaitingForAction,\n" +
+                    "  sum(case when status='' and company_id=" + companyId + "  then 1 else 0 end) InExecution,\n" +
+                    "  sum(case when status='Project Finished' or status='Cancelled' and company_id=" + companyId + "   then 1 else 0 end) Finished\n" +
                     " from projects";
         }
 
@@ -468,31 +467,30 @@ public class ProjectMapper {
             }
 
         }
+    }
+
+    public void updateNotification(int project_id, String notification) {
+        Connection con = null;
+        try {
+            con = DatabaseConnection.getInstance().getConnection();
+        } catch (Exception e) {
+
         }
 
-        public void updateNotification(int project_id, String notification) {
-            Connection con = null;
-            try {
-                con = DatabaseConnection.getInstance().getConnection();
-            } catch (Exception e) {
+        PreparedStatement statement = null;
+        String SQL = "UPDATE projects SET notification = ? where id = ? ";
+        try {
+            statement = con.prepareStatement(SQL);
+            statement.setString(1, notification);
+            statement.setInt(2, project_id);
+            statement.executeUpdate();
 
-            }
-
-            PreparedStatement statement = null;
-            String SQL = "UPDATE projects SET notification = ? where id = ? ";
-            try {
-                statement = con.prepareStatement(SQL);
-                statement.setString(1, notification);
-                statement.setInt(2, project_id);
-                statement.executeUpdate();
-
-            } catch (Exception e) {
-                System.out.println("Error in updateNotification()");
-            } finally {
-                if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
-                if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
-            }
+        } catch (Exception e) {
+            System.out.println("Error in updateNotification()");
+        } finally {
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
         }
-
+    }
 
 }

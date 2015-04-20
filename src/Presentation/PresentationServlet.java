@@ -5,7 +5,9 @@ import Domain.Poe;
 import Domain.User;
 
 import javax.servlet.ServletContext;
+
 import javax.servlet.ServletOutputStream;
+
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.Part;
 import javax.servlet.RequestDispatcher;
@@ -15,6 +17,7 @@ import javax.servlet.http.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -27,6 +30,7 @@ public class PresentationServlet extends HttpServlet {
         Controller cont = AssignController(request);
 
         System.out.println(request.getRequestURI());
+        System.out.println(getServletContext().getRealPath("WEB-INF/view"));
 
         // if logged in
         Object userObj = request.getSession().getAttribute("User");
@@ -152,6 +156,7 @@ public class PresentationServlet extends HttpServlet {
 
     void getDashboard(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
         System.out.println("getDashboard");
+
         User user = (User) request.getAttribute("User");
         if(request.getParameter("state") == null)
             request.setAttribute("projects", cont.getProjectsByState("waitingForAction", user.getCompany_id()));
@@ -212,7 +217,6 @@ public class PresentationServlet extends HttpServlet {
         } else {
             execution_time = Timestamp.valueOf(execution_year + "-" + execution_month + "-" + execution_day + " 00:00:00");
         }
-
 
 
         Object userObj = request.getSession().getAttribute("User");

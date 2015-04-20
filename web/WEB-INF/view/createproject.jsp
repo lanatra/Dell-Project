@@ -47,6 +47,7 @@
   </form>
 </div>
 
+
 <!-- testing upload functionality:-->
 <form action="/uploadFile" method="post" enctype="multipart/form-data">
   <input type="file" name="file" width="100">
@@ -58,8 +59,8 @@
 <form action="/downloadFile" method="post">
 <input type="submit" value="Submit">
 </form>
-<br>
 
+<br>
 
 <script>
   $('span.add_day').click(function() {

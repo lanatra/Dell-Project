@@ -25,6 +25,16 @@
 
         $(this).removeClass('isDate');
       });
+        $('.isShortDate').each(function() {
+            var millis = parseInt($(this).text());
+            var m = millis.toString()
+            if(millis == 0)
+                $(this).text("N/A");
+            else if(m.substring(m.length - 4, m.length) == 1000)
+                $(this).text(moment(millis).format('MMM YYYY'));
+            else
+                $(this).text(moment(millis).format('MMM D[.] YYYY'));
+        })
     }
 
     $(document).ready(function() {
