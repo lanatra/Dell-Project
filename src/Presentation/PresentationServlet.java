@@ -345,7 +345,7 @@ public class PresentationServlet extends HttpServlet {
             // Get the absolute path of the image
             System.out.println(System.getenv("POE_FOLDER") + userpath);
             //String filename = cntx.getRealPath(System.getenv("POE_FOLDER") + userpath);
-            String filename = "C:\\Users\\Anden\\SkyDrive\\CPHB\\2. Semester Project - Dell\\Dell-Project\\web\\WEB-INF\\poe-folder" + "/" + userpath.split("/")[2] + "/" + userpath.split("/")[3];
+            String filename = System.getenv("POE_FOLDER") + "\\" + userpath.split("/")[2] + "\\" + userpath.split("/")[3];
             System.out.println(filename);
             System.out.println(userpath);
             // retrieve mimeType dynamically
