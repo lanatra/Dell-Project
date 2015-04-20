@@ -8,11 +8,10 @@
 
         <c:if test="${stages.get(stageIndex).getType() == 'Waiting Project Verification'}">
             <h3><c:out value="${project.getCompanyName()}"></c:out> is requesting <c:out value="${project.getBudget()}"></c:out> for a <c:out value="${project.getType()}"></c:out></h3>
+            <p><c:out value="${project.getBody()}"></c:out> </p>
             <c:if test="${dellAndLatest}">
-                <p><c:out value="${project.getBody()}"></c:out></p>
                 <span class="status-message">Review the project; approve if satisfactory or reject if not.</span>
             </c:if><c:if test="${partnerAndLatest}">
-                <p><c:out value="${project.getBody()}"></c:out></p>
                 <span class="status-message">Dell will now review your request.</span>
             </c:if>
         </c:if>

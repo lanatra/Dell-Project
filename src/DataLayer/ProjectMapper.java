@@ -385,14 +385,14 @@ public class ProjectMapper {
         if(companyId == 1) {
             SQL = "select " +
                     "  sum(case when status='Waiting Project Verification' or status='Waiting Claim Verification' then 1 else 0 end) WaitingForAction," +
-                    "  sum(case when status='In Execution' then 1 else 0 end) InExecution," +
-                    "  sum(case when status='Finished' then 1 else 0 end) Finished" +
+                    "  sum(case when status='Project Approved'  then 1 else 0 end) InExecution," +
+                    "  sum(case when status='Project Finished' then 1 else 0 end) Finished" +
                     " from projects";
         } else {
             SQL = "select \n" +
-                    "  sum(case when (status='Waiting Project Verification' or status='Waiting Claim Verification') and company_id=" + companyId + " then 1 else 0 end) WaitingForAction,\n" +
-                    "  sum(case when status='In Execution' and company_id=" + companyId + "  then 1 else 0 end) InExecution,\n" +
-                    "  sum(case when status='Finished' and company_id=" + companyId + "   then 1 else 0 end) Finished\n" +
+                    "  sum(case when (status not in ('Project Finished', 'Cancelled')) and company_id=" + companyId + " then 1 else 0 end) WaitingForAction,\n" +
+                    "  sum(case when status='' and company_id=" + companyId + "  then 1 else 0 end) InExecution,\n" +
+                    "  sum(case when status='Project Finished' or status='Cancelled' and company_id=" + companyId + "   then 1 else 0 end) Finished\n" +
                     " from projects";
         }
 

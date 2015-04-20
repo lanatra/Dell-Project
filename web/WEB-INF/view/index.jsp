@@ -8,12 +8,6 @@
   <jsp:include page="header.jsp" />
 
   <div class="container actions" style="margin-top: 40px;">
-      <a href="/dashboard">
-      <div class="filter">
-          <div class="circle unread">--</div>
-          <span>Unread</span>
-      </div>
-      </a>
       <c:if test="${User.getCompany_id() == 1}">
       <a href="/dashboard">
           <div class="filter">
@@ -31,7 +25,7 @@
       <c:if test="${User.getCompany_id() != 1}">
         <a href="/dashboard">
           <div class="filter">
-            <div class="circle execution"><c:out value="${statusCount[1] + statusCount[0]}" /></div>
+            <div class="circle execution"><c:out value="${statusCount[0]}" /></div>
             <span>Active</span>
           </div>
         </a>
