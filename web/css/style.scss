@@ -500,6 +500,11 @@ div.project-items {
 
 	&.pull-right {
 	  float: right;
+
+	  span.user-data, span.date {
+		float: right;
+	  }
+
 	  &.message div.bubble {
 		border-bottom-right-radius: 0px;
 		border-bottom-left-radius: 20px;
