@@ -28,14 +28,13 @@ public class Message {
     }
 
     public String toHTML() {
-        String html = "        <div class=\"message-item\">\n" +
-                "            <span class=\"id\"><strong>#" + id + "</span>\n" +
-                "            <span class=\"partner\">" + user.getName() + "</span>\n" +
-                "            <span class=\"partner\">" + company.getName() + "</span>\n" +
-                "            <span class=\"partner\">" + company.getImg_filename() + "</span>\n" +
-                "            <span class=\"body\">" + body + "</span>\n" +
-                "            <span class=\"notification small\">" + creation_date_millis  + "</span>\n" +
-                "        </div>";
+        String html = "      <div class=\"item pull-right\">\n" +
+                "               <span class=\"user-data\">" + user.getName() + " - " + company.getName() + "</span>\n" +
+                "               <span class=\"date isDate\">" + creation_date_millis + "</span>\n" +
+                "               <div class=\"bubble\">" +
+                "                   <p class=\"partner\">" + body + "</p>\n" +
+                "               </div>" +
+                "            </div>";
 
 
         return html;

@@ -11,7 +11,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+
 @MultipartConfig
 public class PresentationServlet extends HttpServlet {
 
@@ -28,8 +30,6 @@ public class PresentationServlet extends HttpServlet {
 
             String userPath = request.getServletPath();
             System.out.println(userPath);
-            System.out.println(request.getRequestURI());
-            System.out.println(request.getRequestURL());
             switch(userPath) {
                 case "/dashboard":
                     getDashboard(request, response, cont);
@@ -162,6 +162,7 @@ public class PresentationServlet extends HttpServlet {
         request.setAttribute("project", cont.getProjectById(projId, user.getCompany_id()));;
         request.setAttribute("messages", cont.getMessagesByProjectId(projId));
         request.setAttribute("stages", cont.getStagesByProjectId(projId));
+
         request.getRequestDispatcher("/WEB-INF/view/project.jsp").forward(request, response);
     }
 
@@ -172,9 +173,11 @@ public class PresentationServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         int userId = Integer.parseInt(request.getParameter("userId"));
+        int companyId = Integer.parseInt(request.getParameter("companyId"));
         int projectId = Integer.parseInt(request.getParameter("projectId"));
+
         String body = request.getParameter("body");
-        out.println(cont.postMessage(userId, projectId, body));
+        out.println(cont.postMessage(userId, projectId, body, companyId));
     }
 
     void getUserById (HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
@@ -194,14 +197,22 @@ public class PresentationServlet extends HttpServlet {
         int execution_month = Integer.parseInt(request.getParameter("execution_month"));
         int execution_day = Integer.parseInt(request.getParameter("execution_day"));
 
+        Timestamp execution_time;
+
+        if (execution_day == 0) {
+            execution_time = Timestamp.valueOf(execution_year + "-" + execution_month + "-01" + " 00:00:01");
+        } else {
+            execution_time = Timestamp.valueOf(execution_year + "-" + execution_month + "-" + execution_day + " 00:00:00");
+        }
+
+
+
         Object userObj = request.getSession().getAttribute("User");
         if (userObj != null) {
             request.setAttribute("User", userObj);}
-
             User user = (User) request.getAttribute("User");
 
-
-        if (cont.createProjectRequest(budget, project_body, user, project_type, "placeholder")) {
+        if (cont.createProjectRequest(budget, project_body, user, project_type, execution_time)) {
             request.getRequestDispatcher("/WEB-INF/view/createproject.jsp").forward(request, response);
         }
         response.sendRedirect("/");

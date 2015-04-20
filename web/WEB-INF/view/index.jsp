@@ -36,7 +36,7 @@
           </div>
         </a>
       </c:if>
-    <a href="?state=Claim approved">
+    <a href="?state=Project Finished">
       <div class="filter">
         <div class="circle finished"><c:out value="${statusCount[2]}" /></div>
         <span>Finished</span>
@@ -74,8 +74,15 @@
                   <span class="id"><strong>#</strong><c:out value="${project.getId()}" /></span>
                   <span class="partner"><c:out value="${project.getCompanyName()}" /></span>
                   <span class="type"><c:out value="${project.getType()}" /></span>
-                  <span class="notification small"><c:out value="${project.getNotification()}" /></span>
-                  <span class="state small"><c:out value="${project.getStatus()}" /></span>
+                  <c:choose>
+                      <c:when test="${project.getNotification() != null && ((User.getCompany_id() == 1 && project.isUnread_admin()) || (User.getCompany_id() != 1 && project.isUnread_partner()))}">
+                          <span class="notification"><c:out value="${project.getNotification()}" /></span>
+                      </c:when>
+                      <c:otherwise>
+                          <span class="state small"><c:out value="${project.getStatus()}" /></span>
+                      </c:otherwise>
+                  </c:choose>
+
 
 
                   <span class="execution-date small">Jan. 12 2014</span>

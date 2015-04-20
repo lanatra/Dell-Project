@@ -23,35 +23,22 @@ public class DisplayProject extends Project{
 
     public ArrayList<POE> poes;*/
 
+    public DisplayProject() {
 
-    public static DisplayProject projectToDisplay(Project project) {
-        DisplayProject DP = new DisplayProject();
-        DP.id = project.id;
-        DP.start_time = project.start_time;
-        DP.end_time = project.end_time;
-        DP.company_id = project.company_id;
-        DP.owner_id = project.owner_id;
-        DP.status = project.status;
-        DP.budget = project.budget;
-        DP.body = project.body;
-        DP.execution_date = project.execution_date;
-        DP.last_change_admin = project.last_change_admin;
-        DP.last_change_partner = project.last_change_partner;
-        DP.unread_admin = project.unread_admin;
-        DP.unread_partner = project.unread_partner;
+    }
 
+    public DisplayProject(int id, Timestamp start_time, Timestamp end_time, int company_id, int owner_id, String status, double budget, String body, Timestamp execution_date, Timestamp last_change_admin, Timestamp last_change_partner, boolean unread_admin, boolean unread_partner, String notification, String type) {
+        super(id, start_time, end_time, company_id, owner_id, status, budget, body, execution_date, last_change_admin, last_change_partner, unread_admin, unread_partner, notification, type);
 
-        if(project.start_time != null) DP.f_start_time = project.start_time.getTime();
-        if(project.end_time != null) DP.f_end_time = project.end_time.getTime();
-        if(project.execution_date != null) DP.f_execution_date = project.execution_date.getTime();
-        if(project.last_change_admin != null) DP.f_last_change_admin = project.last_change_admin.getTime();
-        if(project.last_change_partner != null) DP.f_last_change_admin = project.last_change_partner.getTime();
-        Company cp = new Controller().getCompanyById(DP.company_id);
+        if(start_time != null) f_start_time = start_time.getTime();
+        if(end_time != null) f_end_time = end_time.getTime();
+        if(execution_date != null) f_execution_date = execution_date.getTime();
+        if(last_change_admin != null) f_last_change_admin = last_change_admin.getTime();
+        if(last_change_partner != null) f_last_change_admin = last_change_partner.getTime();
+        Company cp = new Controller().getCompanyById(company_id);
 
-        DP.companyName = cp.name;
-        DP.companyLogoUrl = cp.img_filename;
-
-        return DP;
+        companyName = cp.name;
+        companyLogoUrl = cp.img_filename;
     }
 
     public long getF_start_time() {
@@ -81,4 +68,6 @@ public class DisplayProject extends Project{
     public String getCompanyLogoUrl() {
         return companyLogoUrl;
     }
+
+    public String getMessage() { return message; }
 }

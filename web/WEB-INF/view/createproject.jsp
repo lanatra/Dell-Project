@@ -15,9 +15,9 @@
     <input class="amount" name="budget" type="text" placeholder="Amount"/>
     <span>for</span>
     <select name="type" id="type">
-      <option value="web-campaign">Web campaign</option>
-      <option value="billboard-ad">Billboard ad</option>
-      <option value="tv-promotion">TV promotion</option>
+      <option value="Web Campaign">Web campaign</option>
+      <option value="Billboard ad">Billboard ad</option>
+      <option value="TV Promotion">TV promotion</option>
     </select>
     <span style="clear: left;">With execution scheduled</span>
     <select name="execution_year" id="year">
@@ -40,7 +40,7 @@
     </select>
     <span class="add_day">Add day</span>
     <select name="execution_day" id="day"style="display: none">
-
+      <option value='0'>0</option>
     </select>
     <textarea name="body" id="description" placeholder="Describe your project here."></textarea>
     <button type="submit" class="button">Send request</button>
@@ -57,17 +57,21 @@
 
 
 <script>
-  var days = 31;
-  for(var i=1; i<=days; i++) {
-    $('select#day').append("<option value='" + i + "'>" + i +".</option>");
-  }
-
   $('span.add_day').click(function() {
+    setDays();
     $('span.add_day').css('display', 'none');
     $('select#day').css('display', 'block');
+    $('select#day').addClass('visible');
   });
 
   $('select#month').change(function() {
+    if($('select#day').hasClass('visible')){
+      setDays();
+    }
+  });
+
+  function setDays() {
+    var days = 31;
     var e = document.getElementById("month");
     var strMonth = e.options[e.selectedIndex].value;
 
@@ -84,7 +88,7 @@
     for(var i=1; i<=days; i++) {
       $('select#day').append("<option value='" + i + "'>" + i +".</option>");
     }
-  });
+  }
 </script>
 
 </body>

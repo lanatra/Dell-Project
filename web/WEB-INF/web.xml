@@ -19,6 +19,10 @@
         <servlet-name>DefaultServlet</servlet-name>
         <url-pattern>/img/*</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DefaultServlet</servlet-name>
+        <url-pattern>/js/*</url-pattern>
+    </servlet-mapping>
 
     <servlet>
         <servlet-name>PresentationServlet</servlet-name>
@@ -30,10 +34,5 @@
         <url-pattern>/api/*</url-pattern>
         <url-pattern>/project/*</url-pattern>
     </servlet-mapping>
-
-
-
-
-
 
 </web-app>

@@ -66,7 +66,7 @@ public class MessageMapper {
         return message;
     }
 
-    public Message postMessage(int userId, int projectId, String body, Connection con) {
+    public Message postMessage(int userId, int projectId, String body, int companyId, Connection con) {
 
         String SQL = "insert into messages values (?,?,?,?,?)";
 
@@ -85,6 +85,14 @@ public class MessageMapper {
             statement.setString(4, body);
             statement.setTimestamp(5, timestamp);
             statement.executeUpdate();
+
+            DatabaseFacade facade = new DatabaseFacade();
+            facade.updateChangeDate(projectId, companyId);
+            facade.updateNotification(projectId, "New message!");
+            if(companyId == 1)
+                facade.markUnread(projectId, 2); // 2 is just not dell, a la partner
+            else
+                facade.markUnread(projectId, 1);
 
         } catch (SQLException t) {
             System.out.println("SQLException in Messagemapper() - postMessage*(");
