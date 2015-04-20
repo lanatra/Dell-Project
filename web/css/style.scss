@@ -497,8 +497,13 @@ div.project-items {
   div.item {
 	float: left;
 	width: 90%;
+
 	&.pull-right {
 	  float: right;
+	  &.message div.bubble {
+		border-bottom-right-radius: 0px;
+		border-bottom-left-radius: 20px;
+	  }
 	}
 
 	span.date {
@@ -513,6 +518,15 @@ div.project-items {
 	  color: #787878;
 	}
 
+	&.message {
+	  width: 70%;
+
+	  div.bubble {
+		background-color: rgba(255,255,255,0.7);
+		border-bottom-left-radius: 0px;
+	  }
+	}
+
 	div.bubble {
 	  float: left;
 	  clear: both;
@@ -520,11 +534,26 @@ div.project-items {
 	  background-color: white;
 	  border-radius: 20px;
 	  box-sizing: border-box;
-	  padding: 20px;
+	  padding: 20px 20px 0 20px;
 	  margin-bottom: 30px;
 	  -webkit-box-shadow: 0px 2px 10px 0px rgba(50, 50, 50, 0.05);
 	  -moz-box-shadow:    0px 2px 10px 0px rgba(50, 50, 50, 0.05);
 	  box-shadow:         0px 2px 10px 0px rgba(50, 50, 50, 0.05);
+
+	  button:hover, .button:hover {
+		-webkit-box-shadow: none;
+		-moz-box-shadow:    none;
+		box-shadow:         none;
+	  }
+
+	  div.system-message {
+		background-color: #F3FBFF;
+		border: 1px solid #E0EEF5;
+		border-radius: 10px;
+		box-sizing: border-box;
+		padding: 15px;
+		color: $color-blue;
+	  }
 	  
 	  h3 {
 		font-size: 1.5em;
@@ -533,12 +562,17 @@ div.project-items {
 		font-weight: lighter;
 		color: #737373;
 	  }
+	  
+	  form.stage-actions {
+		margin-top: 20px;
+		margin-bottom: 15px;
+	  }
+	  
 	  button {
 		border-radius: 15px;
 		height: 30px;
 		text-transform: none;
 		font-size: 1em;
-		font-weight: lighter;
 		line-height: 1;
 		background: $color-blue;
 		color: white;

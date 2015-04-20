@@ -148,6 +148,7 @@ public class PresentationServlet extends HttpServlet {
 
     void getDashboard(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
         System.out.println("getDashboard");
+
         User user = (User) request.getAttribute("User");
         if(request.getParameter("state") == null)
             request.setAttribute("projects", cont.getProjectsByState("waitingForAction", user.getCompany_id()));
@@ -208,7 +209,6 @@ public class PresentationServlet extends HttpServlet {
         } else {
             execution_time = Timestamp.valueOf(execution_year + "-" + execution_month + "-" + execution_day + " 00:00:00");
         }
-
 
 
         Object userObj = request.getSession().getAttribute("User");

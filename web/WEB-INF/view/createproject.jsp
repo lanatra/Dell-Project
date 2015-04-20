@@ -47,11 +47,7 @@
   </form>
 </div>
 
-<!-- testing upload functionality:-->
-
-
 <br>
-
 
 <script>
   $('span.add_day').click(function() {

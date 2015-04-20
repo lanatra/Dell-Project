@@ -78,13 +78,14 @@
 
         <c:if test="${dellAndLatest &&
                      (project.getStatus() == 'Waiting Project Verification' || project.getStatus() == 'Waiting Claim Verification')}">
-            <form method="post" action="/api/changeProjectStatus">
+            <form method="post" class="stage-actions" action="/api/changeProjectStatus">
                 <input type="hidden" name="currentType" value="${project.getStatus()}">
                 <input type="hidden" name="projectId" value="${project.getId()}">
                 <button name="answer" value="approved" class="green">Approve</button>
                 <button name="answer" value="denied" class="red">Reject</button>
             </form>
         </c:if>
+
 
     </div>
 </div>

@@ -467,31 +467,30 @@ public class ProjectMapper {
             }
 
         }
+    }
+
+    public void updateNotification(int project_id, String notification) {
+        Connection con = null;
+        try {
+            con = DatabaseConnection.getInstance().getConnection();
+        } catch (Exception e) {
+
         }
 
-        public void updateNotification(int project_id, String notification) {
-            Connection con = null;
-            try {
-                con = DatabaseConnection.getInstance().getConnection();
-            } catch (Exception e) {
+        PreparedStatement statement = null;
+        String SQL = "UPDATE projects SET notification = ? where id = ? ";
+        try {
+            statement = con.prepareStatement(SQL);
+            statement.setString(1, notification);
+            statement.setInt(2, project_id);
+            statement.executeUpdate();
 
-            }
-
-            PreparedStatement statement = null;
-            String SQL = "UPDATE projects SET notification = ? where id = ? ";
-            try {
-                statement = con.prepareStatement(SQL);
-                statement.setString(1, notification);
-                statement.setInt(2, project_id);
-                statement.executeUpdate();
-
-            } catch (Exception e) {
-                System.out.println("Error in updateNotification()");
-            } finally {
-                if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
-                if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
-            }
+        } catch (Exception e) {
+            System.out.println("Error in updateNotification()");
+        } finally {
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
         }
-
+    }
 
 }

@@ -15,7 +15,7 @@
 <c:if test="${project.getMessage() != null}"><c:out value="${project.getMessage()}"></c:out></c:if>
 
 <div class="container project-container">
-    <h1><small>#</small><c:out value="${project.getId()}" /></h1>
+    <h1><span style="color: #9F9F9F;">#<c:out value="${project.getId()}" /></span> <c:out value="${project.getType()}" /></h1>
     <div class="project-state"><c:out value="${project.getStatus()}" /></div>
     <span class="state">State</span>
 
