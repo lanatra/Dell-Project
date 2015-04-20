@@ -3,10 +3,7 @@ package DataLayer;
 import java.sql.Connection;
 import java.util.ArrayList;
 
-import Domain.Company;
-import Domain.DisplayProject;
-import Domain.User;
-import Domain.Message;
+import Domain.*;
 
 public class DatabaseFacade {
 
@@ -59,6 +56,15 @@ public class DatabaseFacade {
     }
     public boolean createUser(String name, String user_role, String user_email, String password, int company_id) {
         return new UserMapper().createUser(name, user_role, user_email, password, company_id, getCon());
+    }
+
+    // POE
+    public boolean addPoeFile(int project_id, String filename, int user_id, String filetype) {
+        return new PoeMapper().addPoeFile(project_id, filename, user_id, filetype, getCon());
+    }
+
+    public ArrayList<Poe> getPoe(int project_id) {
+        return new PoeMapper().getPoe(project_id, getCon());
     }
 
 

@@ -1,15 +1,18 @@
 package Presentation;
 
 import Domain.Controller;
+import Domain.Poe;
 import Domain.User;
-
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.http.Part;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
-
+import java.util.ArrayList;
+@MultipartConfig
 public class PresentationServlet extends HttpServlet {
 
 
@@ -90,6 +93,9 @@ public class PresentationServlet extends HttpServlet {
             case "/project-request":
                 createProjectRequest(request, response, cont);
                 //changeProjectStatus(request, response, cont);
+                break;
+            case "/uploadFile":
+                createPoe(request, response, cont);
                 break;
             default:
                 getDashboard(request, response, cont);
@@ -261,6 +267,23 @@ public class PresentationServlet extends HttpServlet {
 
         request.setAttribute("createUserResult", false);
         request.getRequestDispatcher("index.jsp").forward(request, response);
+    }
+    void createPoe(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        Part file = request.getPart("file");
+        int project_id = 1;
+        int user_id = 2;
+
+        if(cont.addPoeFile(project_id, file, user_id)) {
+            response.sendRedirect("/");
+        }
+    }
+
+    void getPoes(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        // placeholder  value, how did we get the current project?
+        int project_id = 1;
+        ArrayList<Poe> poes = cont.getPoe(project_id);
+        request.setAttribute("Poes", poes);
+
     }
 
 }

@@ -1,11 +1,13 @@
 package Domain;
 
 import DataLayer.DatabaseFacade;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+
+import javax.servlet.http.Part;
+import java.io.*;
 
 public class Controller {
 
@@ -62,10 +64,12 @@ public class Controller {
         if((companyId == 1 && dp.isUnread_admin()) || (companyId != 1 && dp.isUnread_partner()))
             facade.markRead(id, companyId);
         return  dp; }
-    public ArrayList getStagesByProjectId(int project_id) { return proccessStages(facade.getStagesByProjectId(project_id)); }
+    public ArrayList getStagesByProjectId(int project_id) {
+        return proccessStages(facade.getStagesByProjectId(project_id)); }
     public ArrayList getMessagesByProjectId(int projId) { return processMessages(facade.getMessagesByProjectId(projId)); }
     public String postMessage(int userId, int projId, String body) { return processMessage(facade.postMessage(userId, projId, body)).toHTML();}
-    public ArrayList getProjectsByState(String state, int companyId) { return  facade.getProjectsByState(state, companyId); }
+    public ArrayList getProjectsByState(String state, int companyId) {
+        return  facade.getProjectsByState(state, companyId); }
     //public boolean changeProjectStatus(String project_id, String new_status, String usertype) { return facade.verifyProjectRequest(project_id, new_status, usertype); }
     public int[] getStatusCounts(int companyId) { return facade.getStatusCounts(companyId); }
 
@@ -145,6 +149,27 @@ public class Controller {
         m.user = facade.getUserById(m.getAuthor_id());
         m.company = facade.getCompanyById(m.user.getCompany_id());
         return m;
+    }
+    // POE
+    public boolean addPoeFile(int project_id, Part file, int user_id) throws IOException {
+        FileHandling handler = new FileHandling();
+
+        handler.putFile(file);
+        String filename = handler.getFileName();
+        String filetype = handler.getFileType();
+
+        System.out.println(project_id);
+        System.out.println(filename);
+        System.out.println(filetype);
+        System.out.println(user_id);
+
+        return facade.addPoeFile(project_id, filename, user_id, filetype);
+
+    }
+
+    public ArrayList<Poe> getPoe(int project_id) {
+
+        return facade.getPoe(project_id);
     }
 
 }
