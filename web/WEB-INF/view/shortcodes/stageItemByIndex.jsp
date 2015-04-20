@@ -9,11 +9,13 @@
         <c:if test="${stages.get(stageIndex).getType() == 'Waiting Project Verification'}">
             <h3><c:out value="${project.getCompanyName()}"></c:out> is requesting <c:out value="${project.getBudget()}"></c:out> for a <c:out value="${project.getType()}"></c:out></h3>
             <p><c:out value="${project.getBody()}"></c:out> </p>
-            <c:if test="${dellAndLatest}">
-                <span class="status-message">Review the project; approve if satisfactory or reject if not.</span>
-            </c:if><c:if test="${partnerAndLatest}">
-                <span class="status-message">Dell will now review your request.</span>
-            </c:if>
+            <div class="system-message">
+                <c:if test="${dellAndLatest}">
+                    <span class="status-message">Review the project; approve if satisfactory or reject if not.</span>
+                </c:if><c:if test="${partnerAndLatest}">
+                    <span class="status-message">Dell will now review your request.</span>
+                </c:if>
+            </div>
         </c:if>
 
         <c:if test="${stages.get(stageIndex).getType() == 'Project Rejected'}">
@@ -70,7 +72,7 @@
 
         <c:if test="${stages.get(stageIndex).getType() == project.getStatus() && User.getCompany_id() == 1 &&
                      (project.getStatus() == 'Waiting Project Verification' || project.getStatus() == 'Waiting Claim Verification')}">
-            <form method="post" action="/api/changeProjectStatus">
+            <form method="post" class="stage-actions" action="/api/changeProjectStatus">
                 <input type="hidden" name="currentType" value="${project.getStatus()}">
                 <input type="hidden" name="projectId" value="${project.getId()}">
                 <button name="answer" value="approved" class="green">Approve</button>
@@ -138,6 +140,11 @@
                     <input type="file">
                     <button name="answer" value="approved" class="green">Resubmit claim</button>
                 </c:if>
+            </form>
+
+            <form action="/uploadFile" method="post" enctype="multipart/form-data">
+                <input type="file" name="file" width="100">
+                <input type="submit" name="submit" value="Submit">
             </form>
     </div>
 </div>

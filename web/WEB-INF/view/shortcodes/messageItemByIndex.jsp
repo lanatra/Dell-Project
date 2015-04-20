@@ -1,4 +1,4 @@
-<div class="item <c:if test="${messages.get(messageIndex).getUser().getId() == User.getId()}">pull-right</c:if>">
+<div class="item message <c:if test="${messages.get(messageIndex).getUser().getId() == User.getId()}">pull-right</c:if>">
     <span class="user-data">
         <c:out value="${messages.get(messageIndex).getUser().getName()}"></c:out> -
         <c:out value="${messages.get(messageIndex).getCompany().getName()}"></c:out>
