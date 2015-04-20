@@ -107,7 +107,7 @@ public class PresentationServlet extends HttpServlet {
                 createPoe(request, response, cont);
                 break;
             case "/downloadFile":
-                testDownload(request, response, cont);
+                getPoes(request, response, cont);
                 break;
             default:
                 getDashboard(request, response, cont);
@@ -175,6 +175,7 @@ public class PresentationServlet extends HttpServlet {
         request.setAttribute("project", cont.getProjectById(projId, user.getCompany_id()));;
         request.setAttribute("messages", cont.getMessagesByProjectId(projId));
         request.setAttribute("stages", cont.getStagesByProjectId(projId));
+        request.setAttribute("poes", cont.getPoe(projId));
 
         request.getRequestDispatcher("/WEB-INF/view/project.jsp").forward(request, response);
     }
@@ -293,25 +294,27 @@ public class PresentationServlet extends HttpServlet {
     }
     void createPoe(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
         Part file = request.getPart("file");
-        int project_id = 1;
-        int user_id = 2;
+        User u = (User) request.getAttribute("User");
+        int project_id = Integer.parseInt(request.getParameter("proj_id"));
+        int user_id = u.getId();
         if(cont.addPoeFile(project_id, file, user_id)) {
+
+
             response.sendRedirect("/");
         }
     }
 
-    void testDownload(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
-        int project_id = 1;
-        ArrayList<Poe> poes = cont.getPoe(project_id);
-
+    void getPoes(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        int project_id = Integer.parseInt(request.getParameter("proj_id"));
+        String filename = request.getParameter("filename");
 
         response.setContentType("application/octet-stream");
         response.setHeader("Content-Disposition",
-                "attachment;filename=" + poes.get(0).getFilename());
+                "attachment;filename=" + filename);
 
         // testing first poe
-        String path = poes.get(0).getFilePath();
-        System.out.println(path);
+        String path = System.getenv("POE_FOLDER") + "\\" + project_id + "\\" + filename;
+
         File file = new File(path);
         FileInputStream fileIn = new FileInputStream(file);
         ServletOutputStream out = response.getOutputStream();
@@ -325,14 +328,11 @@ public class PresentationServlet extends HttpServlet {
         fileIn.close();
         out.flush();
         out.close();
-    }
 
-    void getPoes(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
-        // placeholder  value, how did we get the current project?
-        int project_id = 1;
-        ArrayList<Poe> poes = cont.getPoe(project_id);
-        request.setAttribute("Poes", poes);
+
+         response.sendRedirect("/");
 
     }
+
 
 }
