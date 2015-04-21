@@ -64,6 +64,45 @@ public class FileHandling {
         }
     }
 
+    public void putLogo(Part file, int company_id) throws IOException {
+        String path = System.getenv("POE_FOLDER");
+
+        String newPath = path + File.separator + "companies" + File.separator + company_id;
+
+        File dir = new File(newPath);
+
+        dir.mkdir();
+
+        filename = getFileName(file);
+        filetype = filename.substring(filename.lastIndexOf(".") + 1, filename.length());
+
+        OutputStream out = null;
+        InputStream filecontent = null;
+
+        try {
+            out = new FileOutputStream(new File(newPath + File.separator
+                    + filename));
+            filecontent = file.getInputStream();
+
+            int read = 0;
+            final byte[] bytes = new byte[1024];
+
+            while ((read = filecontent.read(bytes)) != -1) {
+                out.write(bytes, 0, read);
+            }
+
+        } catch (FileNotFoundException fne) {
+
+        } finally {
+            if (out != null) {
+                out.close();
+            }
+            if (filecontent != null) {
+                filecontent.close();
+            }
+
+        }
+    }
 
     public String getFileName(Part file) {
 

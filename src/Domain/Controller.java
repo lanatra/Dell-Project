@@ -3,6 +3,9 @@ package Domain;
 import DataLayer.DatabaseFacade;
 
 
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.sql.Timestamp;
 
 import java.util.ArrayList;
@@ -26,8 +29,49 @@ public class Controller {
     public boolean createProjectRequest(String budget, String project_body, User user, String project_type, Timestamp execution_date) {
         return facade.createProjectRequest(budget, project_body, user, project_type, execution_date);
     }
-    public boolean createCompany(String company_name) {
-        return facade.createCompany(company_name);
+    public boolean createCompany(String company_name, String country_code, Part logo, String logo_url) {
+        int company_id = facade.createCompany(company_name, country_code);
+        if(company_id != -1) { //if success
+            String filename = "";
+            System.out.println("logourl: " + logo_url);
+            System.out.println("logo: " + logo);
+            if(logo != null) {
+                FileHandling handler = new FileHandling();
+
+                try {
+                    handler.putLogo(logo, company_id);
+                } catch(Exception e) {}
+
+                filename = handler.getFileName();
+                facade.updateCompanyLogo(filename, company_id);
+            } else if(logo_url != null) {
+                System.out.println(new File(System.getenv("POE_FOLDER") + File.separator + "companies" + File.separator + company_id + File.separator + "logo." + logo_url.substring(logo_url.lastIndexOf(".") + 1, logo_url.length())).getPath());
+                try {
+                    URL website = new URL(logo_url);
+                    System.out.println("test1");
+                    ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+                    System.out.println("test2");
+                    File outputFolder = new File(System.getenv("POE_FOLDER") + File.separator + "companies" + File.separator + company_id );
+                    outputFolder.mkdirs();
+                    filename = "logo." + logo_url.substring(logo_url.lastIndexOf(".") + 1, logo_url.length());
+                    FileOutputStream fos = new FileOutputStream(
+                            new File(outputFolder.getAbsolutePath() + File.separator + filename));
+                    System.out.println("test3");
+                    fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+                    fos.close();
+                    System.out.println("test4");
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+                    System.out.println("Error in saving logo from url");
+                }
+                facade.updateCompanyLogo(filename, company_id);
+            }
+
+
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public boolean changeProjectStatus(int project_id, String current_status, String answer, int companyId, int userId) {

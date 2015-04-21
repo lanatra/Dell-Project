@@ -42,8 +42,8 @@ public class PresentationServlet extends HttpServlet {
                     case "/project":
                         getProjectView(request, response, cont);
                         break;
-                    case "/create-project":
-                        getCreateProjectView(request, response, cont);
+                    case "/create-company":
+                        getCreateCompanyView(request, response, cont);
                         break;
                     case "/logout":
                         logout(request, response, cont);
@@ -267,17 +267,7 @@ public class PresentationServlet extends HttpServlet {
     }
 
 
-    void createCompany(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
-        String company_name = request.getParameter("company_name");
 
-        if (cont.createCompany(company_name)) {
-            request.setAttribute("createCompanyResult", true);
-            request.getRequestDispatcher("index.jsp").forward(request, response);
-            return;
-        }
-        request.setAttribute("createCompanyResult", false);
-        request.getRequestDispatcher("index.jsp").forward(request, response);
-    }
 
 
     // Creates a new user; if a given company name already exists, assign user to that company - otherwise make new company with that name.
@@ -309,8 +299,23 @@ public class PresentationServlet extends HttpServlet {
         }
     }
 
-    void getCreateProjectView(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+    void getCreateCompanyView(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
         request.setAttribute("companies", "ayy");
+        request.getRequestDispatcher("/WEB-INF/view/create-company.jsp").forward(request, response);
+    }
+
+    void createCompany(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        String company_name = request.getParameter("companyName");
+        String country_code = request.getParameter("countryCode");
+        Part logo = null;
+        if(request.getParameter("logo") != null)
+            logo = request.getPart("logo");
+        String logo_url = request.getParameter("logoUrl");
+
+        if (cont.createCompany(company_name, country_code, logo, logo_url)) {
+            request.setAttribute("createCompanyResult", true);
+        }
+        request.setAttribute("createCompanyResult", false);
         request.getRequestDispatcher("/WEB-INF/view/create-company.jsp").forward(request, response);
     }
 
