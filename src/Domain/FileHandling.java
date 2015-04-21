@@ -3,6 +3,7 @@ package Domain;
 /**
  * Created by Lasse on 19-04-2015.
  */
+
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.Part;
 import java.io.*;
@@ -13,23 +14,33 @@ import java.io.OutputStream;
 
 
 @MultipartConfig
-public class FileHandling  {
+public class FileHandling {
 
     String filename;
     String filetype;
-    String path = "C:\\Users\\Lasse\\Desktop\\File Storage Dell";
 
-    public void putFile(Part file) throws IOException {
+    public void putFile(Part file, int project_id) throws IOException {
+
+       // String path = System.getProperty("user.dir");
+       // String projectRoot = path.substring(0, path.lastIndexOf("\\")) + "\\Poe\\";
+       // String PoeRootByProjectId = projectRoot + project_id;
+
+        String path = System.getenv("POE_FOLDER");
+
+        String newPath = path + "\\" + project_id;
+
+        File dir = new File(path + "\\" + project_id);
+
+        dir.mkdir();
+
         filename = getFileName(file);
         filetype = filename.substring(filename.lastIndexOf(".") + 1, filename.length());
-
-
 
         OutputStream out = null;
         InputStream filecontent = null;
 
         try {
-            out = new FileOutputStream(new File(path + File.separator
+            out = new FileOutputStream(new File(newPath + File.separator
                     + filename));
             filecontent = file.getInputStream();
 

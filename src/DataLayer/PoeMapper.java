@@ -42,6 +42,7 @@ public class PoeMapper {
 
             statement.executeUpdate();
 
+
         } catch(Exception e) {
             return false;
         } finally {
@@ -54,8 +55,8 @@ public class PoeMapper {
 
     public ArrayList<Poe> getPoe(int project_id, Connection con) {
 
-        String SQL = "select * from poes where proj_id = ?";
-        int amountPoes = getAmountPoesByProjectId(project_id);
+        String SQL = "select * from poes where project_id = ?";
+        //int amountPoes = getAmountPoesByProjectId(project_id);
         PreparedStatement statement = null;
         ResultSet rs = null;
         ArrayList<Poe> PoeCollection = new ArrayList<>();
@@ -66,7 +67,7 @@ public class PoeMapper {
 
             statement.setInt(1, project_id);
 
-            statement.executeQuery();
+            rs = statement.executeQuery();
 
 
             while (rs.next()) {
@@ -90,12 +91,12 @@ public class PoeMapper {
         }
 
 
-        return new ArrayList<Poe>();
+        return PoeCollection;
 
     }
-
+ /* excessive; never needed this method
     public int getAmountPoesByProjectId(int project_id) {
-        String SQL = "select count(*) from poes where id = ?";
+        String SQL = "select count(id) from poes where project_id = ?";
         PreparedStatement statement = null;
         ResultSet rs = null;
         Connection con = null;
@@ -125,7 +126,7 @@ public class PoeMapper {
 
         return amountPoes;
     }
-
+*/
     public int getNextPoEId() {
         PreparedStatement statement = null;
         ResultSet rs = null;

@@ -1,16 +1,15 @@
 package Presentation;
 
 import Domain.Controller;
-import Domain.Poe;
 import Domain.User;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.*;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 
 @MultipartConfig
 public class PresentationServlet extends HttpServlet {
@@ -20,7 +19,6 @@ public class PresentationServlet extends HttpServlet {
         Controller cont = AssignController(request);
 
         System.out.println(request.getRequestURI());
-        System.out.println(getServletContext().getRealPath("WEB-INF/view"));
 
         // if logged in
         Object userObj = request.getSession().getAttribute("User");
@@ -29,24 +27,29 @@ public class PresentationServlet extends HttpServlet {
 
             String userPath = request.getServletPath();
             System.out.println(userPath);
-            switch(userPath) {
-                case "/dashboard":
-                    getDashboard(request, response, cont);
-                    break;
-                case "/project-request":
-                    request.getRequestDispatcher("/WEB-INF/view/createproject.jsp").forward(request, response);
-                    break;
-                case "/project":
-                    getProjectView(request, response, cont);
-                    break;
-                case "/logout":
-                    logout(request, response, cont);
-                    break;
-                default:
-                    response.sendRedirect("/dashboard");
-                    break;
-            }
 
+            if(userPath.indexOf("/resources/") == 0) {
+                serveResource(request, response, cont);
+            } else {
+
+                switch (userPath) {
+                    case "/dashboard":
+                        getDashboard(request, response, cont);
+                        break;
+                    case "/project-request":
+                        request.getRequestDispatcher("/WEB-INF/view/createproject.jsp").forward(request, response);
+                        break;
+                    case "/project":
+                        getProjectView(request, response, cont);
+                        break;
+                    case "/logout":
+                        logout(request, response, cont);
+                        break;
+                    default:
+                        response.sendRedirect("/dashboard");
+                        break;
+                }
+            }
         } else {
             System.out.println(request.getRequestURI());
             if(request.getRequestURI().equals("/login"))
@@ -95,6 +98,9 @@ public class PresentationServlet extends HttpServlet {
                 break;
             case "/uploadFile":
                 createPoe(request, response, cont);
+                break;
+            case "/downloadFile":
+                getPoes(request, response, cont);
                 break;
             default:
                 getDashboard(request, response, cont);
@@ -162,6 +168,7 @@ public class PresentationServlet extends HttpServlet {
         request.setAttribute("project", cont.getProjectById(projId, user.getCompany_id()));;
         request.setAttribute("messages", cont.getMessagesByProjectId(projId));
         request.setAttribute("stages", cont.getStagesByProjectId(projId));
+        request.setAttribute("poes", cont.getPoe(projId));
 
         request.getRequestDispatcher("/WEB-INF/view/project.jsp").forward(request, response);
     }
@@ -289,20 +296,85 @@ public class PresentationServlet extends HttpServlet {
     }
     void createPoe(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
         Part file = request.getPart("file");
-        int project_id = 1;
-        int user_id = 2;
-
+        User u = (User) request.getAttribute("User");
+        int project_id = Integer.parseInt(request.getParameter("proj_id"));
+        int user_id = u.getId();
         if(cont.addPoeFile(project_id, file, user_id)) {
+
+
             response.sendRedirect("/");
         }
     }
 
     void getPoes(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
-        // placeholder  value, how did we get the current project?
-        int project_id = 1;
-        ArrayList<Poe> poes = cont.getPoe(project_id);
-        request.setAttribute("Poes", poes);
+        int project_id = Integer.parseInt(request.getParameter("proj_id"));
+        String filename = request.getParameter("filename");
+
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition",
+                "attachment;filename=" + filename);
+
+        // testing first poe
+        String path = System.getenv("POE_FOLDER") + "\\" + project_id + "\\" + filename;
+
+        File file = new File(path);
+        FileInputStream fileIn = new FileInputStream(file);
+        ServletOutputStream out = response.getOutputStream();
+
+        byte[] outputByte = new byte[4096];
+
+        while(fileIn.read(outputByte, 0, 4096) != -1)
+        {
+            out.write(outputByte, 0, 4096);
+        }
+        fileIn.close();
+        out.flush();
+        out.close();
+
+
+         response.sendRedirect("/");
 
     }
 
+    void serveResource(HttpServletRequest request, HttpServletResponse response, Controller cont) {
+        try {
+            String userpath = request.getServletPath();
+            boolean download = Boolean.parseBoolean(request.getParameter("download"));
+
+            String filename = System.getenv("POE_FOLDER") + "\\" + userpath.split("/")[2] + "\\" + userpath.split("/")[3];
+            File file = new File(filename);
+            if(download) {
+                response.setContentType("application/force-download");
+                //response.setContentLength(-1);
+                response.setHeader("Content-Transfer-Encoding", "binary");
+                response.setHeader("Content-Disposition","attachment; filename=\"" + file.getName() + "\"");
+            } else {
+                ServletContext cntx= getServletContext();
+
+                // retrieve mimeType dynamically
+                String mime = cntx.getMimeType(filename);
+                if (mime == null) {
+                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    return;
+                }
+                response.setContentType(mime);
+            }
+
+
+            response.setContentLength((int)file.length());
+
+            FileInputStream in = new FileInputStream(file);
+            OutputStream out = response.getOutputStream();
+
+            // Copy the contents of the file to the output stream
+            byte[] buf = new byte[1024];
+            int count = 0;
+            while ((count = in.read(buf)) >= 0) {
+                out.write(buf, 0, count);
+            }
+            out.close();
+            in.close();
+        } catch (Exception e) {};
+
+    }
 }

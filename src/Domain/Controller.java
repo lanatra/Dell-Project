@@ -161,7 +161,7 @@ public class Controller {
     public boolean addPoeFile(int project_id, Part file, int user_id) throws IOException {
         FileHandling handler = new FileHandling();
 
-        handler.putFile(file);
+        handler.putFile(file, project_id);
         String filename = handler.getFileName();
         String filetype = handler.getFileType();
 

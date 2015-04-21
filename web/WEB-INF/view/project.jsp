@@ -72,10 +72,24 @@
 
                 <c:if test="${project.getStatus() == 'Project Approved' || project.getStatus() == 'Claim Rejected'}">
                     <form action="/uploadFile" method="post" enctype="multipart/form-data">
-                        <label>Poe</label>
+                        <label>Choose a file for upload:</label>
+                        <input type="hidden" name="proj_id" value="<c:out value='${project.getId()}'></c:out>">
                         <input type="file" name="file">
                         <input type="submit" name="submit" value="Submit">
                     </form>
+
+                <c:forEach items="${poes}" var="poe" varStatus="ite" >
+                    <label> <c:out value='${poe.getFilename()}'></c:out></label>
+                    <c:if test="${poe.getFiletype() == 'jpg' ||
+                        poe.getFiletype() == 'png' ||
+                        poe.getFiletype() == 'jpeg' ||
+                        poe.getFiletype() == 'gif' ||
+                        poe.getFiletype() == 'bmp'}">
+                        <a href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out> " target="_blank">view image</a>
+                    </c:if>
+                    <a href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>?download=true">Download file</a>
+                </c:forEach>
+
 
                 </c:if>
 
@@ -123,12 +137,12 @@
                     </c:if><c:if test="${project.getStatus() == 'Project Approved'}">
                     <h3>Submit claim</h3>
                     <label>Upload proof of execution</label>
-                    <input type="file">
+
                     <button name="answer" value="approved" class="green">Submit claim</button>
                 </c:if><c:if test="${project.getStatus() == 'Claim Rejected'}">
                     <h3>Resubmit claim</h3>
                     <label>Upload proof of execution</label>
-                    <input type="file">
+
                     <button name="answer" value="approved" class="green">Resubmit claim</button>
                 </c:if>
                 </form>

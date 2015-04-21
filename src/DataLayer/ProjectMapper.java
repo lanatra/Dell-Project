@@ -384,7 +384,7 @@ public class ProjectMapper {
         if(companyId == 1) {
             SQL = "select " +
                     "  sum(case when status='Waiting Project Verification' or status='Waiting Claim Verification' then 1 else 0 end) WaitingForAction," +
-                    "  sum(case when status='Project Approved'  then 1 else 0 end) InExecution," +
+                    "  sum(case when status='Project Approved' or status='Project Rejected' or status='Claim Rejected'  then 1 else 0 end) InExecution," +
                     "  sum(case when status='Project Finished' then 1 else 0 end) Finished" +
                     " from projects";
         } else {

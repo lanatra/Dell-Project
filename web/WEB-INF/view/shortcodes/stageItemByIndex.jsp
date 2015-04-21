@@ -42,6 +42,17 @@
 
         <c:if test="${stages.get(stageIndex).getType() == 'Waiting Claim Verification'}">
             <h3>Waiting claim verification</h3>
+            <c:forEach items="${poes}" var="poe" varStatus="ite" >
+                <label> <c:out value='${poe.getFilename()}'></c:out></label>
+                <c:if test="${poe.getFiletype() == 'jpg' ||
+                        poe.getFiletype() == 'png' ||
+                        poe.getFiletype() == 'jpeg' ||
+                        poe.getFiletype() == 'gif' ||
+                        poe.getFiletype() == 'bmp'}">
+                    <a href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out> " target="_blank">view image</a>
+                </c:if>
+                <a href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>?download=true">Download file</a>
+            </c:forEach>
             </div>
             <c:if test="${dellAndLatest}">
                 <p class="status-message">Review the claim and the attached proofs.</p>
