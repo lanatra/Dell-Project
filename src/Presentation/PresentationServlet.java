@@ -4,15 +4,10 @@ import Domain.Controller;
 import Domain.Poe;
 import Domain.User;
 
-import javax.servlet.ServletContext;
-import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.http.Part;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.*;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -177,11 +172,16 @@ public class PresentationServlet extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
+        String newLine = System.getProperty("line.separator");
+
         int userId = Integer.parseInt(request.getParameter("userId"));
         int companyId = Integer.parseInt(request.getParameter("companyId"));
         int projectId = Integer.parseInt(request.getParameter("projectId"));
 
         String body = request.getParameter("body");
+
+        
+
         out.println(cont.postMessage(userId, projectId, body, companyId));
     }
 
@@ -197,6 +197,10 @@ public class PresentationServlet extends HttpServlet {
         String project_body = request.getParameter("body");
         String budget = request.getParameter("budget");
         String project_type = request.getParameter("type");
+
+        if (project_type.equals("other")) {
+            project_type = request.getParameter("customType");
+        }
 
         int execution_year = Integer.parseInt(request.getParameter("execution_year"));
         int execution_month = Integer.parseInt(request.getParameter("execution_month"));

@@ -6,7 +6,7 @@
     <span class="date isDate">
         <c:out value="${messages.get(messageIndex).getCreation_date_millis()}"></c:out>
     </span>
-    <div class="bubble">
+    <div class="inner-bubble">
         <p><c:out value="${messages.get(messageIndex).getBody()}"></c:out></p>
     </div>
 </div>
