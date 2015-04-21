@@ -12,9 +12,9 @@
             <p><c:out value="${project.getBody()}"></c:out> </p>
             </div>
             <c:if test="${dellAndLatest}">
-                <span class="status-message">Review the project; approve if satisfactory or reject if not.</span>
+                <p class="status-message">Review the project; approve if satisfactory or reject if not.</p>
             </c:if><c:if test="${partnerAndLatest}">
-                <span class="status-message">Dell will now review your request.</span>
+                <p class="status-message">Dell will now review your request.</p>
             </c:if>
         </c:if>
 
@@ -22,10 +22,10 @@
             <h3>Project has been rejected</h3>
             </div>
             <c:if test="${dellAndLatest}">
-                <span class="status-message">Add a comment to explain your decision of rejecting the project.</span>
+                <p class="status-message">Add a comment to explain your decision of rejecting the project.</p>
             </c:if>
             <c:if test="${partnerAndLatest}">
-                <span class="status-message">Dell has rejected your request. Change your request to match Dell�s comment.</span>
+                <p class="status-message">Dell has rejected your request. Change your request to match Dell�s comment.</p>
             </c:if>
         </c:if>
 
@@ -33,20 +33,31 @@
             <h3>Project has been Approved</h3>
             </div>
             <c:if test="${dellAndLatest}">
-                <span class="status-message">You have now approved the project and partner is working on executing the project. A claim request will be made once executed.</span>
+                <p class="status-message">You have now approved the project and partner is working on executing the project. A claim request will be made once executed.</p>
             </c:if>
             <c:if test="${partnerAndLatest}">
-                <span class="status-message">You are now allowed to execute the project. When executed, submit a claim with proper proof of execution.</span>
+                <p class="status-message">You are now allowed to execute the project. When executed, submit a claim with proper proof of execution.</p>
             </c:if>
         </c:if>
 
         <c:if test="${stages.get(stageIndex).getType() == 'Waiting Claim Verification'}">
             <h3>Waiting claim verification</h3>
+            <c:forEach items="${poes}" var="poe" varStatus="ite" >
+                <label> <c:out value='${poe.getFilename()}'></c:out></label>
+                <c:if test="${poe.getFiletype() == 'jpg' ||
+                        poe.getFiletype() == 'png' ||
+                        poe.getFiletype() == 'jpeg' ||
+                        poe.getFiletype() == 'gif' ||
+                        poe.getFiletype() == 'bmp'}">
+                    <a href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out> " target="_blank">view image</a>
+                </c:if>
+                <a href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>?download=true">Download file</a>
+            </c:forEach>
             </div>
             <c:if test="${dellAndLatest}">
-                <span class="status-message">Review the claim and the attached proofs.</span>
+                <p class="status-message">Review the claim and the attached proofs.</p>
             </c:if><c:if test="${partnerAndLatest}">
-                <span class="status-message">Dell will now review your claim request.</span>
+                <p class="status-message">Dell will now review your claim request.</p>
             </c:if>
         </c:if>
 
@@ -54,9 +65,9 @@
             <h3>Claim rejected</h3>
             </div>
             <c:if test="${dellAndLatest}">
-                <span class="status-message">Add a comment to explain your decision of rejecting the claim.</span>
+                <p class="status-message">Add a comment to explain your decision of rejecting the claim.</p>
             </c:if><c:if test="${partnerAndLatest}">
-                <span class="status-message">Dell has rejected your claim. Look in the comments for an explanation.</span>
+                <p class="status-message">Dell has rejected your claim. Look in the comments for an explanation.</p>
             </c:if>
         </c:if>
 
@@ -64,16 +75,16 @@
             <h3>Project finished!</h3>
             </div>
             <c:if test="${dellAndLatest}">
-                <span class="status-message">Project is finished and now awaiting reimbursement.</span>
+                <p class="status-message">Project is finished and now awaiting reimbursement.</p>
             </c:if><c:if test="${partnerAndLatest}">
-                <span class="status-message">Claim has been approved and the project is now finished. Reimbursement is processing.</span>
+                <p class="status-message">Claim has been approved and the project is now finished. Reimbursement is processing.</p>
             </c:if>
         </c:if>
 
         <c:if test="${stages.get(stageIndex).getType() == 'Cancelled'}">
             <h3>Project has been cancelled</h3>
             </div>
-            <span class="status-message">Project has been cancelled, look in the comments for further information.</span>
+            <p class="status-message">Project has been cancelled, look in the comments for further information.</p>
         </c:if>
 
         <c:if test="${dellAndLatest &&
@@ -85,7 +96,5 @@
                 <button name="answer" value="denied" class="red">Reject</button>
             </form>
         </c:if>
-
-
     </div>
 </div>

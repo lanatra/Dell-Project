@@ -18,7 +18,9 @@
       <option value="Web Campaign">Web campaign</option>
       <option value="Billboard ad">Billboard ad</option>
       <option value="TV Promotion">TV promotion</option>
+      <option value="other">Other</option>
     </select>
+    <input class="amount custom-type hidden" id="customType" name="customType" type="text" placeholder="Campaign type"/>
     <span style="clear: left;">With execution scheduled</span>
     <select name="execution_year" id="year">
       <option value="2015">2015</option>
@@ -68,6 +70,16 @@
     $('span.add_day').css('display', 'none');
     $('select#day').css('display', 'block');
     $('select#day').addClass('visible');
+  });
+
+  $('select#type').change(function() {
+    if($(this).val() == 'other') {
+      $('input#customType').removeClass('hidden');
+    } else {
+      if($('input#customType').attr('class') != 'hidden'){
+        $('input#customType').addClass('hidden');
+      }
+    }
   });
 
   $('select#month').change(function() {

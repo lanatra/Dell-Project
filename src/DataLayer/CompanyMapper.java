@@ -3,6 +3,7 @@ package DataLayer;
 import Domain.Company;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 /**
  * Created by Lasse on 10-04-2015.
@@ -88,7 +89,31 @@ public class CompanyMapper {
         return id + 1;
     }
 
+    public ArrayList getCompanies(Connection con) {
+        ArrayList<Company> companies = new ArrayList<>();
+        String SQL = "select * from companies";
 
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        try {
+            statement = con.prepareStatement(SQL);
+            rs = statement.executeQuery();
+            while(rs.next()) {
+                companies.add(new Company(rs.getInt(1),
+                        rs.getString(2),
+                        rs.getString(3)));
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error in CompanyMapper");
+        } finally {
+            if (rs != null) try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
+        }
+
+        return companies;
+    }
 
 
 }

@@ -1,27 +1,15 @@
 package Presentation;
 
 import Domain.Controller;
-import Domain.Poe;
 import Domain.User;
 
-import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
-
-import javax.servlet.ServletOutputStream;
-
-import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.http.Part;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.*;
-import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 
 @MultipartConfig
 public class PresentationServlet extends HttpServlet {
@@ -41,7 +29,7 @@ public class PresentationServlet extends HttpServlet {
             System.out.println(userPath);
 
             if(userPath.indexOf("/resources/") == 0) {
-                serveResource(userPath, request, response, cont);
+                serveResource(request, response, cont);
             } else {
 
                 switch (userPath) {
@@ -53,6 +41,9 @@ public class PresentationServlet extends HttpServlet {
                         break;
                     case "/project":
                         getProjectView(request, response, cont);
+                        break;
+                    case "/create-project":
+                        getCreateProjectView(request, response, cont);
                         break;
                     case "/logout":
                         logout(request, response, cont);
@@ -194,11 +185,16 @@ public class PresentationServlet extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
+        String newLine = System.getProperty("line.separator");
+
         int userId = Integer.parseInt(request.getParameter("userId"));
         int companyId = Integer.parseInt(request.getParameter("companyId"));
         int projectId = Integer.parseInt(request.getParameter("projectId"));
 
         String body = request.getParameter("body");
+
+        
+
         out.println(cont.postMessage(userId, projectId, body, companyId));
     }
 
@@ -214,6 +210,10 @@ public class PresentationServlet extends HttpServlet {
         String project_body = request.getParameter("body");
         String budget = request.getParameter("budget");
         String project_type = request.getParameter("type");
+
+        if (project_type.equals("other")) {
+            project_type = request.getParameter("customType");
+        }
 
         int execution_year = Integer.parseInt(request.getParameter("execution_year"));
         int execution_month = Integer.parseInt(request.getParameter("execution_month"));
@@ -319,7 +319,12 @@ public class PresentationServlet extends HttpServlet {
         cont.deleteFile(filename, project_id);
 
         request.getRequestDispatcher("/project?id=" + project_id).forward(request, response);
+    }
 
+
+    void getCreateProjectView(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        request.setAttribute("companies", "ayy");
+        request.getRequestDispatcher("/WEB-INF/view/create-company.jsp").forward(request, response);
     }
 
     void getPoes(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
@@ -352,28 +357,32 @@ public class PresentationServlet extends HttpServlet {
 
     }
 
-    void serveResource(String userpath, HttpServletRequest request, HttpServletResponse response, Controller cont) {
+    void serveResource(HttpServletRequest request, HttpServletResponse response, Controller cont) {
         try {
-            ServletContext cntx= getServletContext();
-            // Get the absolute path of the image
-            System.out.println(System.getenv("POE_FOLDER") + userpath);
-            //String filename = cntx.getRealPath(System.getenv("POE_FOLDER") + userpath);
+            String userpath = request.getServletPath();
+            boolean download = Boolean.parseBoolean(request.getParameter("download"));
+
             String filename = System.getenv("POE_FOLDER") + "\\" + userpath.split("/")[2] + "\\" + userpath.split("/")[3];
-            System.out.println(filename);
-            System.out.println(userpath);
-            // retrieve mimeType dynamically
-            String mime = cntx.getMimeType(filename);
-            if (mime == null) {
-                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                return;
-            }
-            System.out.println(mime);
-            response.setContentType(mime);
             File file = new File(filename);
-            System.out.println(file.getAbsolutePath());
-            System.out.println(file.getPath());
+            if(download) {
+                response.setContentType("application/force-download");
+                //response.setContentLength(-1);
+                response.setHeader("Content-Transfer-Encoding", "binary");
+                response.setHeader("Content-Disposition","attachment; filename=\"" + file.getName() + "\"");
+            } else {
+                ServletContext cntx= getServletContext();
+
+                // retrieve mimeType dynamically
+                String mime = cntx.getMimeType(filename);
+                if (mime == null) {
+                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    return;
+                }
+                response.setContentType(mime);
+            }
+
+
             response.setContentLength((int)file.length());
-            System.out.println(file.length());
 
             FileInputStream in = new FileInputStream(file);
             OutputStream out = response.getOutputStream();
@@ -387,52 +396,6 @@ public class PresentationServlet extends HttpServlet {
             out.close();
             in.close();
         } catch (Exception e) {};
-        /*URL url = null;
-        try {
-            //url = convertToRemoteUrl(request);
-            url = new URL(new File(System.getenv("POE_FOLDER")).toURI().toURL() + "/" + userpath.split("/")[1] + "/" + userpath.split("/")[2]);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        URLConnection connection = null;
-        if (url != null)
-            try {
-                connection = url.openConnection();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        response.setContentType("image/jpeg");
-        try {
-            BufferedImage bi = ImageIO.read(new File(System.getenv("POE_FOLDER") + "/" + userpath.split("/")[1] + "/" + userpath.split("/")[2]));
-            OutputStream out = null;
-            out = response.getOutputStream();
-            ImageIO.write(bi, "jpg", out);
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-*/
 
     }
-
-    public static void copy(InputStream in, OutputStream out)
-            throws IOException {
-        final byte[] buffer = new byte[1024];
-        for (int length; (length = in.read(buffer)) != -1;) {
-            out.write(buffer, 0, length);
-        }
-        out.flush();
-        out.close();
-        in.close();
-    }
-
-    public static URL convertToRemoteUrl(final HttpServletRequest request)
-            throws MalformedURLException {
-        URL url = new URL(request.getRequestURL().toString());
-        StringBuilder sb = new StringBuilder(256);
-        sb.append("http://localhost:8080");
-        //sb.append(url.getPath().replace(request.getContextPath(), "/realappname"));
-        return new URL(sb.toString());
-    }
-
 }
