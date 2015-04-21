@@ -99,6 +99,7 @@ public class Controller {
 
     public ArrayList proccessStages(ArrayList stages) {
         HashMap userMap = new HashMap();
+        HashMap companyMap = new HashMap();
         User user = null;
         for (Stage s : (ArrayList<Stage>) stages) {
 
@@ -109,6 +110,10 @@ public class Controller {
                 s.user = user;
                 userMap.put(s.user_id, user);
             }
+            if(companyMap.containsKey(s.user.getCompany_id()))
+                s.user.company = (Company) companyMap.get(user.getCompany_id());
+            else
+                s.user.company = facade.getCompanyById(user.getCompany_id());
         }
 
         Collections.sort(stages, Stage.TIME);

@@ -42,6 +42,9 @@ public class PresentationServlet extends HttpServlet {
                     case "/project":
                         getProjectView(request, response, cont);
                         break;
+                    case "/create-project":
+                        getCreateProjectView(request, response, cont);
+                        break;
                     case "/logout":
                         logout(request, response, cont);
                         break;
@@ -304,6 +307,11 @@ public class PresentationServlet extends HttpServlet {
 
             response.sendRedirect("/");
         }
+    }
+
+    void getCreateProjectView(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        request.setAttribute("companies", "ayy");
+        request.getRequestDispatcher("/WEB-INF/view/create-company.jsp").forward(request, response);
     }
 
     void getPoes(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
