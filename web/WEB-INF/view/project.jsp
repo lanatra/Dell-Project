@@ -83,15 +83,21 @@
                     <form action="/downloadFile" method="post">
                         <label> <c:out value='${poe.getFilename()}'></c:out></label>
                         <c:if test="${poe.getFiletype() == 'jpg' ||
-                        poe.getFileType() == 'png' ||
-                        poe.getFileType() == 'jpeg' ||
-                        poe.getFileType() == 'gif' ||
-                        poe.getFileType() == 'bmp'}">
+                        poe.getFiletype() == 'png' ||
+                        poe.getFiletype() == 'jpeg' ||
+                        poe.getFiletype() == 'gif' ||
+                        poe.getFiletype() == 'bmp'}">
                             <a href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out> " target="_blank">view image</a>
                         </c:if>
                         <input type="hidden" name="filename" value="<c:out value='${poe.getFilename()}'></c:out>">
                         <input type="hidden" name="proj_id" value="<c:out value='${project.getId()}'></c:out>">
                         <input type="submit" value="Download">
+                    </form>
+                    <!-- Delete PoE -->
+                    <form action="/deleteFile" method="post">
+                        <input type="hidden" name="filename" value="<c:out value='${poe.getFilename()}'></c:out>">
+                        <input type="hidden" name="proj_id" value="<c:out value='${project.getId()}'></c:out>">
+                        <input type="submit" value="Delete">
                     </form>
 
 

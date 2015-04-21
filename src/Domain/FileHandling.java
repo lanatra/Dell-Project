@@ -11,6 +11,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 
 @MultipartConfig
@@ -62,6 +65,18 @@ public class FileHandling {
             }
 
         }
+    }
+
+    public boolean deleteFile(String filename, int project_id) throws IOException {
+       try {
+           String stringpath = System.getenv("POE_FOLDER") + "\\" + project_id + "\\" + filename;
+           Path path = Paths.get(stringpath);
+           Files.delete(path);
+       } catch (Exception e) {
+           System.out.println("didnt delete file");
+           return false;
+       }
+        return true;
     }
 
 
