@@ -53,6 +53,31 @@ public class PoeMapper {
         return true;
     }
 
+    public boolean deletePoe(String filename, int project_id, Connection con) {
+
+        String SQL = "delete from poes where filename = ? and project_id = ?";
+        PreparedStatement statement = null;
+
+        try {
+            statement = con.prepareStatement(SQL);
+
+            statement.setString(1, filename);
+            statement.setInt(2, project_id);
+
+            statement.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("couldn't delete poe from db");
+            return false;
+        }finally {
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
+        }
+
+        return true;
+
+    }
+
     public ArrayList<Poe> getPoe(int project_id, Connection con) {
 
         String SQL = "select * from poes where project_id = ?";

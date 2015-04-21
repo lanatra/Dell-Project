@@ -80,6 +80,9 @@ public class DatabaseFacade {
         return new PoeMapper().getPoe(project_id, getCon());
     }
 
+    public boolean deletePoe(String filename, int project_id) {
+        return new PoeMapper().deletePoe(filename, project_id, getCon());
+    }
 
 
 

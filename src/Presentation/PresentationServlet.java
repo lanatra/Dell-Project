@@ -105,6 +105,9 @@ public class PresentationServlet extends HttpServlet {
             case "/downloadFile":
                 getPoes(request, response, cont);
                 break;
+            case "/deleteFile":
+                deletePoe(request, response, cont);
+                break;
             default:
                 getDashboard(request, response, cont);
         }
@@ -299,7 +302,19 @@ public class PresentationServlet extends HttpServlet {
         }
     }
 
+
+    void deletePoe(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        int project_id = Integer.parseInt(request.getParameter("proj_id"));
+        String filename = request.getParameter("filename");
+
+        cont.deleteFile(filename, project_id);
+
+        request.getRequestDispatcher("/project?id=" + project_id).forward(request, response);
+    }
+
+
     void getCreateCompanyView(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+
         request.setAttribute("companies", "ayy");
         request.getRequestDispatcher("/WEB-INF/view/create-company.jsp").forward(request, response);
     }

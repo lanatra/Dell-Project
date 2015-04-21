@@ -228,4 +228,17 @@ public class Controller {
         return facade.getPoe(project_id);
     }
 
+    public boolean deleteFile(String filename, int project_id) throws IOException {
+        FileHandling handler = new FileHandling();
+
+        if (!handler.deleteFile(filename, project_id)) {
+            return false;
+        }
+        return facade.deletePoe(filename, project_id);
+    }
+
+    public void sendEmail(String recipient, String subject, String body) {
+        new Notifications().sendEmail(recipient, subject, body);
+    }
+
 }
