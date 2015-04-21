@@ -1,13 +1,14 @@
 package Domain;
 
+import javafx.scene.web.HTMLEditor;
+
+import java.io.File;
+import java.net.URLEncoder;
 import java.sql.Timestamp;
 
-/**
- * Created by Lasse on 17-04-2015.
- */
+
 public class Poe {
 
-    String path = "C:\\Users\\Lasse\\Desktop\\File Storage Dell";
     int id;
     int proj_id;
     String filename;
@@ -33,7 +34,7 @@ public class Poe {
     }
 
     public String getFilename() {
-        return filename;
+        return URLEncoder.encode(filename);
     }
 
     public int getUser_id() {
@@ -49,7 +50,7 @@ public class Poe {
     }
 
     public String getFilePath() {
-        return System.getenv("POE_FOLDER") + "\\" + proj_id + "\\" + filename;
+        return System.getenv("POE_FOLDER") + File.separator + proj_id + File.separator + filename;
     }
 
 }

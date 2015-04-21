@@ -9,6 +9,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.*;
 import java.io.*;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.sql.Timestamp;
 
 @MultipartConfig
@@ -303,9 +305,7 @@ public class PresentationServlet extends HttpServlet {
         int project_id = Integer.parseInt(request.getParameter("proj_id"));
         int user_id = u.getId();
         if(cont.addPoeFile(project_id, file, user_id)) {
-
-
-            response.sendRedirect("/");
+            response.sendRedirect("/project?id="+project_id);
         }
     }
 
@@ -316,14 +316,14 @@ public class PresentationServlet extends HttpServlet {
 
     void getPoes(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
         int project_id = Integer.parseInt(request.getParameter("proj_id"));
-        String filename = request.getParameter("filename");
+        String filename = URLDecoder.decode(request.getParameter("filename"));
 
         response.setContentType("application/octet-stream");
         response.setHeader("Content-Disposition",
                 "attachment;filename=" + filename);
 
         // testing first poe
-        String path = System.getenv("POE_FOLDER") + "\\" + project_id + "\\" + filename;
+        String path = System.getenv("POE_FOLDER") + File.separator + project_id + File.separator + filename;
 
         File file = new File(path);
         FileInputStream fileIn = new FileInputStream(file);
@@ -349,8 +349,9 @@ public class PresentationServlet extends HttpServlet {
             String userpath = request.getServletPath();
             boolean download = Boolean.parseBoolean(request.getParameter("download"));
 
-            String filename = System.getenv("POE_FOLDER") + "\\" + userpath.split("/")[2] + "\\" + userpath.split("/")[3];
+            String filename = System.getenv("POE_FOLDER") + File.separator + userpath.split("/")[2] + File.separator + userpath.split("/")[3];
             File file = new File(filename);
+
             if(download) {
                 response.setContentType("application/force-download");
                 //response.setContentLength(-1);

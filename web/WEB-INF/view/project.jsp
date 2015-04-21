@@ -67,29 +67,36 @@
 
 
     <c:if test="${User.getCompany_id() != 1 && (project.getStatus() == 'Project Rejected' || project.getStatus() == 'Project Approved' || project.getStatus() == 'Claim Rejected')}">
-        <div class="item u-full-width">
+        <div class="item pull-right u-full-width">
             <div class="bubble">
 
                 <c:if test="${project.getStatus() == 'Project Approved' || project.getStatus() == 'Claim Rejected'}">
-                    <form action="/uploadFile" method="post" enctype="multipart/form-data">
-                        <label>Choose a file for upload:</label>
-                        <input type="hidden" name="proj_id" value="<c:out value='${project.getId()}'></c:out>">
-                        <input type="file" name="file">
-                        <input type="submit" name="submit" value="Submit">
-                    </form>
-
-                <c:forEach items="${poes}" var="poe" varStatus="ite" >
-                    <label> <c:out value='${poe.getFilename()}'></c:out></label>
-                    <c:if test="${poe.getFiletype() == 'jpg' ||
-                        poe.getFiletype() == 'png' ||
-                        poe.getFiletype() == 'jpeg' ||
-                        poe.getFiletype() == 'gif' ||
-                        poe.getFiletype() == 'bmp'}">
-                        <a href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out> " target="_blank">view image</a>
-                    </c:if>
-                    <a href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>?download=true">Download file</a>
-                </c:forEach>
-
+                    <div class="inner-bubble">
+                        <h3>Proof Of Execution</h3>
+                        <p class="instructions">Upload your images and documents, one by one.</p>
+                        <c:forEach items="${poes}" var="poe" varStatus="ite" >
+                            <div class="proof-container">
+                                <c:if test="${poe.getFiletype() == 'jpg' ||
+                                    poe.getFiletype() == 'png' ||
+                                    poe.getFiletype() == 'jpeg' ||
+                                    poe.getFiletype() == 'gif' ||
+                                    poe.getFiletype() == 'bmp'}">
+                                    <div class="proof" style="background-image: url(/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>)">
+                                        <div class="view-image"></div>
+                                        <div class="download-file"><a href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>?download=true">Download</a></div>
+                                    </div>
+                                </c:if>
+                                <span class="filename"><c:out value='${poe.getFilename()}'></c:out></span>
+                            </div>
+                        </c:forEach>
+                        <div class="new-image">
+                            <form action="/uploadFile" method="post" enctype="multipart/form-data">
+                                <input type="hidden" name="proj_id" value="<c:out value='${project.getId()}'></c:out>">
+                                <input type="file" name="file">
+                                <input class="button" type="submit" name="submit" value="Upload">
+                            </form>
+                        </div>
+                    </div>
 
                 </c:if>
 
@@ -135,10 +142,11 @@
 
                         <button name="answer" value="approved" class="green">Resubmit project</button>
                     </c:if><c:if test="${project.getStatus() == 'Project Approved'}">
-                    <h3>Submit claim</h3>
-                    <label>Upload proof of execution</label>
+                    <p class="status-message">When the project is finished, upload images and documents as a proof of execution.</p>
+                    <div class="stage-actions">
+                        <button name="answer" value="approved" class="blue">Send</button>
+                    </div>
 
-                    <button name="answer" value="approved" class="green">Submit claim</button>
                 </c:if><c:if test="${project.getStatus() == 'Claim Rejected'}">
                     <h3>Resubmit claim</h3>
                     <label>Upload proof of execution</label>

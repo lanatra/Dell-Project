@@ -111,9 +111,11 @@ public class Controller {
                 userMap.put(s.user_id, user);
             }
             if(companyMap.containsKey(s.user.getCompany_id()))
-                s.user.company = (Company) companyMap.get(user.getCompany_id());
-            else
-                s.user.company = facade.getCompanyById(user.getCompany_id());
+                s.user.company = (Company) companyMap.get(s.user.getCompany_id());
+            else {
+                s.user.company = facade.getCompanyById(s.user.getCompany_id());
+                companyMap.put(s.user.getCompany_id(), s.user.company);
+            }
         }
 
         Collections.sort(stages, Stage.TIME);

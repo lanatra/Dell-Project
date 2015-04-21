@@ -27,13 +27,14 @@ public class FileHandling {
 
         String path = System.getenv("POE_FOLDER");
 
-        String newPath = path + "\\" + project_id;
+        String newPath = path + File.separator + project_id;
 
-        File dir = new File(path + "\\" + project_id);
+        File dir = new File(path + File.separator + project_id);
 
         dir.mkdir();
 
         filename = getFileName(file);
+        filename = filename.replaceAll(" ", "_");
         filetype = filename.substring(filename.lastIndexOf(".") + 1, filename.length());
 
         OutputStream out = null;

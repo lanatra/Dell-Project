@@ -2,7 +2,7 @@
 <c:set var="partnerAndLatest" value="${User.getCompany_id() != 1 && lastStage}"></c:set>
 
 <div class="item<c:if test='${stages.get(stageIndex).getUser().getId() == User.getId()}'> pull-right</c:if>">
-    <span class="user-data"><c:out value="${stages.get(stageIndex).getUser().getName()}"></c:out> - <c:out value="${project.getCompanyName()}"></c:out></span>
+    <span class="user-data"><c:out value="${stages.get(stageIndex).getUser().getName()}"></c:out> - <c:out value="${stages.get(stageIndex).getUser().getCompany().getName()}"></c:out></span>
     <span class="date isDate"><c:out value="${stages.get(stageIndex).getDate()}"></c:out></span>
     <div class="bubble">
         <div class="inner-bubble">
