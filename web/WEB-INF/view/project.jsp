@@ -82,7 +82,7 @@
                                     poe.getFiletype() == 'gif' ||
                                     poe.getFiletype() == 'bmp'}">
                                     <div class="proof" style="background-image: url(/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>)">
-                                        <div class="view-image"></div>
+                                        <a class="fancybox" rel="<c:out value='${poe.getProj_id()}'></c:out>" href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>"><div class="view-image"></div></a>
                                         <div class="download-file"><a href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>?download=true">Download</a></div>
                                     </div>
                                 </c:if>
@@ -194,7 +194,9 @@
     </c:if>
 </c:if>-->
 
-
+<script>
+    $(".fancybox").fancybox();
+</script>
 <script type="text/javascript" src="js/project-functions.js"></script>
 
 </body>

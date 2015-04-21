@@ -639,7 +639,7 @@ div.project-items {
 		background-color: #F4F4F4;
 		padding: 10px;
 		border-radius: 15px;
-		margin-bottom: 20px;
+		margin-bottom: 40px;
 
 		input[type="file"] {
 		  float: left;
@@ -668,6 +668,7 @@ div.project-items {
 		  clear: left;
 		  font-size: 10px;
 		  color: #c9c9c9;
+		  margin-top: 5px;
 		}
 	  }
 
@@ -735,4 +736,13 @@ div.project-items {
 
 .hidden {
   display: none;
+}
+
+.fancybox-skin {
+  border-radius: 15px;
+  padding: 0px !important;
+}
+
+.fancybox-inner img.fancybox-image {
+  border-radius: 15px;
 }

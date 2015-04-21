@@ -11,6 +11,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,500&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <link rel="stylesheet" href="css/jquery.fancybox.css" type="text/css" media="screen" />
+  <script type="text/javascript" src="js/jquery.fancybox.pack.js"></script>
   <script type="text/javascript" src="js/moment.js"></script>
   <link href="css/normalize.css" rel="stylesheet" media="all">
   <link href="css/skeleton.css" rel="stylesheet" media="all">
