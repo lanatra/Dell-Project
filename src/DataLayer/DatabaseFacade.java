@@ -58,7 +58,10 @@ public class DatabaseFacade {
         return new CompanyMapper().getCompanyById(id, getCon());
     }
 
-    public boolean createCompany(String company_name) { return new CompanyMapper().createCompany(company_name, getCon()); };
+    public int createCompany(String company_name, String country_code) { return new CompanyMapper().createCompany(company_name, country_code, getCon()); };
+
+    public void updateCompanyLogo(String filename, int id) { new CompanyMapper().updateCompanyLogo(filename, id, getCon()); }
+
 
     // USER
     public User getUserByEmail(String email) {
@@ -77,6 +80,9 @@ public class DatabaseFacade {
         return new PoeMapper().getPoe(project_id, getCon());
     }
 
+    public boolean deletePoe(String filename, int project_id) {
+        return new PoeMapper().deletePoe(filename, project_id, getCon());
+    }
 
 
 

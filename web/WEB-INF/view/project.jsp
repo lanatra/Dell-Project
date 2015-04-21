@@ -71,6 +71,7 @@
             <div class="bubble">
 
                 <c:if test="${project.getStatus() == 'Project Approved' || project.getStatus() == 'Claim Rejected'}">
+<<<<<<< HEAD
                     <div class="inner-bubble">
                         <h3>Proof Of Execution</h3>
                         <p class="instructions">Upload your images and documents, one by one.</p>
@@ -97,6 +98,37 @@
                             </form>
                         </div>
                     </div>
+=======
+                    <form action="/uploadFile" method="post" enctype="multipart/form-data">
+                        <label>Choose a file for upload:</label>
+                        <input type="hidden" name="proj_id" value="<c:out value='${project.getId()}'></c:out>">
+                        <input type="file" name="file">
+                        <input type="submit" name="submit" value="Submit">
+                    </form>
+
+                <c:forEach items="${poes}" var="poe" varStatus="ite" >
+
+                    <label> <c:out value='${poe.getFilename()}'></c:out></label>
+
+                    <!-- Delete PoE -->
+                    <form action="/deleteFile" method="post">
+                        <input type="hidden" name="filename" value="<c:out value='${poe.getFilename()}'></c:out>">
+                        <input type="hidden" name="proj_id" value="<c:out value='${project.getId()}'></c:out>">
+                        <input type="submit" value="Delete">
+                    </form>
+
+                    <c:if test="${poe.getFiletype() == 'jpg' ||
+                        poe.getFiletype() == 'png' ||
+                        poe.getFiletype() == 'jpeg' ||
+                        poe.getFiletype() == 'gif' ||
+                        poe.getFiletype() == 'bmp'}">
+                        <a href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out> " target="_blank">view image</a>
+                    </c:if>
+                    <a href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>?download=true">Download file</a>
+
+                </c:forEach>
+
+>>>>>>> origin/master
 
                 </c:if>
 

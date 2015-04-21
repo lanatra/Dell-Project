@@ -23,7 +23,8 @@ public class CompanyMapper {
             if (rs.next()) {
                 company = new Company(rs.getInt(1),
                         rs.getString(2),
-                        rs.getString(3));
+                        rs.getString(3),
+                        rs.getString(4));
             }
 
         } catch (Exception e) {
@@ -37,8 +38,8 @@ public class CompanyMapper {
         return company;
     }
 
-    public boolean createCompany(String company_name, Connection con) {
-        String SQL = "insert into companies values (?,?,?)";
+    public int createCompany(String company_name, String country_code, Connection con) {
+        String SQL = "insert into companies values (?,?,?,?)";
 
         PreparedStatement statement = null;
         try {
@@ -49,10 +50,11 @@ public class CompanyMapper {
             statement.setInt(1, nextCompanyId);
             statement.setString(2, company_name);
             statement.setString(3, "N/A");
+            statement.setString(4, country_code);
 
             statement.executeUpdate();
 
-            return true;
+            return nextCompanyId;
 
         } catch (Exception e) {
             System.out.println("Error in createCompany");
@@ -61,7 +63,28 @@ public class CompanyMapper {
             if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
         }
 
-        return false;
+        return -1;
+    }
+
+    public void updateCompanyLogo(String filename, int id, Connection con) {
+        String SQL = "update companies set IMAGE_FILENAME=? where id=?";
+
+        PreparedStatement statement = null;
+        try {
+            statement = con.prepareStatement(SQL);
+
+
+            statement.setString(1, filename);
+            statement.setInt(2, id);
+
+            statement.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("Error in updateCompanyLogo");
+        } finally {
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
+        }
     }
 
      public int getNextCompanyId(Connection con) {
@@ -101,7 +124,8 @@ public class CompanyMapper {
             while(rs.next()) {
                 companies.add(new Company(rs.getInt(1),
                         rs.getString(2),
-                        rs.getString(3)));
+                        rs.getString(3),
+                        rs.getString(4)));
             }
 
         } catch (Exception e) {

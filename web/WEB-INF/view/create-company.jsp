@@ -12,67 +12,31 @@
 
     var imageSearch;
 
-    function addPaginationLinks() {
-
-        // To paginate search results, use the cursor function.
-        var cursor = imageSearch.cursor;
-        var curPage = cursor.currentPageIndex; // check what page the app is on
-        var pagesDiv = document.createElement('div');
-        for (var i = 0; i < cursor.pages.length; i++) {
-            var page = cursor.pages[i];
-            if (curPage == i) {
-
-                // If we are on the current page, then don't make a link.
-                var label = document.createTextNode(' ' + page.label + ' ');
-                pagesDiv.appendChild(label);
-            } else {
-
-                // Create links to other pages using gotoPage() on the searcher.
-                var link = document.createElement('a');
-                link.href="/image-search/v1/javascript:imageSearch.gotoPage("+i+');';
-                link.innerHTML = page.label;
-                link.style.marginRight = '2px';
-                pagesDiv.appendChild(link);
-            }
-        }
-
-        var contentDiv = document.getElementById('content');
-        contentDiv.appendChild(pagesDiv);
-    }
-
     function searchComplete() {
 
         // Check that we got results
         if (imageSearch.results && imageSearch.results.length > 0) {
 
             // Grab our content div, clear it.
-            var contentDiv = document.getElementById('content');
+            var contentDiv = document.getElementById('logo-results');
             contentDiv.innerHTML = '';
 
             // Loop through our results, printing them to the page.
             var results = imageSearch.results;
             for (var i = 0; i < results.length; i++) {
-                // For each result write it's title and image to the screen
                 var result = results[i];
-                var imgContainer = document.createElement('div');
-                var title = document.createElement('div');
-
-                // We use titleNoFormatting so that no HTML tags are left in the
-                // title
-                title.innerHTML = result.titleNoFormatting;
                 var newImg = document.createElement('img');
 
                 // There is also a result.url property which has the escaped version
                 newImg.src=result.tbUrl;
-                imgContainer.appendChild(title);
-                imgContainer.appendChild(newImg);
+                $(newImg).data("full-url", result.url);
 
                 // Put our title + image in the content
-                contentDiv.appendChild(imgContainer);
+                contentDiv.appendChild(newImg);
             }
-
+            selectImage();
             // Now add links to additional pages of search results.
-            addPaginationLinks(imageSearch);
+            // addPaginationLinks(imageSearch);
         }
     }
 
@@ -99,10 +63,34 @@
         })
     })
 
+    function selectImage() {
+        $("#logo-results img").click(function() {
+            if($(this).hasClass("selected")) {
+                $(this).removeClass("selected");
+                $("#logo-url").val("");
+            } else {
+                $("#logo-results img").removeClass("selected");
+                $(this).addClass("selected");
+                $("#logo-url").val($(this).data("full-url"));
+            }
+        })
+    }
+
 </script>
-
+<h2>Create Company</h2>
+<form action="/api/createCompany" method="post">
 <input id="companyName" name="companyName" >
-
-
+<input id="countryCode" name="countryCode">
+<input id="email" name="email">
+<div>
+<h3>Select logo</h3>
+    <div  id="logo-results"></div>
+    <div id="branding"  style="float: left;"></div></div><br>
+    <label>Or upload your own</label>
+    <input type="file" name="logo">
+    <input type="hidden" name="logoUrl" id="logo-url">
+</div>
+    <input type="submit" value="Create Company">
+</form>
 </body>
 </html>
