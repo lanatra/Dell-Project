@@ -23,7 +23,7 @@ public class PoeMapper {
 
     public boolean addPoeFile(int project_id, String filename, int user_id, String filetype, Connection con) {
 
-        String SQL = "insert into poes values(?, ?, ?, ?, ?, ?)";
+        String SQL = "insert into poes values(?, ?, ?, ?, ?, ?, ?)";
 
         PreparedStatement statement = null;
 
@@ -39,6 +39,7 @@ public class PoeMapper {
             statement.setInt(4, user_id);
             statement.setTimestamp(5, timestamp);
             statement.setString(6, filetype);
+            statement.setTimestamp(7, null);
 
             statement.executeUpdate();
 
@@ -80,7 +81,7 @@ public class PoeMapper {
 
     public ArrayList<Poe> getPoe(int project_id, Connection con) {
 
-        String SQL = "select * from poes where project_id = ?";
+        String SQL = "select * from poes where project_id = ? order by date";
         //int amountPoes = getAmountPoesByProjectId(project_id);
         PreparedStatement statement = null;
         ResultSet rs = null;
@@ -101,7 +102,8 @@ public class PoeMapper {
                         rs.getString(3),
                         rs.getInt(4),
                         rs.getTimestamp(5),
-                        rs.getString(6)
+                        rs.getString(6),
+                        rs.getTimestamp(7)
                 ));
             }
 

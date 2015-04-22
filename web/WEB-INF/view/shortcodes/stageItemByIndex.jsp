@@ -43,7 +43,8 @@
         <c:if test="${stages.get(stageIndex).getType() == 'Waiting Claim Verification'}">
             <h3>Waiting claim verification</h3>
             <c:forEach items="${poes}" var="poe" varStatus="ite" >
-                <label> <c:out value='${poe.getFilename()}'></c:out></label>
+                <c:if test="${poe.getF_date() < stages.get(stageIndex).getDate() && poe.getF_deletion_date() > stages.get(stageIndex).getDate}">
+                <label class='<c:if test="${poe.getF_deletion_date() != null}">deleted</c:if><c:if test="${poe.getF_date() > stages.get(stageIndex - 1).getDate() && poe.getF_date() < stages.get(stageIndex).getDate()}"> new</c:if>'> <c:out value='${poe.getFilename()}'></c:out></label>
                 <c:if test="${poe.getFiletype() == 'jpg' ||
                         poe.getFiletype() == 'png' ||
                         poe.getFiletype() == 'jpeg' ||
@@ -52,6 +53,7 @@
                     <a href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out> " target="_blank">view image</a>
                 </c:if>
                 <a href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>?download=true">Download file</a>
+                </c:if>
             </c:forEach>
             </div>
             <c:if test="${dellAndLatest}">

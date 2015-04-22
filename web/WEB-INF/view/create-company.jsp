@@ -79,9 +79,16 @@
 </script>
 <h2>Create Company</h2>
 <form action="/api/createCompany" method="post">
-<input id="companyName" name="companyName" >
-<input id="countryCode" name="countryCode">
-<input id="email" name="email">
+<input id="companyName" name="companyName" placeholder="Company Name">
+<select id="countryCode" name="countryCode" >
+    <option value="DK">Denmark</option>
+    <option value="SE">Sweden</option>
+    <option value="NO">Norway</option>
+    <option value="DE">Germany</option>
+    <option value="PL">Poland</option>
+    <option value="CZ">Czech</option>
+    </select>
+<input id="email" name="email" placeholder="email">
 <div>
 <h3>Select logo</h3>
     <div  id="logo-results"></div>
