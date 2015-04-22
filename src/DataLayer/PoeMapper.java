@@ -81,7 +81,7 @@ public class PoeMapper {
 
     public ArrayList<Poe> getPoe(int project_id, Connection con) {
 
-        String SQL = "select * from poes where project_id = ? order by date";
+        String SQL = "select * from poes where project_id = ? order by creation_date";
         //int amountPoes = getAmountPoesByProjectId(project_id);
         PreparedStatement statement = null;
         ResultSet rs = null;
