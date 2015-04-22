@@ -15,7 +15,6 @@ import java.sql.Timestamp;
 @MultipartConfig
 public class PresentationServlet extends HttpServlet {
 
-
     protected void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Controller cont = AssignController(request);
 
@@ -233,14 +232,7 @@ public class PresentationServlet extends HttpServlet {
             request.setAttribute("User", userObj);}
             User user = (User) request.getAttribute("User");
 
-<<<<<<< HEAD
         int projectId = cont.createProjectRequest(budget, project_body, user, project_type, execution_time);
-=======
-        if (cont.createProjectRequest(budget, project_body, user, project_type, execution_time)) {
-            request.getRequestDispatcher("/WEB-INF/view/createproject.jsp").forward(request, response);
-        } else
-            response.sendRedirect("/");
->>>>>>> origin/master
 
         if (projectId != 0) {
             response.sendRedirect("/project?id=" + projectId);
@@ -304,16 +296,11 @@ public class PresentationServlet extends HttpServlet {
         User u = (User) request.getAttribute("User");
         int project_id = Integer.parseInt(request.getParameter("proj_id"));
         int user_id = u.getId();
-<<<<<<< HEAD
-        if(cont.addPoeFile(project_id, file, user_id)) {
-            response.sendRedirect("/project?id=" + project_id);
-=======
         int stage = -1;
         if(request.getParameter("stage") != null)
             stage = Integer.parseInt(request.getParameter("stage"));
         if(cont.addPoeFile(project_id, file, user_id, stage)) {
             response.sendRedirect("/project?id="+project_id);
->>>>>>> origin/master
         }
     }
 
@@ -326,11 +313,7 @@ public class PresentationServlet extends HttpServlet {
 
         cont.deleteFile(fileName, projectId, fileId, deleteFile);
 
-<<<<<<< HEAD
-        response.sendRedirect("/project?id=" + project_id);
-=======
-        request.getRequestDispatcher("/project?id=" + projectId).forward(request, response);
->>>>>>> origin/master
+        response.sendRedirect("/project?id=" + projectId);
     }
 
 
