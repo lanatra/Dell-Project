@@ -209,7 +209,7 @@ public class Controller {
         return m;
     }
     // POE
-    public boolean addPoeFile(int project_id, Part file, int user_id) throws IOException {
+    public boolean addPoeFile(int project_id, Part file, int user_id, int stage) throws IOException {
         FileHandling handler = new FileHandling();
 
         handler.putFile(file, project_id);
@@ -221,7 +221,7 @@ public class Controller {
         System.out.println(filetype);
         System.out.println(user_id);
 
-        return facade.addPoeFile(project_id, filename, user_id, filetype);
+        return facade.addPoeFile(project_id, filename, user_id, filetype, stage);
 
     }
 
@@ -230,13 +230,15 @@ public class Controller {
         return facade.getPoe(project_id);
     }
 
-    public boolean deleteFile(String filename, int project_id) throws IOException {
+    public boolean deleteFile(String filename, int project_id, int fileId, boolean deleteFile) throws IOException {
         FileHandling handler = new FileHandling();
-
-        if (!handler.deleteFile(filename, project_id)) {
-            return false;
+        if(deleteFile) {
+            if (!handler.deleteFile(filename, project_id))
+                return false;
+            return facade.deletePoe(fileId);
+        } else {
+            return facade.markDeletePoe(fileId);
         }
-        return facade.deletePoe(filename, project_id);
     }
 
     public void sendEmail(String recipient, String subject, String body) {

@@ -17,11 +17,12 @@ public class Poe {
     Timestamp date;
     Timestamp deletion_date;
     String filetype;
+    int uploaded_on_stage;
 
     long f_date;
     long f_deletion_date;
 
-    public Poe(int id, int proj_id, String filename, int user_id, Timestamp date, String filetype, Timestamp deletion_date) {
+    public Poe(int id, int proj_id, String filename, int user_id, Timestamp date, String filetype, Timestamp deletion_date, int uploaded_on_stage) {
         this.id = id;
         this.proj_id = proj_id;
         this.filename = filename;
@@ -29,6 +30,7 @@ public class Poe {
         this.date = date;
         this.filetype = filetype;
         this.deletion_date = deletion_date;
+        this.uploaded_on_stage = uploaded_on_stage;
 
         if(date != null) f_date = date.getTime();
         if(deletion_date != null) f_deletion_date = deletion_date.getTime();
@@ -64,6 +66,9 @@ public class Poe {
 
     public long getF_deletion_date() {
         return f_deletion_date;
+    }
+    public int getUploaded_on_stage() {
+        return uploaded_on_stage;
     }
 
     public String getFilePath() {

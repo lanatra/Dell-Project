@@ -43,6 +43,8 @@
         <c:if test="${stages.get(stageIndex).getType() == 'Waiting Claim Verification'}">
             <h3>Waiting claim verification</h3>
             <c:forEach items="${poes}" var="poe" varStatus="ite" >
+                <c:if test="${poe.getF_date() < stages.get(stageIndex).getDate() || (poe.getUploaded_on_stage() == stages.get(stageIndex).getId()) }">
+                    <c:if test="${poe.getF_deletion_date() == 0 || (poe.getF_deletion_date() != 0 && poe.getF_deletion_date() > stages.get(stageIndex).getDate() && stageIndex + 1 != stages.size())}">
                 <div class="proof-container">
                     <c:if test="${poe.getFiletype() == 'jpg' ||
                                     poe.getFiletype() == 'png' ||
@@ -55,8 +57,28 @@
                         </div>
                     </c:if>
                     <span class="filename"><c:out value='${poe.getFilename()}'></c:out></span>
+                    <c:if test="${partnerAndLatest}">
+                    <form action="/api/deleteFile" method="post">
+                        <input type="hidden" name="fileId" value="<c:out value='${poe.getId()}'></c:out>">
+                        <input type="hidden" name="deleteFile" value="<c:out value='${poe.getF_date() > stages.get(stageIndex - 1).getDate() ? "true" : "false"}'></c:out>">
+                        <input type="hidden" name="projectId" value="<c:out value='${project.getId()}'></c:out>">
+                        <input type="hidden" name="fileName" value="<c:out value='${poe.getFilename()}'></c:out>">
+                        <input type="submit" value="Delete">
+                    </form>
+                    </c:if>
                 </div>
+                </c:if></c:if>
             </c:forEach>
+            <c:if test="${partnerAndLatest}">
+                <div class="new-image">
+                    <form action="/uploadFile" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="proj_id" value="<c:out value='${project.getId()}'></c:out>">
+                        <input type="file" name="file">
+                        <input type="hidden" name="stage" value="<c:out value='${stages.get(stageIndex).getId()}'></c:out>">
+                        <input class="button" type="submit" name="submit" value="Upload">
+                    </form>
+                </div>
+            </c:if>
 
             </div>
             <c:if test="${dellAndLatest}">

@@ -72,16 +72,19 @@ public class DatabaseFacade {
     }
 
     // POE
-    public boolean addPoeFile(int project_id, String filename, int user_id, String filetype) {
-        return new PoeMapper().addPoeFile(project_id, filename, user_id, filetype, getCon());
+    public boolean addPoeFile(int project_id, String filename, int user_id, String filetype, int stage) {
+        return new PoeMapper().addPoeFile(project_id, filename, user_id, filetype, stage, getCon());
     }
 
     public ArrayList<Poe> getPoe(int project_id) {
         return new PoeMapper().getPoe(project_id, getCon());
     }
 
-    public boolean deletePoe(String filename, int project_id) {
-        return new PoeMapper().deletePoe(filename, project_id, getCon());
+    public boolean deletePoe(int fileId) {
+        return new PoeMapper().deletePoe(fileId, getCon());
+    }
+    public boolean markDeletePoe(int fileId) {
+        return new PoeMapper().markDeletePoe(fileId, getCon());
     }
 
 
