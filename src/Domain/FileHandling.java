@@ -110,7 +110,7 @@ public class FileHandling {
 
     public boolean deleteFile(String filename, int project_id) throws IOException {
        try {
-           String stringpath = System.getenv("POE_FOLDER") + "\\" + project_id + "\\" + filename;
+           String stringpath = System.getenv("POE_FOLDER") + File.separator + project_id + File.separator + filename;
            Path path = Paths.get(stringpath);
            Files.delete(path);
        } catch (Exception e) {
