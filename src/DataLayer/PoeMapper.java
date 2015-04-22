@@ -21,9 +21,9 @@ public class PoeMapper {
 
     // bros before poes
 
-    public boolean addPoeFile(int project_id, String filename, int user_id, String filetype, Connection con) {
+    public boolean addPoeFile(int project_id, String filename, int user_id, String filetype, int stage, Connection con) {
 
-        String SQL = "insert into poes values(?, ?, ?, ?, ?, ?, ?)";
+        String SQL = "insert into poes values(?, ?, ?, ?, ?, ?, ?, ?)";
 
         PreparedStatement statement = null;
 
@@ -40,6 +40,7 @@ public class PoeMapper {
             statement.setTimestamp(5, timestamp);
             statement.setString(6, filetype);
             statement.setTimestamp(7, null);
+            statement.setInt(8, stage);
 
             statement.executeUpdate();
 
@@ -54,16 +55,42 @@ public class PoeMapper {
         return true;
     }
 
-    public boolean deletePoe(String filename, int project_id, Connection con) {
+    public boolean deletePoe(int fileId, Connection con) {
 
-        String SQL = "delete from poes where filename = ? and project_id = ?";
+        String SQL = "delete from poes where id=?";
         PreparedStatement statement = null;
 
         try {
             statement = con.prepareStatement(SQL);
 
-            statement.setString(1, filename);
-            statement.setInt(2, project_id);
+            statement.setInt(1, fileId);
+
+            statement.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("couldn't delete poe from db");
+            return false;
+        }finally {
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
+        }
+
+        return true;
+
+    }
+
+    public boolean markDeletePoe(int fileId, Connection con) {
+        String SQL = "update poes set deletion_date=? where id=?";
+        PreparedStatement statement = null;
+
+        java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
+        Timestamp timestamp = new Timestamp(date.getTime());
+
+        try {
+            statement = con.prepareStatement(SQL);
+
+            statement.setTimestamp(1, timestamp);
+            statement.setInt(2, fileId);
 
             statement.executeUpdate();
 
@@ -103,7 +130,8 @@ public class PoeMapper {
                         rs.getInt(4),
                         rs.getTimestamp(5),
                         rs.getString(6),
-                        rs.getTimestamp(7)
+                        rs.getTimestamp(7),
+                        rs.getInt(8)
                 ));
             }
 

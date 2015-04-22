@@ -107,7 +107,7 @@ public class PresentationServlet extends HttpServlet {
             case "/downloadFile":
                 getPoes(request, response, cont);
                 break;
-            case "/deleteFile":
+            case "/api/deleteFile":
                 deletePoe(request, response, cont);
                 break;
             default:
@@ -237,8 +237,8 @@ public class PresentationServlet extends HttpServlet {
 
         if (cont.createProjectRequest(budget, project_body, user, project_type, execution_time)) {
             request.getRequestDispatcher("/WEB-INF/view/createproject.jsp").forward(request, response);
-        }
-        response.sendRedirect("/");
+        } else
+            response.sendRedirect("/");
 
     }
 
@@ -297,19 +297,24 @@ public class PresentationServlet extends HttpServlet {
         User u = (User) request.getAttribute("User");
         int project_id = Integer.parseInt(request.getParameter("proj_id"));
         int user_id = u.getId();
-        if(cont.addPoeFile(project_id, file, user_id)) {
+        int stage = -1;
+        if(request.getParameter("stage") != null)
+            stage = Integer.parseInt(request.getParameter("stage"));
+        if(cont.addPoeFile(project_id, file, user_id, stage)) {
             response.sendRedirect("/project?id="+project_id);
         }
     }
 
 
     void deletePoe(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
-        int project_id = Integer.parseInt(request.getParameter("proj_id"));
-        String filename = request.getParameter("filename");
+        int projectId = Integer.parseInt(request.getParameter("projectId"));
+        String fileName = request.getParameter("fileName");
+        int fileId = Integer.parseInt(request.getParameter("fileId"));
+        boolean deleteFile = Boolean.parseBoolean(request.getParameter("deleteFile"));
 
-        cont.deleteFile(filename, project_id);
+        cont.deleteFile(fileName, projectId, fileId, deleteFile);
 
-        request.getRequestDispatcher("/project?id=" + project_id).forward(request, response);
+        request.getRequestDispatcher("/project?id=" + projectId).forward(request, response);
     }
 
 
