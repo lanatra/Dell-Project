@@ -43,7 +43,7 @@
         <c:if test="${stages.get(stageIndex).getType() == 'Waiting Claim Verification'}">
             <h3>Waiting claim verification</h3>
             <c:forEach items="${poes}" var="poe" varStatus="ite" >
-                <c:if test="${poe.getF_date() < stages.get(stageIndex).getDate() && poe.getF_deletion_date() > stages.get(stageIndex).getDate}">
+                <c:if test="${poe.getF_date() < stages.get(stageIndex).getDate()}">
                 <label class='<c:if test="${poe.getF_deletion_date() != null}">deleted</c:if><c:if test="${poe.getF_date() > stages.get(stageIndex - 1).getDate() && poe.getF_date() < stages.get(stageIndex).getDate()}"> new</c:if>'> <c:out value='${poe.getFilename()}'></c:out></label>
                 <c:if test="${poe.getFiletype() == 'jpg' ||
                         poe.getFiletype() == 'png' ||
