@@ -198,6 +198,83 @@
 		"outputPathIsSetByUser": 0,
 		"processed": 0
 		},
+	"\/WEB-INF\/poe-folder\/11\/15-1.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 344103,
+		"inputAbbreviatedPath": "\/WEB-INF\/poe-folder\/11\/15-1.png",
+		"outputAbbreviatedPath": "\/WEB-INF\/poe-folder\/11\/15-1.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/WEB-INF\/poe-folder\/12\/IG.jpg": {
+		"fileType": 16384,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 22524,
+		"inputAbbreviatedPath": "\/WEB-INF\/poe-folder\/12\/IG.jpg",
+		"outputAbbreviatedPath": "\/WEB-INF\/poe-folder\/12\/IG.jpg",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/WEB-INF\/poe-folder\/12\/lego 4.jpg": {
+		"fileType": 16384,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 856790,
+		"inputAbbreviatedPath": "\/WEB-INF\/poe-folder\/12\/lego 4.jpg",
+		"outputAbbreviatedPath": "\/WEB-INF\/poe-folder\/12\/lego 4.jpg",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/WEB-INF\/poe-folder\/13\/dům.jpg": {
+		"fileType": 16384,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 26987,
+		"inputAbbreviatedPath": "\/WEB-INF\/poe-folder\/13\/dům.jpg",
+		"outputAbbreviatedPath": "\/WEB-INF\/poe-folder\/13\/dům.jpg",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/WEB-INF\/poe-folder\/13\/hrnek.jpg": {
+		"fileType": 16384,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 17863,
+		"inputAbbreviatedPath": "\/WEB-INF\/poe-folder\/13\/hrnek.jpg",
+		"outputAbbreviatedPath": "\/WEB-INF\/poe-folder\/13\/hrnek.jpg",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/WEB-INF\/poe-folder\/13\/lego_4.jpg": {
+		"fileType": 16384,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 856790,
+		"inputAbbreviatedPath": "\/WEB-INF\/poe-folder\/13\/lego_4.jpg",
+		"outputAbbreviatedPath": "\/WEB-INF\/poe-folder\/13\/lego_4.jpg",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/WEB-INF\/poe-folder\/13\/the_King_of_the_Ring.jpg": {
+		"fileType": 16384,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 20261,
+		"inputAbbreviatedPath": "\/WEB-INF\/poe-folder\/13\/the_King_of_the_Ring.jpg",
+		"outputAbbreviatedPath": "\/WEB-INF\/poe-folder\/13\/the_King_of_the_Ring.jpg",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
 	"\/WEB-INF\/poe-folder\/14\/Hearthstone_Screenshot_10.23.2014.15.30.25.png": {
 		"fileType": 32768,
 		"ignore": 0,
@@ -231,6 +308,28 @@
 		"outputPathIsSetByUser": 0,
 		"processed": 0
 		},
+	"\/WEB-INF\/poe-folder\/15\/Hearthstone_Screenshot_10.23.2014.15.30.25.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 2.0407e+06,
+		"inputAbbreviatedPath": "\/WEB-INF\/poe-folder\/15\/Hearthstone_Screenshot_10.23.2014.15.30.25.png",
+		"outputAbbreviatedPath": "\/WEB-INF\/poe-folder\/15\/Hearthstone_Screenshot_10.23.2014.15.30.25.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/WEB-INF\/poe-folder\/15\/Hearthstone_Screenshot_10.23.2014.15.30.30.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 2.84602e+06,
+		"inputAbbreviatedPath": "\/WEB-INF\/poe-folder\/15\/Hearthstone_Screenshot_10.23.2014.15.30.30.png",
+		"outputAbbreviatedPath": "\/WEB-INF\/poe-folder\/15\/Hearthstone_Screenshot_10.23.2014.15.30.30.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
 	"\/WEB-INF\/poe-folder\/15\/Hearthstone_Screenshot_10.23.2014.15.31.02.png": {
 		"fileType": 32768,
 		"ignore": 0,
@@ -249,6 +348,50 @@
 		"initialSize": 86012,
 		"inputAbbreviatedPath": "\/WEB-INF\/poe-folder\/15\/Julefrokost.jpg",
 		"outputAbbreviatedPath": "\/WEB-INF\/poe-folder\/15\/Julefrokost.jpg",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/WEB-INF\/poe-folder\/30\/754_julefrokost-menu-festen.jpg": {
+		"fileType": 16384,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 313087,
+		"inputAbbreviatedPath": "\/WEB-INF\/poe-folder\/30\/754_julefrokost-menu-festen.jpg",
+		"outputAbbreviatedPath": "\/WEB-INF\/poe-folder\/30\/754_julefrokost-menu-festen.jpg",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/WEB-INF\/poe-folder\/30\/Hearthstone_Screenshot_8.19.2014.19.59.01.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 2.94368e+06,
+		"inputAbbreviatedPath": "\/WEB-INF\/poe-folder\/30\/Hearthstone_Screenshot_8.19.2014.19.59.01.png",
+		"outputAbbreviatedPath": "\/WEB-INF\/poe-folder\/30\/Hearthstone_Screenshot_8.19.2014.19.59.01.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/WEB-INF\/poe-folder\/30\/Julefrokost.jpg": {
+		"fileType": 16384,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 86012,
+		"inputAbbreviatedPath": "\/WEB-INF\/poe-folder\/30\/Julefrokost.jpg",
+		"outputAbbreviatedPath": "\/WEB-INF\/poe-folder\/30\/Julefrokost.jpg",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/WEB-INF\/poe-folder\/31\/rhino.139.jpg": {
+		"fileType": 16384,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 163714,
+		"inputAbbreviatedPath": "\/WEB-INF\/poe-folder\/31\/rhino.139.jpg",
+		"outputAbbreviatedPath": "\/WEB-INF\/poe-folder\/31\/rhino.139.jpg",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"processed": 0
@@ -334,6 +477,15 @@
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/WEB-INF\/view\/shortcodes\/messageItemByIndex.jsp",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
+	"\/WEB-INF\/view\/shortcodes\/stageItemByIndex.jsp": {
+		"fileType": 8192,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/WEB-INF\/view\/shortcodes\/stageItemByIndex.jsp",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0

@@ -88,12 +88,12 @@
                                     </div>
                                 </c:if>
                                 <span class="filename"><c:out value='${poe.getFilename()}'></c:out></span>
-                                <form action="/api/deleteFile" method="post">
+                                <form action="/api/deleteFile" method="post" class="delete-files">
                                     <input type="hidden" name="fileId" value="<c:out value='${poe.getId()}'></c:out>">
                                     <input type="hidden" name="deleteFile" value="<c:out value='${poe.getF_date() > stages.get(stageIndex - 1).getDate() ? "true" : "false"}'></c:out>">
                                     <input type="hidden" name="projectId" value="<c:out value='${project.getId()}'></c:out>">
                                     <input type="hidden" name="fileName" value="<c:out value='${poe.getFilename()}'></c:out>">
-                                    <input type="submit" value="Delete">
+                                    <input type="submit" value="" class="delete-icon">
                                 </form>
                             </div>
                             </c:if>

@@ -658,6 +658,7 @@ div.project-items {
 
 	  div.proof-container {
 		float: left;
+		position: relative;
 		height: 120px;
 		width: 100px;
 		overflow: hidden;
@@ -746,4 +747,21 @@ div.project-items {
 
 .fancybox-inner img.fancybox-image {
   border-radius: 15px;
+}
+
+form.delete-files {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  input.delete-icon {
+	padding: 0px;
+	margin-top: 5px;
+	margin-right: 5px;
+	float: right;
+	width: 16px;
+	height: 16px;
+	background-image: url("../img/delete_icon.svg");
+	border: none;
+	background-repeat: no-repeat;
+  }
 }
