@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class ProjectMapper {
 
 
-    public boolean createProjectRequest(String budget, String project_body, User user, String project_type, Timestamp execution_date, Connection con) {
+    public int createProjectRequest(String budget, String project_body, User user, String project_type, Timestamp execution_date, Connection con) {
 
         String SQL = "insert into projects values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
@@ -23,7 +23,7 @@ public class ProjectMapper {
         try {
             parsedBudget = Double.parseDouble(budget);
         } catch (NumberFormatException e) {
-            return false;
+            return 0;
         }
 /* Figure out how to handle dates from frontend; would be ideal if we could have input such that we can convert it to timestamp instead of int
         int execDateParsed;
@@ -65,9 +65,7 @@ public class ProjectMapper {
             
             addStage(user.id, nextProjectID, "Waiting Project Verification", DatabaseConnection.getInstance().getConnection());
 
-            return true;
-
-
+            return nextProjectID;
 
         } catch (SQLException t) {
             System.out.println("SQLException in createProjectRequest()");
@@ -79,7 +77,7 @@ public class ProjectMapper {
             if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
         }
 
-        return false;
+        return 0;
     }
 
     public int getNextProjectId() {

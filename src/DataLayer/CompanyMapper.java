@@ -5,9 +5,6 @@ import Domain.Company;
 import java.sql.*;
 import java.util.ArrayList;
 
-/**
- * Created by Lasse on 10-04-2015.
- */
 public class CompanyMapper {
 
     public Company getCompanyById(int id, Connection con) {
@@ -72,13 +69,9 @@ public class CompanyMapper {
         PreparedStatement statement = null;
         try {
             statement = con.prepareStatement(SQL);
-
-
             statement.setString(1, filename);
             statement.setInt(2, id);
-
             statement.executeUpdate();
-
         } catch (Exception e) {
             System.out.println("Error in updateCompanyLogo");
         } finally {

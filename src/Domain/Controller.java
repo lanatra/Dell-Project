@@ -26,7 +26,7 @@ public class Controller {
 
     }
     // Writers
-    public boolean createProjectRequest(String budget, String project_body, User user, String project_type, Timestamp execution_date) {
+    public int createProjectRequest(String budget, String project_body, User user, String project_type, Timestamp execution_date) {
         return facade.createProjectRequest(budget, project_body, user, project_type, execution_date);
     }
     public boolean createCompany(String company_name, String country_code, Part logo, String logo_url) {

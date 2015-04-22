@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>DataLayer</OriginalElement>
+  <nodes>
+    <node x="2221.5" y="0.0">Domain.Login</node>
+    <node x="2561.5" y="0.0">DataLayer.DatabaseConnection</node>
+    <node x="1894.5" y="1459.0">Domain.Notifications</node>
+    <node x="844.9856625258799" y="255.0">Domain.User</node>
+    <node x="188.5" y="875.0">DataLayer.ProjectMapper</node>
+    <node x="0.0" y="167.0">Domain.Project</node>
+    <node x="1768.75" y="598.0">Domain.Poe</node>
+    <node x="1004.75" y="1791.0">Domain.Controller</node>
+    <node x="1376.6523291925464" y="0.0">Domain.Company</node>
+    <node x="1678.75" y="963.0">DataLayer.PoeMapper</node>
+    <node x="879.75" y="653.0">DataLayer.UserMapper</node>
+    <node x="970.5" y="1228.0">DataLayer.DatabaseFacade</node>
+    <node x="1465.75" y="288.0">DataLayer.CompanyMapper</node>
+    <node x="646.75" y="631.0">Domain.Stage</node>
+    <node x="1591.5" y="1404.0">Domain.FileHandling</node>
+    <node x="95.5" y="609.0">Domain.DisplayProject</node>
+    <node x="1022.25" y="2310.0">Presentation.PresentationServlet</node>
+    <node x="1222.75" y="598.0">Domain.Message</node>
+    <node x="1164.25" y="963.0">DataLayer.MessageMapper</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="DataLayer.ProjectMapper" target="Domain.DisplayProject">
+      <point x="-188.25" y="-146.5" />
+      <point x="376.75" y="850.0" />
+      <point x="343.0" y="850.0" />
+      <point x="82.5" y="102.5" />
+    </edge>
+    <edge source="Domain.User" target="Domain.Company">
+      <point x="0.0" y="-102.5" />
+      <point x="971.4856625258799" y="142.0" />
+      <point x="1405.48566252588" y="142.0" />
+      <point x="-57.666666666666686" y="58.5" />
+    </edge>
+    <edge source="Domain.Message" target="Domain.Company">
+      <point x="77.5" y="-113.5" />
+      <point x="1455.25" y="142.0" />
+      <point x="1463.1523291925464" y="142.0" />
+      <point x="0.0" y="58.5" />
+    </edge>
+    <edge source="DataLayer.DatabaseFacade" target="DataLayer.UserMapper">
+      <point x="-85.85714285714278" y="-256.5" />
+      <point x="1185.142857142857" y="1188.0" />
+      <point x="1041.25" y="1188.0" />
+      <point x="0.0" y="58.5" />
+    </edge>
+    <edge source="DataLayer.CompanyMapper" target="Domain.Company">
+      <point x="0.0" y="-69.5" />
+      <point x="1668.25" y="142.0" />
+      <point x="1520.8189958592131" y="142.0" />
+      <point x="57.66666666666663" y="58.5" />
+    </edge>
+    <edge source="DataLayer.UserMapper" target="Domain.User">
+      <point x="0.0" y="-58.5" />
+      <point x="1041.25" y="573.0" />
+      <point x="971.4856625258799" y="573.0" />
+      <point x="0.0" y="102.5" />
+    </edge>
+    <edge source="DataLayer.DatabaseFacade" target="DataLayer.MessageMapper">
+      <point x="5.6843418860808015E-14" y="-256.5" />
+      <point x="-106.75" y="58.5" />
+    </edge>
+    <edge source="DataLayer.MessageMapper" target="DataLayer.DatabaseFacade">
+      <point x="106.75" y="58.5" />
+      <point x="1484.5" y="1188.0" />
+      <point x="1356.857142857143" y="1188.0" />
+      <point x="85.85714285714289" y="-256.5" />
+    </edge>
+    <edge source="DataLayer.DatabaseFacade" target="DataLayer.PoeMapper">
+      <point x="257.57142857142856" y="-256.5" />
+      <point x="1528.5714285714284" y="1208.0" />
+      <point x="1905.25" y="1208.0" />
+      <point x="0.0" y="58.5" />
+    </edge>
+    <edge source="Domain.Stage" target="Domain.User">
+      <point x="0.0" y="-80.5" />
+      <point x="753.25" y="573.0" />
+      <point x="887.1523291925466" y="573.0" />
+      <point x="-84.33333333333331" y="102.5" />
+    </edge>
+    <edge source="DataLayer.DatabaseFacade" target="DataLayer.CompanyMapper">
+      <point x="171.71428571428567" y="-256.5" />
+      <point x="1442.7142857142856" y="1198.0" />
+      <point x="1668.25" y="1198.0" />
+      <point x="0.0" y="69.5" />
+    </edge>
+    <edge source="Domain.Message" target="Domain.User">
+      <point x="-77.5" y="-113.5" />
+      <point x="1300.25" y="573.0" />
+      <point x="1055.8189958592131" y="573.0" />
+      <point x="84.33333333333331" y="102.5" />
+    </edge>
+    <edge source="DataLayer.PoeMapper" target="Domain.Poe">
+      <point x="0.0" y="-58.5" />
+      <point x="0.0" y="113.5" />
+    </edge>
+    <edge source="DataLayer.MessageMapper" target="Domain.Message">
+      <point x="0.0" y="-58.5" />
+      <point x="0.0" y="113.5" />
+    </edge>
+    <edge source="Domain.Controller" target="Domain.Notifications">
+      <point x="333.20000000000005" y="-234.5" />
+      <point x="1754.45" y="1766.0" />
+      <point x="2035.5" y="1766.0" />
+      <point x="0.0" y="25.5" />
+    </edge>
+    <edge source="Domain.Controller" target="Domain.FileHandling">
+      <point x="166.5999999999999" y="-234.5" />
+      <point x="1587.85" y="1766.0" />
+      <point x="1733.0" y="1766.0" />
+      <point x="0.0" y="80.5" />
+    </edge>
+    <edge source="DataLayer.DatabaseFacade" target="DataLayer.ProjectMapper">
+      <point x="-257.57142857142844" y="-256.5" />
+      <point x="1013.4285714285716" y="1208.0" />
+      <point x="376.75" y="1208.0" />
+      <point x="-188.25" y="146.5" />
+    </edge>
+    <edge source="Domain.Controller" target="DataLayer.DatabaseFacade">
+      <point x="-166.60000000000014" y="-234.5" />
+      <point x="1254.6499999999999" y="1766.0" />
+      <point x="1120.75" y="1766.0" />
+      <point x="-150.25" y="256.5" />
+    </edge>
+    <edge source="Domain.DisplayProject" target="Domain.Project">
+      <point x="0.0" y="-102.5" />
+      <point x="0.0" y="190.5" />
+    </edge>
+    <edge source="Presentation.PresentationServlet" target="Domain.Controller">
+      <point x="0.0" y="-245.5" />
+      <point x="0.0" y="234.5" />
+    </edge>
+    <edge source="DataLayer.ProjectMapper" target="Domain.Stage">
+      <point x="188.25" y="-146.5" />
+      <point x="0.0" y="80.5" />
+    </edge>
+    <edge source="DataLayer.ProjectMapper" target="DataLayer.DatabaseFacade">
+      <point x="188.25" y="146.5" />
+      <point x="753.25" y="1198.0" />
+      <point x="1099.2857142857142" y="1198.0" />
+      <point x="-171.7142857142856" y="-256.5" />
+    </edge>
+    <edge source="Domain.DisplayProject" target="Domain.Controller">
+      <point x="-82.5" y="102.5" />
+      <point x="178.0" y="1766.0" />
+      <point x="1088.0499999999997" y="1766.0" />
+      <point x="-333.20000000000016" y="-234.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.3004437523257508" x="1563.2306443241307" y="515.5490777983603" />
+  <SelectedNodes>
+    <node>Domain.DisplayProject</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

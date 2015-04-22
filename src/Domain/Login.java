@@ -4,9 +4,6 @@ import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.Random;
 
-/**
- * Created by Andreas Poulsen on 09-Apr-15.
- */
 public class Login {
 
     public static String createPassword(String pw) {

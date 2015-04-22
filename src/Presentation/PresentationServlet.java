@@ -10,7 +10,6 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.*;
 import java.io.*;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.sql.Timestamp;
 
 @MultipartConfig
@@ -99,7 +98,6 @@ public class PresentationServlet extends HttpServlet {
                 break;
             case "/project-request":
                 createProjectRequest(request, response, cont);
-                //changeProjectStatus(request, response, cont);
                 break;
             case "/uploadFile":
                 createPoe(request, response, cont);
@@ -235,11 +233,13 @@ public class PresentationServlet extends HttpServlet {
             request.setAttribute("User", userObj);}
             User user = (User) request.getAttribute("User");
 
-        if (cont.createProjectRequest(budget, project_body, user, project_type, execution_time)) {
-            request.getRequestDispatcher("/WEB-INF/view/createproject.jsp").forward(request, response);
-        }
-        response.sendRedirect("/");
+        int projectId = cont.createProjectRequest(budget, project_body, user, project_type, execution_time);
 
+        if (projectId != 0) {
+            response.sendRedirect("/project?id=" + projectId);
+        } else {
+            System.out.println("Project ID is 0!");
+        }
     }
 
     void getProjectsByState(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
@@ -260,7 +260,7 @@ public class PresentationServlet extends HttpServlet {
 
         cont.changeProjectStatus(projectId, currentType, answer, companyId, userId);
 
-        response.sendRedirect("/dashboard");
+        response.sendRedirect("/project?id=" + projectId);
     }
 
     void logout(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
@@ -298,7 +298,7 @@ public class PresentationServlet extends HttpServlet {
         int project_id = Integer.parseInt(request.getParameter("proj_id"));
         int user_id = u.getId();
         if(cont.addPoeFile(project_id, file, user_id)) {
-            response.sendRedirect("/project?id="+project_id);
+            response.sendRedirect("/project?id=" + project_id);
         }
     }
 
@@ -309,7 +309,7 @@ public class PresentationServlet extends HttpServlet {
 
         cont.deleteFile(filename, project_id);
 
-        request.getRequestDispatcher("/project?id=" + project_id).forward(request, response);
+        response.sendRedirect("/project?id=" + project_id);
     }
 
 
