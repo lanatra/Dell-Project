@@ -147,10 +147,10 @@
                     </div>
 
                 </c:if><c:if test="${project.getStatus() == 'Claim Rejected'}">
-                    <h3>Resubmit claim</h3>
-                    <label>Upload proof of execution</label>
-
-                    <button name="answer" value="approved" class="green">Resubmit claim</button>
+                    <p class="status-message">Resubmit claim, upload new proof of execution.</p>
+                    <div class="stage-actions">
+                        <button name="answer" value="approved" class="blue">Resubmit claim</button>
+                    </div>
                 </c:if>
                 </form>
             </div>

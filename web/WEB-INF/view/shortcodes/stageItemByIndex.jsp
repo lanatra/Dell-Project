@@ -43,16 +43,21 @@
         <c:if test="${stages.get(stageIndex).getType() == 'Waiting Claim Verification'}">
             <h3>Waiting claim verification</h3>
             <c:forEach items="${poes}" var="poe" varStatus="ite" >
-                <label> <c:out value='${poe.getFilename()}'></c:out></label>
-                <c:if test="${poe.getFiletype() == 'jpg' ||
-                        poe.getFiletype() == 'png' ||
-                        poe.getFiletype() == 'jpeg' ||
-                        poe.getFiletype() == 'gif' ||
-                        poe.getFiletype() == 'bmp'}">
-                    <a href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out> " target="_blank">view image</a>
-                </c:if>
-                <a href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>?download=true">Download file</a>
+                <div class="proof-container">
+                    <c:if test="${poe.getFiletype() == 'jpg' ||
+                                    poe.getFiletype() == 'png' ||
+                                    poe.getFiletype() == 'jpeg' ||
+                                    poe.getFiletype() == 'gif' ||
+                                    poe.getFiletype() == 'bmp'}">
+                        <div class="proof" style="background-image: url(/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>)">
+                            <a class="fancybox" rel="<c:out value='${stages.get(stageIndex).getId()}'></c:out>" href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>"><div class="view-image"></div></a>
+                            <div class="download-file"><a href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>?download=true">Download</a></div>
+                        </div>
+                    </c:if>
+                    <span class="filename"><c:out value='${poe.getFilename()}'></c:out></span>
+                </div>
             </c:forEach>
+
             </div>
             <c:if test="${dellAndLatest}">
                 <p class="status-message">Review the claim and the attached proofs.</p>

@@ -580,13 +580,13 @@ div.project-items {
 
 	span.date {
 	  float: left;
-	  margin-left: 20px;
 	  margin-bottom: 5px;
 	  color: #9F9F9F;
 	}
 	span.user-data {
 	  float: left;
-	  margin-left: 10px;
+	  margin-left: 20px;
+	  margin-right: 20px;
 	  color: #787878;
 	}
 
@@ -662,6 +662,7 @@ div.project-items {
 		width: 100px;
 		overflow: hidden;
 		margin-right: 10px;
+		margin-bottom: 20px;
 
 		span.filename {
 		  float: left;
