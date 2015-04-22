@@ -2,6 +2,48 @@
 "CodeKitInfo": "This is a CodeKit 2.x project configuration file. It is designed to sync project settings across multiple machines. MODIFYING THE CONTENTS OF THIS FILE IS A POOR LIFE DECISION. If you do so, you will likely cause CodeKit to crash. This file is not useful unless accompanied by the project that created it in CodeKit 2. This file is not backwards-compatible with CodeKit 1.x. For more information, see: http:\/\/incident57.com\/codekit",
 "creatorBuild": "18493",
 "files": {
+	"\/css\/fancybox_overlay.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 1003,
+		"inputAbbreviatedPath": "\/css\/fancybox_overlay.png",
+		"outputAbbreviatedPath": "\/css\/fancybox_overlay.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/css\/fancybox_sprite.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 1362,
+		"inputAbbreviatedPath": "\/css\/fancybox_sprite.png",
+		"outputAbbreviatedPath": "\/css\/fancybox_sprite.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/css\/fancybox_sprite@2x.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 6553,
+		"inputAbbreviatedPath": "\/css\/fancybox_sprite@2x.png",
+		"outputAbbreviatedPath": "\/css\/fancybox_sprite@2x.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/css\/jquery.fancybox.css": {
+		"fileType": 16,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/css\/jquery.fancybox.css",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
 	"\/css\/normalize.css": {
 		"fileType": 16,
 		"ignore": 1,
@@ -69,6 +111,17 @@
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
+		},
+	"\/js\/jquery.fancybox.pack.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/js\/jquery.fancybox.pack.js",
+		"outputAbbreviatedPath": "\/js\/min\/jquery.fancybox.pack-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
 		},
 	"\/js\/min\/project-functions-min.js": {
 		"fileType": 64,
@@ -145,6 +198,61 @@
 		"outputPathIsSetByUser": 0,
 		"processed": 0
 		},
+	"\/WEB-INF\/poe-folder\/14\/Hearthstone_Screenshot_10.23.2014.15.30.25.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 2.0407e+06,
+		"inputAbbreviatedPath": "\/WEB-INF\/poe-folder\/14\/Hearthstone_Screenshot_10.23.2014.15.30.25.png",
+		"outputAbbreviatedPath": "\/WEB-INF\/poe-folder\/14\/Hearthstone_Screenshot_10.23.2014.15.30.25.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/WEB-INF\/poe-folder\/14\/Hearthstone_Screenshot_10.23.2014.15.31.02.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 2.82720e+06,
+		"inputAbbreviatedPath": "\/WEB-INF\/poe-folder\/14\/Hearthstone_Screenshot_10.23.2014.15.31.02.png",
+		"outputAbbreviatedPath": "\/WEB-INF\/poe-folder\/14\/Hearthstone_Screenshot_10.23.2014.15.31.02.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/WEB-INF\/poe-folder\/15\/754_julefrokost-menu-festen.jpg": {
+		"fileType": 16384,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 313087,
+		"inputAbbreviatedPath": "\/WEB-INF\/poe-folder\/15\/754_julefrokost-menu-festen.jpg",
+		"outputAbbreviatedPath": "\/WEB-INF\/poe-folder\/15\/754_julefrokost-menu-festen.jpg",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/WEB-INF\/poe-folder\/15\/Hearthstone_Screenshot_10.23.2014.15.31.02.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 2.82720e+06,
+		"inputAbbreviatedPath": "\/WEB-INF\/poe-folder\/15\/Hearthstone_Screenshot_10.23.2014.15.31.02.png",
+		"outputAbbreviatedPath": "\/WEB-INF\/poe-folder\/15\/Hearthstone_Screenshot_10.23.2014.15.31.02.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/WEB-INF\/poe-folder\/15\/Julefrokost.jpg": {
+		"fileType": 16384,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 86012,
+		"inputAbbreviatedPath": "\/WEB-INF\/poe-folder\/15\/Julefrokost.jpg",
+		"outputAbbreviatedPath": "\/WEB-INF\/poe-folder\/15\/Julefrokost.jpg",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
 	"\/WEB-INF\/poe-folder\/8\/MD_Image (3).jpg": {
 		"fileType": 16384,
 		"ignore": 0,
@@ -152,6 +260,17 @@
 		"initialSize": 1.23151e+07,
 		"inputAbbreviatedPath": "\/WEB-INF\/poe-folder\/8\/MD_Image (3).jpg",
 		"outputAbbreviatedPath": "\/WEB-INF\/poe-folder\/8\/MD_Image (3).jpg",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/WEB-INF\/poe-folder\/companies\/1356\/logo.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 11492,
+		"inputAbbreviatedPath": "\/WEB-INF\/poe-folder\/companies\/1356\/logo.png",
+		"outputAbbreviatedPath": "\/WEB-INF\/poe-folder\/companies\/1356\/logo.png",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"processed": 0
@@ -215,15 +334,6 @@
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/WEB-INF\/view\/shortcodes\/messageItemByIndex.jsp",
-		"outputAbbreviatedPath": "No Output Path",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0
-		},
-	"\/WEB-INF\/view\/shortcodes\/stageItemByIndex.jsp": {
-		"fileType": 8192,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/WEB-INF\/view\/shortcodes\/stageItemByIndex.jsp",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
