@@ -99,7 +99,9 @@ public class Controller {
     }
     //User related
     public boolean createUser(String name, String user_role, String user_email, String password, int company_id) {
-        return facade.createUser(name, user_role, user_email, password, company_id);
+        String hashedPassword = Login.createPassword(password);
+
+        return facade.createUser(name, user_role, user_email, hashedPassword, company_id);
     }
 
    //Readers
@@ -139,7 +141,10 @@ public class Controller {
         }
         return null;
     }
-
+    // Companies
+    public ArrayList<Company> getCompanies() {
+        return facade.getCompanies();
+    }
 
     public ArrayList proccessStages(ArrayList stages) {
         HashMap userMap = new HashMap();

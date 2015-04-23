@@ -76,7 +76,7 @@
                         <p class="instructions">Upload your images and documents, one by one.</p>
                         <c:forEach items="${poes}" var="poe" varStatus="ite" >
                             <c:if test="${poe.getF_deletion_date() == 0}">
-                                <div class="proof-container">
+                                <div class="proof-container <c:if test="${poe.getF_date() > stages.get(stageIndex).getDate()}"> new</c:if>">
                                     <c:choose>
                                         <c:when test="${poe.getFiletype() == 'jpg' || poe.getFiletype() == 'png' || poe.getFiletype() == 'jpeg' || poe.getFiletype() == 'gif' || poe.getFiletype() == 'bmp'}">
                                             <div class="proof" style="background-image: url(/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>)">

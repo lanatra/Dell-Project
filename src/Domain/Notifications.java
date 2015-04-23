@@ -50,8 +50,11 @@ package Domain;
 
                 System.out.println("Mail Check 2");
 
-                // EMAIL TITLE AND BODY:
                 message.setSubject(subject);
+
+
+                // IF YOU WANT TO SEND HTML, USE THIS LINE OF CODE INSTEAD:
+                // message.setContent(someHtmlMessage, "text/html; charset=utf-8");
                 message.setText(emailMessage);
 
                 System.out.println("Mail Check 3");

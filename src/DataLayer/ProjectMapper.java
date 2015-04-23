@@ -389,7 +389,7 @@ public class ProjectMapper {
             SQL = "select \n" +
                     "  sum(case when (status not in ('Project Finished', 'Cancelled')) and company_id=" + companyId + " then 1 else 0 end) WaitingForAction,\n" +
                     "  sum(case when status='' and company_id=" + companyId + "  then 1 else 0 end) InExecution,\n" +
-                    "  sum(case when status='Project Finished' or status='Cancelled' and company_id=" + companyId + "   then 1 else 0 end) Finished\n" +
+                    "  sum(case when (status='Project Finished' or status='Cancelled') and company_id=" + companyId + "   then 1 else 0 end) Finished\n" +
                     " from projects";
         }
 
@@ -490,5 +490,6 @@ public class ProjectMapper {
             if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
         }
     }
+
 
 }
