@@ -45,7 +45,7 @@
             <c:forEach items="${poes}" var="poe" varStatus="ite" >
                 <c:if test="${poe.getF_date() < stages.get(stageIndex).getDate() || (poe.getUploaded_on_stage() == stages.get(stageIndex).getId()) }">
                     <c:if test="${poe.getF_deletion_date() == 0 || (poe.getF_deletion_date() != 0 && poe.getF_deletion_date() > stages.get(stageIndex).getDate() && stageIndex + 1 != stages.size())}">
-                <div class="proof-container">
+                <div class="proof-container<c:if test="${poe.getF_date() > stages.get(stageIndex - 1).getDate() && poe.getF_date() < stages.get(stageIndex).getDate()}"> new</c:if>">
                     <c:if test="${poe.getFiletype() == 'jpg' ||
                                     poe.getFiletype() == 'png' ||
                                     poe.getFiletype() == 'jpeg' ||
