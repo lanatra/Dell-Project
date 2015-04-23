@@ -62,6 +62,7 @@ public class DatabaseFacade {
 
     public void updateCompanyLogo(String filename, int id) { new CompanyMapper().updateCompanyLogo(filename, id, getCon()); }
 
+    public ArrayList<Company> getCompanies() { return new CompanyMapper().getCompanies(getCon()); }
 
     // USER
     public User getUserByEmail(String email) {

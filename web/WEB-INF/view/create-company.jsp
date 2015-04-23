@@ -77,7 +77,7 @@
     }
 
 </script>
-<h2>Create Company</h2>
+<h2>Register A New Company</h2>
 <form action="/api/createCompany" method="post">
 <input id="companyName" name="companyName" placeholder="Company Name">
 <select id="countryCode" name="countryCode" >
@@ -99,5 +99,34 @@
 </div>
     <input type="submit" value="Create Company">
 </form>
+
+
+<br>
+
+<br>
+
+<h2> Register A New User </h2>
+<form action="/createUser" method="post">
+    <label> Select a registered company: </label>
+    <select name="selectedCompany">
+        <c:forEach var="companies" items="${companies}">
+        <option value="<c:out value='${companies.getId()}'></c:out>"><c:out value='${companies.getName()}'></c:out></option>
+        </c:forEach>
+    </select>
+
+    <label> Username: </label><input type="text" name="userName">
+    <label> Password: </label><input type="password" name="password">
+    <label> User type: </label>
+    <select name="role">
+        <option value="Partner">Partner</option>
+        <option value="Dell">Dell</option>
+    </select>
+    <label> Email: </label><input type="text" name="userEmail">
+    <br>
+    <input type="submit" value="Register User">
+</form>
+
+
+
 </body>
 </html>

@@ -1,5 +1,6 @@
 package Presentation;
 
+import Domain.Company;
 import Domain.Controller;
 import Domain.User;
 
@@ -11,6 +12,7 @@ import javax.servlet.http.*;
 import java.io.*;
 import java.net.URLDecoder;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 @MultipartConfig
 public class PresentationServlet extends HttpServlet {
@@ -106,6 +108,9 @@ public class PresentationServlet extends HttpServlet {
                 break;
             case "/api/deleteFile":
                 deletePoe(request, response, cont);
+                break;
+            case "/createUser":
+                createUser(request, response, cont);
                 break;
             default:
                 getDashboard(request, response, cont);
@@ -271,26 +276,6 @@ public class PresentationServlet extends HttpServlet {
     }
 
 
-
-
-
-    // Creates a new user; if a given company name already exists, assign user to that company - otherwise make new company with that name.
-    void createUser(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
-        String name = request.getParameter("name");
-        String user_role = request.getParameter("user_role");
-        String user_email = request.getParameter("user_email");
-        String password = request.getParameter("password");
-        // String company_name = request.getParameter("company_name");
-
-                if (cont.createUser(name, user_role, user_email, password, 1)) {
-                    request.setAttribute("createUserResult", true);
-                    request.getRequestDispatcher("index.jsp").forward(request, response);
-                    return;
-                }
-
-        request.setAttribute("createUserResult", false);
-        request.getRequestDispatcher("index.jsp").forward(request, response);
-    }
     void createPoe(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
         Part file = request.getPart("file");
         User u = (User) request.getAttribute("User");
@@ -319,7 +304,8 @@ public class PresentationServlet extends HttpServlet {
 
     void getCreateCompanyView(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
 
-        request.setAttribute("companies", "ayy");
+        ArrayList<Company> companies = cont.getCompanies();
+        request.setAttribute("companies", companies);
         request.getRequestDispatcher("/WEB-INF/view/create-company.jsp").forward(request, response);
     }
 
@@ -408,6 +394,25 @@ public class PresentationServlet extends HttpServlet {
             out.close();
             in.close();
         } catch (Exception e) {};
+
+    }
+
+    void createUser(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+
+        String name = request.getParameter("userName");
+        String role = request.getParameter("role");
+        String email = request.getParameter("userEmail");
+        String password = request.getParameter("password");
+        int company_id;
+        if (role.equals("Dell")) {
+            company_id = 1;
+        } else {
+            company_id = Integer.parseInt(request.getParameter("selectedCompany"));
+        }
+        cont.createUser(name, role, email, password, company_id);
+
+        response.sendRedirect("/create-company");
+
 
     }
 }

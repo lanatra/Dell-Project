@@ -14,11 +14,12 @@ import static org.junit.Assert.*;
 public class PoeMapperTest {
 
     PoeMapper mapper;
+    int file_id;
     int proj_id;
     String filename;
     int user_id;
     String filetype;
-
+    int stage_id;
 
     @Before
     public void setUp() throws Exception {
@@ -29,13 +30,15 @@ public class PoeMapperTest {
     @org.junit.Test
     public void testAddPoeFile() throws Exception {
         System.out.println("DUMMY VALUES:");
+        stage_id = 2000;
+        file_id = 100;
         proj_id = 10;
         filename = "eyyy.txt";
         user_id = 2;
         filetype = "txt";
 
 
-        mapper.addPoeFile(proj_id, filename, user_id, filetype, DatabaseConnection.getInstance().getConnection());
+        mapper.addPoeFile(proj_id, filename, user_id, filetype, stage_id, DatabaseConnection.getInstance().getConnection());
 
         ArrayList<Poe> poes= mapper.getPoe(proj_id, DatabaseConnection.getInstance().getConnection());
 
@@ -58,7 +61,7 @@ public class PoeMapperTest {
     @After
     public void resetDbChanges() throws Exception {
 
-        mapper.deletePoe(filename, proj_id, DatabaseConnection.getInstance().getConnection());
+        mapper.deletePoe(file_id, DatabaseConnection.getInstance().getConnection());
     }
 
     @org.junit.Test
