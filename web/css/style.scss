@@ -183,9 +183,10 @@ div.header{
 	  }
 	}
 	div.budget-label {
-		float: right;
+		float: left;
 		margin-top: 20px;
 		margin-right: 20px;
+	    margin-left: 40px;
 		span.big {
 			float: left;
 			font-size: 1.5em;
@@ -201,6 +202,7 @@ div.header{
 
   	.button {
 	  float: right;
+	  padding: 0px 20px;
 	  border-radius: 15px;
 	  height: 30px;
 	  background-color: white;
@@ -210,6 +212,20 @@ div.header{
 	  margin-right: 30px;
 	  color: $color-blue;
 	}
+
+  .button-clear {
+	padding: 0px 20px;
+	float: right;
+	border-radius: 15px;
+	height: 30px;
+	background-color: transparent;
+	border: 1px solid white;
+	margin-top: 23px;
+	line-height: 2;
+	margin-right: 30px;
+	text-decoration: none;
+	color: white;
+  }
 }
 
 div.filter {
@@ -805,5 +821,108 @@ form.delete-files {
 	background-image: url("../img/delete_icon.svg");
 	border: none;
 	background-repeat: no-repeat;
+  }
+}
+
+div.big-paper {
+  background-color: white;
+  -webkit-box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow:    0px 1px 3px 0px rgba(0, 0, 0, 0.1);
+  box-shadow:         0px 1px 3px 0px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  float: left;
+  width: 100%;
+  border-radius: 20px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding: 40px;
+  
+  h2 {
+	font-size: 30px;
+  }
+
+  .button {
+	float: left;
+	clear: left;
+	border-radius: 15px;
+	height: 30px;
+	text-transform: none;
+	font-size: 1em;
+	line-height: 1;
+	background: $color-blue;
+	color: white;
+	margin-right: 6px;
+	margin-top: 20px;
+	border: none;
+	font-weight: normal;
+  }
+}
+
+div.input-group {
+  float: left;
+
+  span {
+	float: left;
+	color: #9F9F9F;
+  }
+  input, select {
+	float: left;
+	clear: left;
+	height: 40px;
+	border-radius: 20px;
+	font-weight: lighter;
+	font-size: 1em;
+	border: none;
+	margin-top: 10px;
+	&:focus {
+	  border: none;
+	}
+  }
+  input {
+	background-color: #ECECEC;
+	margin-right: 20px;
+	padding-left: 20px;
+  }
+  select {
+	margin-right: 20px;
+	-webkit-appearance: none;
+	padding-left: 20px;
+	padding-right: 40px;
+	background: #ECECEC url(../img/dark_dropdown.svg) no-repeat right 20px center;
+  }
+}
+
+div#logo-results {
+  float: left;
+  min-height: 100px;
+  img {
+	float: left;
+	cursor: pointer;
+	margin-right: 20px;
+	margin-bottom: 10px;
+	height: 100px;
+	border-radius: 15px;
+	border: 4px solid #ECECEC;
+
+	&.selected {
+	  border: 4px solid $color-blue;
+	}
+  }
+}
+
+div.logo-box {
+  float: left;
+  clear: both;
+  
+  span {
+	float: left;
+	width: 100%;
+	margin-bottom: 10px;
+	color: #9F9F9F;
+  }
+
+  input[type="file"] {
+	float: left;
+	clear: left;
   }
 }

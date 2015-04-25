@@ -62,7 +62,10 @@
       </ul>
     </div>
     <c:if test="${User.getCompany_id() == 1}">
-        <div class="budget-label u-pull-right">
+        <div class="u-pull-right">
+          <a href="/create-company" class="project-request button-clear">Manage users</a>
+        </div>
+        <div class="budget-label u-pull-left">
             <span class="big">834 039 DKK</span>
             <span class="desc">is left available in this quarter (1.1.2015 - 31.3.2015)</span>
         </div>

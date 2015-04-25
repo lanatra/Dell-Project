@@ -303,7 +303,6 @@ public class PresentationServlet extends HttpServlet {
 
 
     void getCreateCompanyView(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
-
         ArrayList<Company> companies = cont.getCompanies();
         request.setAttribute("companies", companies);
         request.getRequestDispatcher("/WEB-INF/view/create-company.jsp").forward(request, response);
