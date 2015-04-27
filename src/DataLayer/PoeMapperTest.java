@@ -50,6 +50,8 @@ public class PoeMapperTest {
             }
         }
         if (checkForMatch != -1) {
+            System.out.println(filename);
+            System.out.println(poes.get(checkForMatch).getFilename());
             assertTrue(poes.get(checkForMatch).getFilename().equals(filename));
         } else {
             fail();

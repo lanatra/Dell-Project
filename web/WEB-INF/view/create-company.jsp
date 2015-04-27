@@ -108,7 +108,7 @@
 <h2> Register A New User </h2>
 <form action="/createUser" method="post">
     <label> Select a registered company: </label>
-    <select name="selectedCompany">
+    <select name="selectedCompany" id="companyDropdown">
         <c:forEach var="companies" items="${companies}">
         <option value="<c:out value='${companies.getId()}'></c:out>"><c:out value='${companies.getName()}'></c:out></option>
         </c:forEach>
@@ -117,7 +117,7 @@
     <label> Username: </label><input type="text" name="userName">
     <label> Password: </label><input type="password" name="password">
     <label> User type: </label>
-    <select name="role">
+    <select name="role" id="userRole">
         <option value="Partner">Partner</option>
         <option value="Dell">Dell</option>
     </select>
@@ -125,6 +125,7 @@
     <br>
     <input type="submit" value="Register User">
 </form>
+
 
 
 
