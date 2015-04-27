@@ -50,6 +50,9 @@ public class PresentationServlet extends HttpServlet {
                     case "/logout":
                         logout(request, response, cont);
                         break;
+                    case "/budget_view":
+                        getBudgetView(request, response, cont);
+                        break;
                     default:
                         response.sendRedirect("/dashboard");
                         break;
@@ -111,6 +114,9 @@ public class PresentationServlet extends HttpServlet {
                 break;
             case "/createUser":
                 createUser(request, response, cont);
+                break;
+            case "/createBudget":
+                createBudget(request, response, cont);
                 break;
             default:
                 getDashboard(request, response, cont);
@@ -412,6 +418,27 @@ public class PresentationServlet extends HttpServlet {
 
         response.sendRedirect("/create-company");
 
+    }
 
+    void createBudget(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        int year = Integer.parseInt(request.getParameter("year"));
+        int quarter = Integer.parseInt(request.getParameter("quarter"));
+        int budget = Integer.parseInt(request.getParameter("initial_budget"));
+
+        if (cont.addBudget(year, quarter, budget)) {
+            cont.sendEmail("noobglivestream@gmail.com", "budget created", "hope this works!");
+            getBudgetView(request, response, cont);
+        } else {
+            //response.sendRedirect("/errorPage");
+        }
+    }
+
+    void getBudgetView(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+
+        request.setAttribute("budgetCollection", cont.getAllBudgets());
+
+
+
+        request.getRequestDispatcher("/WEB-INF/view/budget_view.jsp").forward(request, response);
     }
 }

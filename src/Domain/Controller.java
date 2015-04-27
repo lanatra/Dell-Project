@@ -1,11 +1,13 @@
 package Domain;
 
+import DataLayer.BudgetMapper;
 import DataLayer.DatabaseFacade;
 
 
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.sql.Connection;
 import java.sql.Timestamp;
 
 import java.util.ArrayList;
@@ -107,7 +109,9 @@ public class Controller {
    //Readers
     //User related
     public User getUserById(int user_id) { return facade.getUserById(user_id); }
-
+    public ArrayList<User> getUserByCompanyId(int company_id) {
+        return facade.getUserByCompanyId(company_id);
+    }
 
 
     //Project related
@@ -125,6 +129,11 @@ public class Controller {
 
     //public boolean changeProjectStatus(String project_id, String new_status, String usertype) { return facade.verifyProjectRequest(project_id, new_status, usertype); }
     public int[] getStatusCounts(int companyId) { return facade.getStatusCounts(companyId); }
+
+
+    public ArrayList<Project> getProjectsByCompanyId(int company_id) {
+        return facade.getProjectsByCompanyId(company_id);
+    }
 
     public Company getCompanyById(int id) { return facade.getCompanyById(id); }
 
@@ -250,4 +259,29 @@ public class Controller {
         new Notifications().sendEmail(recipient, subject, body);
     }
 
+    // BUDGETSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+    public boolean addBudget(int year, int quarter, int budget) {
+        return facade.addBudget(year, quarter, budget);
+    }
+
+    public boolean modifyBudget(int budget_id, int new_budget) {
+        return facade.modifyBudget(budget_id, new_budget);
+    }
+
+    public ArrayList<Budget> getBudget(int budget_id) {
+        return facade.getBudget(budget_id);
+    }
+
+    public ArrayList<Budget> getAllBudgets() {
+        return facade.getAllBudgets();
+    }
+
+    public int getAvailableFunds(int budget_id) {
+        return facade.getAvailableFunds(budget_id);
+    }
+
+
+
 }
+
+

@@ -1,6 +1,8 @@
 package DataLayer;
 
 import java.sql.*;
+import java.util.ArrayList;
+
 import Domain.*;
 /**
  * Created by Lasse on 09-04-2015.
@@ -132,6 +134,47 @@ public class UserMapper {
 
         return id + 1;
     }
+
+
+    public ArrayList<User> getUserByCompanyId(int company_id, Connection con) {
+
+            String SQL = "select * from users where company_id = ?";
+            PreparedStatement statement = null;
+            ResultSet rs = null;
+            ArrayList<User> UserCollection = new ArrayList<>();
+
+
+            try {
+                statement = con.prepareStatement(SQL);
+
+                statement.setInt(1, company_id);
+
+                rs = statement.executeQuery();
+
+                while (rs.next()) {
+                    UserCollection.add(new User(rs.getInt(1),
+                            rs.getString(2),
+                            rs.getString(5),
+                            rs.getString(3),
+                            rs.getString(4),
+                            rs.getInt(6)
+                    ));
+                }
+
+
+
+            } catch (Exception e) {
+                System.out.println("error in budgetmapperrerr");
+            }finally {
+                if (rs != null) try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+                if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+                if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
+            }
+
+
+            return UserCollection;
+        }
+
 
 
 

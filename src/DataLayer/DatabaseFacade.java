@@ -22,6 +22,10 @@ public class DatabaseFacade {
         return new ProjectMapper().createProjectRequest(budget, project_body, user, project_type, execution_date, getCon());
 
     }
+    public ArrayList<Project> getProjectsByCompanyId(int company_id) {
+        return new ProjectMapper().getProjectsByCompanyId(company_id, getCon());
+    }
+
     public boolean changeProjectStatus(int project_id, String new_status, int companyId, int userId) {
         return new ProjectMapper().changeProjectStatus(project_id, new_status, companyId, userId, getCon());
     }
@@ -71,6 +75,9 @@ public class DatabaseFacade {
     public boolean createUser(String name, String user_role, String user_email, String password, int company_id) {
         return new UserMapper().createUser(name, user_role, user_email, password, company_id, getCon());
     }
+    public ArrayList<User> getUserByCompanyId(int company_id) {
+        return new UserMapper().getUserByCompanyId(company_id, getCon());
+    }
 
     // POE
     public boolean addPoeFile(int project_id, String filename, int user_id, String filetype, int stage) {
@@ -88,6 +95,24 @@ public class DatabaseFacade {
         return new PoeMapper().markDeletePoe(fileId, getCon());
     }
 
+    // BUDGET
+    public boolean addBudget(int year, int quarter, int budget) {
+    return new BudgetMapper().addBudget(year, quarter, budget, getCon());
+    }
 
+    public boolean modifyBudget(int budget_id, int new_budget) {
+    return new BudgetMapper().modifyBudget(budget_id, new_budget, getCon());
+    }
 
+    public ArrayList<Budget> getBudget(int budget_id) {
+    return new BudgetMapper().getBudget(budget_id, getCon());
+    }
+
+    public ArrayList<Budget> getAllBudgets() {
+        return new BudgetMapper().getAllBudgets(getCon());
+    }
+
+    public int getAvailableFunds(int budget_id) {
+        return new BudgetMapper().getAvailableFunds(budget_id, getCon());
+    }
 }
