@@ -25,7 +25,7 @@
       <c:if test="${User.getCompany_id() != 1}">
         <a href="/dashboard">
           <div class="filter">
-            <div class="circle execution <c:if test="${param.state != null && param.state.equals('inExecution')}">active</c:if>"><c:out value="${statusCount[0]}" /></div>
+              <div class="circle execution <c:if test="${param.state == null}">active</c:if>"><c:out value="${statusCount[0]}" /></div>
             <span>Active</span>
           </div>
         </a>

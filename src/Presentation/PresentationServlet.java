@@ -208,6 +208,8 @@ public class PresentationServlet extends HttpServlet {
 
         int partnerId = Integer.parseInt(request.getParameter("id"));
         request.setAttribute("partner", cont.getCompanyById(partnerId));
+        request.setAttribute("users", cont.getUserByCompanyId(partnerId));
+        request.setAttribute("projects", cont.getProjectsByCompanyId(partnerId));
 
         request.getRequestDispatcher("/WEB-INF/view/partner.jsp").forward(request, response);
     }
@@ -226,7 +228,6 @@ public class PresentationServlet extends HttpServlet {
 
         String body = request.getParameter("body");
 
-        
 
         out.println(cont.postMessage(userId, projectId, body, companyId));
     }
@@ -377,9 +378,7 @@ public class PresentationServlet extends HttpServlet {
         out.flush();
         out.close();
 
-
-         response.sendRedirect("/");
-
+        response.sendRedirect("/");
     }
 
     void serveResource(HttpServletRequest request, HttpServletResponse response, Controller cont) {

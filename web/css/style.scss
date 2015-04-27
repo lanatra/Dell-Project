@@ -361,12 +361,19 @@ div.table-head, div.project-item {
 span.id {width: 12%;}
 span.partner {width: 20%;}
 span.partner-name {width: 70%;}
+span.user-name {width: 50%;}
 span.country {width: 18%;}
 span.type {width: 30%;}
 span.state, span.notification {width: 25%;}
 span.execution-date {width: 13%;}
+span.email {width: 38%;}
 
-
+h5.above-list {
+  float: left;
+  clear: left;
+  margin-top: 20px;
+  margin-bottom: 0px;
+}
 
 table {
   color: #4F4F4F;

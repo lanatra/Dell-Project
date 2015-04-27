@@ -4,9 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 import Domain.*;
-/**
- * Created by Lasse on 09-04-2015.
- */
+
 public class UserMapper {
 
 
@@ -154,9 +152,9 @@ public class UserMapper {
                 while (rs.next()) {
                     UserCollection.add(new User(rs.getInt(1),
                             rs.getString(2),
-                            rs.getString(5),
                             rs.getString(3),
                             rs.getString(4),
+                            rs.getString(5),
                             rs.getInt(6)
                     ));
                 }
