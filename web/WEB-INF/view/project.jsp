@@ -76,26 +76,49 @@
                         <p class="instructions">Upload your images and documents, one by one.</p>
                         <c:forEach items="${poes}" var="poe" varStatus="ite" >
                             <c:if test="${poe.getF_deletion_date() == 0}">
-                            <div class="proof-container">
-                                <c:if test="${poe.getFiletype() == 'jpg' ||
-                                    poe.getFiletype() == 'png' ||
-                                    poe.getFiletype() == 'jpeg' ||
-                                    poe.getFiletype() == 'gif' ||
-                                    poe.getFiletype() == 'bmp'}">
-                                    <div class="proof" style="background-image: url(/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>)">
-                                        <a class="fancybox" rel="<c:out value='${poe.getProj_id()}'></c:out>" href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>"><div class="view-image"></div></a>
-                                        <div class="download-file"><a href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>?download=true">Download</a></div>
-                                    </div>
-                                </c:if>
-                                <span class="filename"><c:out value='${poe.getFilename()}'></c:out></span>
-                                <form action="/api/deleteFile" method="post" class="delete-files">
-                                    <input type="hidden" name="fileId" value="<c:out value='${poe.getId()}'></c:out>">
-                                    <input type="hidden" name="deleteFile" value="<c:out value='${poe.getF_date() > stages.get(stageIndex - 1).getDate() ? "true" : "false"}'></c:out>">
-                                    <input type="hidden" name="projectId" value="<c:out value='${project.getId()}'></c:out>">
-                                    <input type="hidden" name="fileName" value="<c:out value='${poe.getFilename()}'></c:out>">
-                                    <input type="submit" value="" class="delete-icon">
-                                </form>
-                            </div>
+                                <div class="proof-container <c:if test="${poe.getF_date() > stages.get(stageIndex).getDate()}"> new</c:if>">
+                                    <c:choose>
+                                        <c:when test="${poe.getFiletype() == 'jpg' || poe.getFiletype() == 'png' || poe.getFiletype() == 'jpeg' || poe.getFiletype() == 'gif' || poe.getFiletype() == 'bmp'}">
+                                            <div class="proof" style="background-image: url(/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>)">
+                                                <a class="fancybox" rel="<c:out value='${poe.getProj_id()}'></c:out>" href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>"><div class="view-image"></div></a>
+                                                <div class="download-file"><a href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>?download=true">Download</a></div>
+                                            </div>
+                                        </c:when>
+                                        <c:when test="${poe.getFiletype() == 'xlsx' || poe.getFiletype() == 'xls' || poe.getFiletype() == 'numbers' || poe.getFiletype() == 'xml'}">
+                                            <div class="proof excel">
+                                                <div class="icon-space"></div>
+                                                <div class="download-file"><a href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>?download=true">Download</a></div>
+                                            </div>
+                                        </c:when>
+                                        <c:when test="${poe.getFiletype() == 'zip' || poe.getFiletype() == 'rar' || poe.getFiletype() == 'tar' || poe.getFiletype() == 'dmg'}">
+                                            <div class="proof archive">
+                                                <div class="icon-space"></div>
+                                                <div class="download-file"><a href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>?download=true">Download</a></div>
+                                            </div>
+                                        </c:when>
+                                        <c:when test="${poe.getFiletype() == 'mp3' || poe.getFiletype() == 'flac' || poe.getFiletype() == 'm4a' || poe.getFiletype() == 'wav' || poe.getFiletype() == 'flv' || poe.getFiletype() == 'mov' || poe.getFiletype() == 'mp4' || poe.getFiletype() == 'mpeg' || poe.getFiletype() == 'avi' || poe.getFiletype() == 'mkv'}">
+                                            <div class="proof media">
+                                                <div class="icon-space"></div>
+                                                <div class="download-file"><a href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>?download=true">Download</a></div>
+                                            </div>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div class="proof document">
+                                                <div class="icon-space"></div>
+                                                <div class="download-file"><a href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>?download=true">Download</a></div>
+                                            </div>
+                                        </c:otherwise>
+                                    </c:choose>
+
+                                    <span class="filename"><c:out value='${poe.getFilename()}'></c:out></span>
+                                    <form action="/api/deleteFile" method="post" class="delete-files">
+                                        <input type="hidden" name="fileId" value="<c:out value='${poe.getId()}'></c:out>">
+                                        <input type="hidden" name="deleteFile" value="<c:out value='${poe.getF_date() > stages.get(stageIndex - 1).getDate() ? "true" : "false"}'></c:out>">
+                                        <input type="hidden" name="projectId" value="<c:out value='${project.getId()}'></c:out>">
+                                        <input type="hidden" name="fileName" value="<c:out value='${poe.getFilename()}'></c:out>">
+                                        <input type="submit" value="" class="delete-icon">
+                                    </form>
+                                </div>
                             </c:if>
                         </c:forEach>
                         <div class="new-image">

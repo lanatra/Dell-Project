@@ -8,9 +8,6 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Lasse on 22-04-2015.
- */
 public class PoeMapperTest {
 
     PoeMapper mapper;

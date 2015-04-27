@@ -27,5 +27,14 @@
     <orderEntry type="library" exported="" name="ojdbc7" level="project" />
     <orderEntry type="library" exported="" name="lib" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="GlassFish 4.1.01 - WebSocket" level="application_server_libraries" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/junit-4.7.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
