@@ -1,8 +1,5 @@
 package Domain;
 
-/**
- * Created by Lasse on 10-04-2015.
- */
 public class Company {
 
     int id;

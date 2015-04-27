@@ -2,6 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,6 +46,8 @@
   </script>
 </head>
 <body>
+<c:set var="uri" value="${pageContext.request.requestURI}" />
+<!--<c:out value="${pageContext.request.requestURI}" />-->
 
 <div class="header u-full-width">
   <div class="container">
@@ -63,11 +66,14 @@
     </div>
     <c:if test="${User.getCompany_id() == 1}">
         <div class="u-pull-right">
-          <a href="/create-company" class="project-request button-clear">Manage users</a>
+          <a href="/budgets" class="head-button <c:if test="${fn:contains(uri, 'create-company')}">active</c:if>">Budgets</a>
+          <a href="/users" class="head-button <c:if test="${fn:contains(uri, 'create-company')}">active</c:if>">Users</a>
+          <a href="/partners" class="head-button <c:if test="${fn:contains(uri, 'partner')}">active</c:if>">Partners</a>
+          <a href="/dashboard" class="head-button <c:if test="${fn:contains(uri, 'index')}">active</c:if>">Dashboard</a>
         </div>
         <div class="budget-label u-pull-left">
-            <span class="big">834 039 DKK</span>
-            <span class="desc">is left available in this quarter (1.1.2015 - 31.3.2015)</span>
+            <span class="big">834,039 &#8364</span>
+            <span class="desc">is left in FY15Q2</span>
         </div>
     </c:if>
     <c:if test="${User.getCompany_id() != 1}">
