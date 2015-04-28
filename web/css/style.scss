@@ -204,6 +204,14 @@ div.header{
 			font-size: 1.5em;
 			line-height: 1;
 			font-weight: lighter;
+		  	a {
+			  color: white;
+			}
+		  	strong {
+			  font-weight: normal;
+			  font-size: 13px;
+			  color: rgba(255,255,255,0.6);
+			}
 		}
 		span.desc {
 			font-size: 0.8em;
@@ -358,6 +366,10 @@ div.table-head, div.project-item {
   }
 }
 
+span.t-quarter {width: 10%;}
+span.t-year {width: 20%;}
+span.t-budget {width: 30%;}
+span.t-reserved {width: 13.3%;}
 span.id {width: 12%;}
 span.partner {width: 20%;}
 span.partner-name {width: 70%;}

@@ -113,6 +113,7 @@ public class Controller {
         return facade.getUserByCompanyId(company_id);
     }
     public ArrayList<User> getUsers() {return facade.getUsers();}
+    public User getUserByEmail(String email) {return facade.getUserByEmail(email);}
 
 
     //Project related

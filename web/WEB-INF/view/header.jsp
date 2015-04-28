@@ -67,7 +67,7 @@
     </div>
     <c:if test="${User.getCompany_id() == 1}">
         <div class="u-pull-right">
-          <a href="/budgets" class="head-button <c:if test="${fn:contains(uri, 'create-company')}">active</c:if>">Budgets</a>
+          <a href="/budgets" class="head-button <c:if test="${fn:contains(uri, 'budget')}">active</c:if>">Budgets</a>
           <a href="/users" class="head-button <c:if test="${fn:contains(uri, 'user')}">active</c:if>">Users</a>
           <a href="/partners" class="head-button <c:if test="${fn:contains(uri, 'partner')}">active</c:if>">Partners</a>
           <a href="/dashboard" class="head-button <c:if test="${fn:contains(uri, 'index')}">active</c:if>">Dashboard</a>
@@ -75,11 +75,11 @@
         <div class="budget-label u-pull-left">
 
             <% if (request.getAttribute("activeBudget") != null) { %>
-            <span class="big" style="color:white;"><c:out value="${activeBudget.get(0).getLeftAvailable()}"></c:out> EUR (<c:out value="${activeBudget.get(0).getReserved()}"></c:out> EUR reserved)</span>
+            <span class="big"><c:out value="${activeBudget.get(0).getLeftAvailable()}"></c:out>&#8364 <strong>(<c:out value="${activeBudget.get(0).getReserved()}"></c:out>&#8364 reserved)</strong></span>
             <span class="desc">is left available in this quarter</span>
             <% } else { %>
-            <span class="big"> <a href="/budget_view">Create a budget</a> </span>
-            <span class="desc">No budget available for this quarter, consider adding one by clicking the link above</span>
+            <span class="big"> <a href="/budget_view">Set budget</a> </span>
+            <span class="desc">No budget available</span>
             <% } %>
 
         </div>
