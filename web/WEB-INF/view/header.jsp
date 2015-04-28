@@ -66,8 +66,14 @@
           <a href="/create-company" class="project-request button-clear">Manage users</a>
         </div>
         <div class="budget-label u-pull-left">
-            <span class="big">834 039 DKK</span>
-            <span class="desc">is left available in this quarter (1.1.2015 - 31.3.2015)</span>
+            <% if (request.getAttribute("activeBudget") != null) { %>
+            <span class="big" style="color:white;"><c:out value="${activeBudget.get(0).getLeftAvailable()}"></c:out> EUR (<c:out value="${activeBudget.get(0).getReserved()}"></c:out> EUR reserved)</span>
+            <span class="desc">is left available in this quarter</span>
+            <% } else { %>
+            <span class="big"> <a href="/budget_view">Create a budget</a> </span>
+            <span class="desc">No budget available for this quarter, consider adding one by clicking the link above</span>
+            <% } %>
+
         </div>
     </c:if>
     <c:if test="${User.getCompany_id() != 1}">

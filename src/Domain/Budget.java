@@ -4,24 +4,18 @@ package Domain;
  * Created by Lasse on 27-04-2015.
  */
 public class Budget {
-    int id;
     int initial_budget;
     int year;
     int quarter;
-    int reimbursed;
     int reserved;
+    int reimbursed;
 
-    public Budget(int id, int initial_budget, int year, int quarter, int reimbursed, int reserved) {
-        this.id = id;
+    public Budget(int initial_budget, int year, int quarter, int reimbursed, int reserved) {
         this.initial_budget = initial_budget;
         this.year = year;
         this.quarter = quarter;
         this.reimbursed = reimbursed;
         this.reserved = reserved;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public int getInitial_budget() {
@@ -38,5 +32,13 @@ public class Budget {
 
     public int getReimbursed() {
         return reimbursed;
+    }
+
+    public int getReserved() {
+        return reserved;
+    }
+
+    public int getLeftAvailable() {
+        return initial_budget - reserved - reimbursed;
     }
 }

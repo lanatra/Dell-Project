@@ -1,5 +1,6 @@
 package Presentation;
 
+import Domain.Budget;
 import Domain.Company;
 import Domain.Controller;
 import Domain.User;
@@ -13,6 +14,7 @@ import java.io.*;
 import java.net.URLDecoder;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 @MultipartConfig
 public class PresentationServlet extends HttpServlet {
@@ -29,6 +31,8 @@ public class PresentationServlet extends HttpServlet {
 
             String userPath = request.getServletPath();
             System.out.println(userPath);
+
+            getActiveBudget(request, response, cont);
 
             if(userPath.indexOf("/resources/") == 0) {
                 serveResource(request, response, cont);
@@ -78,6 +82,8 @@ public class PresentationServlet extends HttpServlet {
         if (userObj != null)
             request.setAttribute("User", userObj); // passing user object to request
 
+        getActiveBudget(request, response, cont);
+
         switch (path) {
             case "/login":
                 login(request, response, cont);
@@ -117,6 +123,9 @@ public class PresentationServlet extends HttpServlet {
                 break;
             case "/createBudget":
                 createBudget(request, response, cont);
+                break;
+            case "/modifyBudget":
+                modifyBudget(request, response, cont);
                 break;
             default:
                 getDashboard(request, response, cont);
@@ -161,6 +170,7 @@ public class PresentationServlet extends HttpServlet {
             request.setAttribute("message", "Incorrect login");
             request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
         }
+
     }
 
     void getDashboard(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
@@ -429,7 +439,8 @@ public class PresentationServlet extends HttpServlet {
             cont.sendEmail("noobglivestream@gmail.com", "budget created", "hope this works!");
             getBudgetView(request, response, cont);
         } else {
-            //response.sendRedirect("/errorPage");
+            request.setAttribute("errorMes", "Quarter already exists, consider modifying the current budget or creating a new one.");
+            response.sendRedirect("/budget_view");
         }
     }
 
@@ -437,8 +448,35 @@ public class PresentationServlet extends HttpServlet {
 
         request.setAttribute("budgetCollection", cont.getAllBudgets());
 
-
+        getActiveBudget(request, response, cont);
 
         request.getRequestDispatcher("/WEB-INF/view/budget_view.jsp").forward(request, response);
     }
+
+    void getActiveBudget(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+
+        int currentQuarter = (currentMonth / 3 ) + 1;
+
+        ArrayList<Budget> budgets = cont.getActiveBudget(currentYear, currentQuarter);
+        if (budgets.isEmpty()) {
+            request.setAttribute("activeBudget", null);
+        } else {
+            request.setAttribute("activeBudget", cont.getActiveBudget(currentYear, currentQuarter));
+        }
+
+
+    }
+
+    void modifyBudget(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        int newBudget = Integer.parseInt(request.getParameter("newBudget"));
+        int year = Integer.parseInt(request.getParameter("year"));
+        int quarter = Integer.parseInt(request.getParameter("quarter"));
+
+        cont.modifyBudget(newBudget, year, quarter);
+
+        response.sendRedirect("/budget_view");
+    }
+
 }

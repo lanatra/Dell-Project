@@ -264,20 +264,20 @@ public class Controller {
         return facade.addBudget(year, quarter, budget);
     }
 
-    public boolean modifyBudget(int budget_id, int new_budget) {
-        return facade.modifyBudget(budget_id, new_budget);
+    public boolean modifyBudget(int new_budget, int year, int quarter) {
+        return facade.modifyBudget(new_budget, year, quarter);
     }
 
-    public ArrayList<Budget> getBudget(int budget_id) {
-        return facade.getBudget(budget_id);
+    public ArrayList<Budget> getActiveBudget(int year, int quarter) {
+        return facade.getActiveBudget(year, quarter);
     }
 
     public ArrayList<Budget> getAllBudgets() {
         return facade.getAllBudgets();
     }
 
-    public int getAvailableFunds(int budget_id) {
-        return facade.getAvailableFunds(budget_id);
+    public int getAvailableFunds(int year, int quarter) {
+        return facade.getAvailableFunds(year, quarter);
     }
 
 

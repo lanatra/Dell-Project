@@ -100,19 +100,19 @@ public class DatabaseFacade {
     return new BudgetMapper().addBudget(year, quarter, budget, getCon());
     }
 
-    public boolean modifyBudget(int budget_id, int new_budget) {
-    return new BudgetMapper().modifyBudget(budget_id, new_budget, getCon());
+    public boolean modifyBudget(int new_budget, int year, int quarter) {
+    return new BudgetMapper().modifyBudget(new_budget,year, quarter, getCon());
     }
 
-    public ArrayList<Budget> getBudget(int budget_id) {
-    return new BudgetMapper().getBudget(budget_id, getCon());
+    public ArrayList<Budget> getActiveBudget(int year, int quarter) {
+    return new BudgetMapper().getActiveBudget(year, quarter, getCon());
     }
 
     public ArrayList<Budget> getAllBudgets() {
         return new BudgetMapper().getAllBudgets(getCon());
     }
 
-    public int getAvailableFunds(int budget_id) {
-        return new BudgetMapper().getAvailableFunds(budget_id, getCon());
+    public int getAvailableFunds(int year, int quarter) {
+        return new BudgetMapper().getAvailableFunds(year, quarter, getCon());
     }
 }
