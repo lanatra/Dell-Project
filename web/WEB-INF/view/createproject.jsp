@@ -12,7 +12,11 @@
 
   <form action="/project-request" method="post">
     <span><c:out value="${User.getCompany().getName()}" /> is requesting</span>
-    <input class="amount" name="budget" type="text" placeholder="Amount"/>
+    <div class="amount-box">
+      <span class="small-label">Euro is binding currency</span>
+      <input class="amount" name="budget" type="text" placeholder="Amount"/>
+      <span class="euro-label">&#8364</span>
+    </div>
     <span>for</span>
     <select name="type" id="type">
       <option value="Web Campaign">Web campaign</option>

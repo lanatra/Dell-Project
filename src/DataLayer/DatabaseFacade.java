@@ -22,6 +22,10 @@ public class DatabaseFacade {
         return new ProjectMapper().createProjectRequest(budget, project_body, user, project_type, execution_date, getCon());
 
     }
+    public ArrayList<Project> getProjectsByCompanyId(int company_id) {
+        return new ProjectMapper().getProjectsByCompanyId(company_id, getCon());
+    }
+
     public boolean changeProjectStatus(int project_id, String new_status, int companyId, int userId) {
         return new ProjectMapper().changeProjectStatus(project_id, new_status, companyId, userId, getCon());
     }
@@ -92,6 +96,13 @@ public class DatabaseFacade {
     public boolean createUser(String name, String user_role, String user_email, String password, int company_id) {
         return new UserMapper().createUser(name, user_role, user_email, password, company_id, getCon());
     }
+    public ArrayList<User> getUserByCompanyId(int company_id) {
+        return new UserMapper().getUserByCompanyId(company_id, getCon());
+    }
+
+    public ArrayList<User> getUsers() {
+        return new UserMapper().getUsers(getCon());
+    }
 
     // POE
     public boolean addPoeFile(int project_id, String filename, int user_id, String filetype, int stage) {
@@ -109,6 +120,24 @@ public class DatabaseFacade {
         return new PoeMapper().markDeletePoe(fileId, getCon());
     }
 
+    // BUDGET
+    public boolean addBudget(int year, int quarter, int budget) {
+    return new BudgetMapper().addBudget(year, quarter, budget, getCon());
+    }
 
+    public boolean modifyBudget(int new_budget, int year, int quarter) {
+    return new BudgetMapper().modifyBudget(new_budget,year, quarter, getCon());
+    }
 
+    public ArrayList<Budget> getActiveBudget(int year, int quarter) {
+    return new BudgetMapper().getActiveBudget(year, quarter, getCon());
+    }
+
+    public ArrayList<Budget> getAllBudgets() {
+        return new BudgetMapper().getAllBudgets(getCon());
+    }
+
+    public int getAvailableFunds(int year, int quarter) {
+        return new BudgetMapper().getAvailableFunds(year, quarter, getCon());
+    }
 }

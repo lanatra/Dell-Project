@@ -1,11 +1,13 @@
 package Domain;
 
+import DataLayer.BudgetMapper;
 import DataLayer.DatabaseFacade;
 
 
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.sql.Connection;
 import java.sql.Timestamp;
 
 import java.util.ArrayList;
@@ -107,7 +109,10 @@ public class Controller {
    //Readers
     //User related
     public User getUserById(int user_id) { return facade.getUserById(user_id); }
-
+    public ArrayList<User> getUserByCompanyId(int company_id) {
+        return facade.getUserByCompanyId(company_id);
+    }
+    public ArrayList<User> getUsers() {return facade.getUsers();}
 
 
     //Project related
@@ -154,6 +159,11 @@ public class Controller {
 
     //public boolean changeProjectStatus(String project_id, String new_status, String usertype) { return facade.verifyProjectRequest(project_id, new_status, usertype); }
     public int[] getStatusCounts(int companyId) { return facade.getStatusCounts(companyId); }
+
+
+    public ArrayList<Project> getProjectsByCompanyId(int company_id) {
+        return facade.getProjectsByCompanyId(company_id);
+    }
 
     public Company getCompanyById(int id) { return facade.getCompanyById(id); }
 
@@ -289,4 +299,29 @@ public class Controller {
         return JSONTranslator.stringArrayList(facade.getDistinctTypes(query, companyId));
     }
 
+    // BUDGETSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+    public boolean addBudget(int year, int quarter, int budget) {
+        return facade.addBudget(year, quarter, budget);
+    }
+
+    public boolean modifyBudget(int new_budget, int year, int quarter) {
+        return facade.modifyBudget(new_budget, year, quarter);
+    }
+
+    public ArrayList<Budget> getActiveBudget(int year, int quarter) {
+        return facade.getActiveBudget(year, quarter);
+    }
+
+    public ArrayList<Budget> getAllBudgets() {
+        return facade.getAllBudgets();
+    }
+
+    public int getAvailableFunds(int year, int quarter) {
+        return facade.getAvailableFunds(year, quarter);
+    }
+
+
+
 }
+
+

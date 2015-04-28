@@ -710,4 +710,53 @@ public class ProjectMapper {
     }
 
 
+    public ArrayList<Project> getProjectsByCompanyId(int company_id, Connection con) {
+        String SQL = "select * from projects where company_id = ?";
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        ArrayList<Project> ProjectCollection = new ArrayList<>();
+
+
+        try {
+            statement = con.prepareStatement(SQL);
+
+            statement.setInt(1, company_id);
+
+            rs = statement.executeQuery();
+
+            while (rs.next()) {
+                ProjectCollection.add(new Project(
+                                rs.getInt(1),
+                                rs.getTimestamp(2),
+                                rs.getTimestamp(3),
+                                rs.getInt(4),
+                                rs.getInt(5),
+                                rs.getString(6),
+                                rs.getInt(7),
+                                rs.getString(8),
+                                rs.getTimestamp(9),
+                                rs.getTimestamp(10),
+                                rs.getTimestamp(11),
+                                rs.getBoolean(12),
+                                rs.getBoolean(13),
+                                rs.getString(14),
+                                rs.getString(15)
+                ));
+            }
+
+
+
+        } catch (Exception e) {
+            System.out.println("error in projectmapperrerr get by company id method" );
+        }finally {
+            if (rs != null) try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
+        }
+
+
+        return ProjectCollection;
+    }
+
+
 }

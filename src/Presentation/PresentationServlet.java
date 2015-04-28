@@ -1,5 +1,6 @@
 package Presentation;
 
+import Domain.Budget;
 import Domain.Company;
 import Domain.Controller;
 import Domain.User;
@@ -10,9 +11,11 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.*;
 import java.io.*;
+import java.lang.reflect.Array;
 import java.net.URLDecoder;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 @MultipartConfig
 public class PresentationServlet extends HttpServlet {
@@ -30,6 +33,8 @@ public class PresentationServlet extends HttpServlet {
             String userPath = request.getServletPath();
             System.out.println(userPath);
 
+            getActiveBudget(request, response, cont);
+
             if(userPath.indexOf("/resources/") == 0) {
                 serveResource(request, response, cont);
             } else {
@@ -37,6 +42,18 @@ public class PresentationServlet extends HttpServlet {
                 switch (userPath) {
                     case "/dashboard":
                         getDashboard(request, response, cont);
+                        break;
+                    case "/partners":
+                        getPartners(request, response, cont);
+                        break;
+                    case "/partner":
+                        getPartnerView(request, response, cont);
+                        break;
+                    case "/users":
+                        getUsers(request, response, cont);
+                        break;
+                    case "/user":
+                        getUserView(request, response, cont);
                         break;
                     case "/project-request":
                         request.getRequestDispatcher("/WEB-INF/view/createproject.jsp").forward(request, response);
@@ -57,9 +74,14 @@ public class PresentationServlet extends HttpServlet {
                         break;
                     case "/getTypes":
                         getDistinctTypes(request, response, cont);
+                    case "/create-user":
+                        getCreateUserView(request, response, cont);
                         break;
                     case "/logout":
                         logout(request, response, cont);
+                        break;
+                    case "/budget_view":
+                        getBudgetView(request, response, cont);
                         break;
                     default:
                         response.sendRedirect("/dashboard");
@@ -85,6 +107,8 @@ public class PresentationServlet extends HttpServlet {
         Object userObj = request.getSession().getAttribute("User");
         if (userObj != null)
             request.setAttribute("User", userObj); // passing user object to request
+
+        getActiveBudget(request, response, cont);
 
         switch (path) {
             case "/login":
@@ -123,6 +147,12 @@ public class PresentationServlet extends HttpServlet {
             case "/createUser":
                 createUser(request, response, cont);
                 break;
+            case "/createBudget":
+                createBudget(request, response, cont);
+                break;
+            case "/modifyBudget":
+                modifyBudget(request, response, cont);
+                break;
             default:
                 getDashboard(request, response, cont);
         }
@@ -160,12 +190,11 @@ public class PresentationServlet extends HttpServlet {
         if (user != null) {
             request.getSession().setAttribute("User", user);
             response.sendRedirect("/dashboard");
-            //request.setAttribute("User", user);
-            //getDashboard(request, response, cont);
         } else {
             request.setAttribute("message", "Incorrect login");
             request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
         }
+
     }
 
     void getDashboard(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
@@ -183,9 +212,32 @@ public class PresentationServlet extends HttpServlet {
         else
             request.setAttribute("projects", cont.getProjectsByState("waitingForAction", user.getCompany_id()));
 
+
         request.setAttribute("statusCount", cont.getStatusCounts(user.getCompany_id()));
 
         request.getRequestDispatcher("/WEB-INF/view/index.jsp").forward(request, response);
+    }
+
+    void getPartners(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        System.out.println("getPartners");
+        User user = (User) request.getAttribute("User");
+        if (user.getCompany_id() != 1) {
+            response.sendRedirect("/dashboard");
+        } else {
+            request.setAttribute("partners", cont.getCompanies());
+            request.getRequestDispatcher("/WEB-INF/view/partners.jsp").forward(request, response);
+        }
+    }
+
+    void getUsers(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        System.out.println("getUsers");
+        User user = (User) request.getAttribute("User");
+        if (user.getCompany_id() != 1) {
+            response.sendRedirect("/dashboard");
+        } else {
+            request.setAttribute("users", cont.getUsers());
+            request.getRequestDispatcher("/WEB-INF/view/users.jsp").forward(request, response);
+        }
     }
 
     void getProjectView(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
@@ -205,6 +257,34 @@ public class PresentationServlet extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/view/project.jsp").forward(request, response);
     }
 
+    void getPartnerView(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        System.out.println("getPartnerView");
+        User user = (User) request.getAttribute("User");
+        if (user.getCompany_id() != 1) {
+            response.sendRedirect("/dashboard");
+        } else {
+            int partnerId = Integer.parseInt(request.getParameter("id"));
+            request.setAttribute("partner", cont.getCompanyById(partnerId));
+            request.setAttribute("users", cont.getUserByCompanyId(partnerId));
+            request.setAttribute("projects", cont.getProjectsByCompanyId(partnerId));
+
+            request.getRequestDispatcher("/WEB-INF/view/partner.jsp").forward(request, response);
+        }
+    }
+
+    void getUserView(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        System.out.println("getUserView");
+        User user = (User) request.getAttribute("User");
+        if (user.getCompany_id() != 1) {
+            response.sendRedirect("/dashboard");
+        } else {
+            int userId = Integer.parseInt(request.getParameter("id"));
+            request.setAttribute("user", cont.getUserById(userId));
+
+            request.getRequestDispatcher("/WEB-INF/view/user.jsp").forward(request, response);
+        }
+    }
+
     void postMessage(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
         System.out.println("postMessage");
 
@@ -218,7 +298,6 @@ public class PresentationServlet extends HttpServlet {
 
         String body = request.getParameter("body");
 
-        
 
         out.println(cont.postMessage(userId, projectId, body, companyId));
     }
@@ -329,6 +408,12 @@ public class PresentationServlet extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/view/create-company.jsp").forward(request, response);
     }
 
+    void getCreateUserView(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        ArrayList<Company> companies = cont.getCompanies();
+        request.setAttribute("companies", companies);
+        request.getRequestDispatcher("/WEB-INF/view/create-user.jsp").forward(request, response);
+    }
+
     void createCompany(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
         String company_name = request.getParameter("companyName");
         String country_code = request.getParameter("countryCode");
@@ -369,9 +454,7 @@ public class PresentationServlet extends HttpServlet {
         out.flush();
         out.close();
 
-
-         response.sendRedirect("/");
-
+        response.sendRedirect("/");
     }
 
     void serveResource(HttpServletRequest request, HttpServletResponse response, Controller cont) {
@@ -379,7 +462,14 @@ public class PresentationServlet extends HttpServlet {
             String userpath = request.getServletPath();
             boolean download = Boolean.parseBoolean(request.getParameter("download"));
 
-            String filename = System.getenv("POE_FOLDER") + File.separator + userpath.split("/")[2] + File.separator + userpath.split("/")[3];
+            String[] path = userpath.split("/");
+            String filename = System.getenv("POE_FOLDER");
+
+            for (int i=2; i < path.length; i++) {
+                filename+= File.separator + path[i];
+            }
+
+            //String filename = System.getenv("POE_FOLDER") + File.separator + userpath.split("/")[2] + File.separator + userpath.split("/")[3];
             File file = new File(filename);
 
             if(download) {
@@ -431,10 +521,33 @@ public class PresentationServlet extends HttpServlet {
         }
         cont.createUser(name, role, email, password, company_id);
 
-        response.sendRedirect("/create-company");
-
+        response.sendRedirect("/create-user");
 
     }
+
+    void createBudget(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        int year = Integer.parseInt(request.getParameter("year"));
+        int quarter = Integer.parseInt(request.getParameter("quarter"));
+        int budget = Integer.parseInt(request.getParameter("initial_budget"));
+
+        if (cont.addBudget(year, quarter, budget)) {
+            cont.sendEmail("noobglivestream@gmail.com", "budget created", "hope this works!");
+            getBudgetView(request, response, cont);
+        } else {
+            request.setAttribute("errorMes", "Quarter already exists, consider modifying the current budget or creating a new one.");
+            response.sendRedirect("/budget_view");
+        }
+    }
+
+    void getBudgetView(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+
+        request.setAttribute("budgetCollection", cont.getAllBudgets());
+
+        getActiveBudget(request, response, cont);
+
+        request.getRequestDispatcher("/WEB-INF/view/budget_view.jsp").forward(request, response);
+    }
+
 
     void getDistinctStatuses(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
         response.setContentType("application/json");
@@ -465,4 +578,31 @@ public class PresentationServlet extends HttpServlet {
         request.setAttribute("error", error);
         getDashboard(request, response, cont);
     }
+
+    void getActiveBudget(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+
+        int currentQuarter = (currentMonth / 3 ) + 1;
+
+        ArrayList<Budget> budgets = cont.getActiveBudget(currentYear, currentQuarter);
+        if (budgets.isEmpty()) {
+            request.setAttribute("activeBudget", null);
+        } else {
+            request.setAttribute("activeBudget", cont.getActiveBudget(currentYear, currentQuarter));
+        }
+
+
+    }
+
+    void modifyBudget(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        int newBudget = Integer.parseInt(request.getParameter("newBudget"));
+        int year = Integer.parseInt(request.getParameter("year"));
+        int quarter = Integer.parseInt(request.getParameter("quarter"));
+
+        cont.modifyBudget(newBudget, year, quarter);
+
+        response.sendRedirect("/budget_view");
+    }
+
 }

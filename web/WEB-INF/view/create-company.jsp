@@ -10,10 +10,10 @@
 
 <div class="container">
 <div class="big-paper">
-    <h2>Register new company</h2>
+    <h2>Register new partner</h2>
     <form action="/api/createCompany" method="post">
         <div class="input-group">
-            <span>Name of the company</span>
+            <span>Name of the partner</span>
             <input type="text" id="companyName" name="companyName">
         </div>
         <div class="input-group">
@@ -39,43 +39,10 @@
         <input class="button" type="submit" value="Create Company">
     </form>
 
-    <div style="float: left; clear: both; margin-top: 40px; padding-top: 30px; border-top: 1px solid #9F9F9F;">
-        <h2> Register new user </h2>
-        <form action="/createUser" method="post">
-            <div class="input-group">
-                <span>Select company</span>
-                <select name="selectedCompany">
-                    <c:forEach var="companies" items="${companies}">
-                        <option value="<c:out value='${companies.getId()}'></c:out>"><c:out value='${companies.getName()}'></c:out></option>
-                    </c:forEach>
-                </select>
-            </div>
-            <div class="input-group">
-                <span>Full name</span>
-                <input type="text" name="userName">
-            </div>
-            <div class="input-group">
-                <span>Password</span>
-                <input type="password" name="password">
-            </div>
-            <div class="input-group">
-                <span>Email</span>
-                <input type="email" name="userEmail">
-            </div>
-            <div class="input-group">
-                <span>User type</span>
-                <select name="role">
-                    <option value="Partner">Partner</option>
-                    <option value="Dell">Dell</option>
-                </select>
-            </div>
-
-            <input class="button" type="submit" value="Register User">
-        </form>
-    </div>
-
     </div>
 </div>
+
+
 
 
 </body>
