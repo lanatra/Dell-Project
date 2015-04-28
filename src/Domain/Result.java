@@ -6,23 +6,23 @@ package Domain;
 public class Result {
 
     public String type;
-    public String query;
     public int id;
     public String body;
+    public int rating;
 
-    public Result(String type, String query, int id, String body) {
+    public Result(String type, int id, String body, int rating) {
         this.type = type;
-        this.query = query;
         this.id = id;
         this.body = body;
+        this.rating = rating;
     }
 
     public String getType() {
         return type;
     }
 
-    public String getQuery() {
-        return query;
+    public int getRating() {
+        return rating;
     }
 
     public int getId() {

@@ -113,6 +113,8 @@ public class Controller {
     //Project related
     public DisplayProject getProjectById(int id, int companyId) {
         DisplayProject dp = facade.getProjectById(id, companyId);
+        if(dp == null)
+            return null;
         if((companyId == 1 && dp.isUnread_admin()) || (companyId != 1 && dp.isUnread_partner()))
             facade.markRead(id, companyId);
         return  dp; }
@@ -122,6 +124,33 @@ public class Controller {
 
     public String postMessage(int userId, int projId, String body, int companyId) { return processMessage(facade.postMessage(userId, projId, body, companyId)).toHTML();}
     public ArrayList getProjectsByState(String state, int companyId) { return  facade.getProjectsByState(state, companyId); }
+    public ArrayList getProjectsByType(String type, int companyId) { return  facade.getProjectsByType(type, companyId); }
+    public ArrayList getProjectsByCompanyName(String companyName, int companyId) { return  facade.getProjectsByCompanyName(companyName, companyId); }
+
+    //Search
+    public ArrayList search(String q, int companyId) {
+        ArrayList<Result> res = facade.search(q, companyId);
+        ArrayList<ResultsContainer> container = new ArrayList<>();
+        String t;
+        boolean skip = false;
+        for (Result r : res) {
+            skip = false;
+            t = r.getType();
+            for (int i = 0; i < container.size(); i++) {
+                if(container.get(i).getType().equals(t)) {
+                    container.get(i).getContainer().add(r);
+                    skip = true;
+                    break;
+                }
+            }
+            if(skip)
+                continue;
+            container.add(new ResultsContainer(t));
+            container.get(container.size() - 1).getContainer().add(r);
+        }
+
+        return container;
+    }
 
     //public boolean changeProjectStatus(String project_id, String new_status, String usertype) { return facade.verifyProjectRequest(project_id, new_status, usertype); }
     public int[] getStatusCounts(int companyId) { return facade.getStatusCounts(companyId); }
@@ -144,6 +173,9 @@ public class Controller {
     // Companies
     public ArrayList<Company> getCompanies() {
         return facade.getCompanies();
+    }
+    public String getCompanyNames(String query, int companyId) {
+        return JSONTranslator.stringArrayList(facade.getCompanyNames(query, companyId));
     }
 
     public ArrayList proccessStages(ArrayList stages) {
@@ -248,6 +280,13 @@ public class Controller {
 
     public void sendEmail(String recipient, String subject, String body) {
         new Notifications().sendEmail(recipient, subject, body);
+    }
+
+    public String getDistinctStatuses(String query) {
+        return JSONTranslator.stringArrayList(facade.getDistinctStatuses(query));
+    }
+    public String getDistinctTypes(String query, int companyId) {
+        return JSONTranslator.stringArrayList(facade.getDistinctTypes(query, companyId));
     }
 
 }

@@ -7,6 +7,6 @@
         <c:out value="${messages.get(messageIndex).getCreation_date_millis()}"></c:out>
     </span>
     <div class="inner-bubble">
-        <p><c:out value="${messages.get(messageIndex).getBody()}"></c:out></p>
+        <c:out value="${messages.get(messageIndex).getBody()}" escapeXml="false"></c:out>
     </div>
 </div>

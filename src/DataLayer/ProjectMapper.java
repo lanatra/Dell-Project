@@ -4,9 +4,9 @@ import Domain.DisplayProject;
 import Domain.Project;
 import Domain.Stage;
 import Domain.User;
+import Domain.Result;
 
 import javax.xml.crypto.Data;
-import javax.xml.transform.Result;
 import java.security.interfaces.RSAKey;
 import java.sql.*;
 import java.util.ArrayList;
@@ -360,7 +360,107 @@ public class ProjectMapper {
                         rs.getBoolean(13),
                         rs.getString(14),
                         rs.getString(15)
-                        ));
+                ));
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error in UserMapper");
+        } finally {
+            if (rs != null) try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
+        }
+
+
+        return displayProjects;
+    }
+
+    public ArrayList getProjectsByType(String type, int companyId, Connection con) {
+        ArrayList<DisplayProject> displayProjects = new ArrayList<>();
+
+        String SQL;
+        if(companyId == 1)
+            SQL = "select * from projects where type=? order by last_change_partner DESC, start_time DESC";
+        else
+            SQL = "select * from projects where type=? and company_id=? order by case when last_change_admin is null then 0 else 1 end DESC, last_change_admin DESC, start_time DESC";
+
+
+
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+
+        try {
+            statement = con.prepareStatement(SQL);
+            statement.setString(1, type);
+            if(companyId != 1)
+                statement.setInt(2, companyId);
+
+            rs = statement.executeQuery();
+            while (rs.next()) {
+                displayProjects.add(new DisplayProject(rs.getInt(1),
+                        rs.getTimestamp(2),
+                        rs.getTimestamp(3),
+                        rs.getInt(4),
+                        rs.getInt(5),
+                        rs.getString(6),
+                        rs.getInt(7),
+                        rs.getString(8),
+                        rs.getTimestamp(9),
+                        rs.getTimestamp(10),
+                        rs.getTimestamp(11),
+                        rs.getBoolean(12),
+                        rs.getBoolean(13),
+                        rs.getString(14),
+                        rs.getString(15)
+                ));
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error in UserMapper");
+        } finally {
+            if (rs != null) try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
+        }
+
+
+        return displayProjects;
+    }
+
+    public ArrayList getProjectsByCompanyName(String companyName, int companyId, Connection con) {
+        ArrayList<DisplayProject> displayProjects = new ArrayList<>();
+
+        DatabaseFacade facade = new DatabaseFacade();
+        int id = facade.getCompanyIdByName(companyName);
+
+        String SQL = "select * from projects where company_id=? order by last_change_partner DESC, start_time DESC";
+
+
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+
+        try {
+            statement = con.prepareStatement(SQL);
+            statement.setInt(1, id);
+
+            rs = statement.executeQuery();
+            while (rs.next()) {
+                displayProjects.add(new DisplayProject(rs.getInt(1),
+                        rs.getTimestamp(2),
+                        rs.getTimestamp(3),
+                        rs.getInt(4),
+                        rs.getInt(5),
+                        rs.getString(6),
+                        rs.getInt(7),
+                        rs.getString(8),
+                        rs.getTimestamp(9),
+                        rs.getTimestamp(10),
+                        rs.getTimestamp(11),
+                        rs.getBoolean(12),
+                        rs.getBoolean(13),
+                        rs.getString(14),
+                        rs.getString(15)
+                ));
             }
 
         } catch (Exception e) {
@@ -489,6 +589,124 @@ public class ProjectMapper {
             if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
             if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
         }
+    }
+
+    public ArrayList getDistinctStatuses(String query, Connection con) {
+        ArrayList<String> results = new ArrayList<>();
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        String SQL = "select DISTINCT status\n" +
+                "from projects\n" +
+                "where lower(status) like lower('%" + query + "%')\n";
+
+        System.out.println(SQL);
+
+        try {
+            statement = con.prepareStatement(SQL);
+            rs = statement.executeQuery();
+            while (rs.next()) {
+                results.add(rs.getString(1));
+            }
+        } catch (Exception e) {
+            System.out.println("Error in ProjectMapper - getDistinctStatuses()");
+        } finally {
+            if (rs != null) try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
+        }
+
+        return results;
+    }
+
+    public ArrayList getDistinctTypes(String query, int companyId, Connection con) {
+        ArrayList<String> results = new ArrayList<>();
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        String SQL;
+        if(companyId != 1)
+            SQL = "select DISTINCT type\n" +
+                "from projects\n" +
+                "where company_id=? lower(type) like lower('%" + query + "%')\n";
+        else
+            SQL = "select DISTINCT type\n" +
+                    "from projects\n" +
+                    "where lower(type) like lower('%" + query + "%')\n";
+
+        System.out.println(SQL);
+
+        try {
+            statement = con.prepareStatement(SQL);
+            if(companyId != 1)
+                statement.setInt(1, companyId);
+            rs = statement.executeQuery();
+            while (rs.next()) {
+                results.add(rs.getString(1));
+            }
+        } catch (Exception e) {
+            System.out.println("Error in ProjectMapper - getDistinctStatuses()");
+        } finally {
+            if (rs != null) try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
+        }
+
+        return results;
+    }
+
+    public ArrayList search(String query, int companyId, Connection con) {
+        ArrayList<Result> results = new ArrayList<>();
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        String SQL;
+
+        if(companyId == 1)
+            SQL = "    select 'Project' OriginatingTable, id, body, utl_match.jaro_winkler_similarity(body, '" + query + "') Ayy, 1\n" +
+                "    from projects\n" +
+                "    where lower(body) like lower('%" + query + "%')\n" +
+                "    union all\n" +
+                "    select 'Message', project_id, body, utl_match.jaro_winkler_similarity(body, '" + query + "') Ayy, 2\n" +
+                "    from messages\n" +
+                "    where lower(body) like lower('%" + query + "%')\n" +
+                "    union all\n" +
+                "    select 'User', id, name, utl_match.jaro_winkler_similarity(name, '" + query + "') Ayy, 3\n" +
+                "    from users\n" +
+                "    where lower(name) like lower('%" + query + "%')\n" +
+                "    ORDER by 5 ASC, Ayy DESC";
+        else
+            SQL = "    select 'Project' OriginatingTable, id, body, utl_match.jaro_winkler_similarity(body, '" + query + "') Ayy, 1\n" +
+                    "    from projects\n" +
+                    "    where lower(body) like lower('%" + query + "%') and company_id=" + companyId +"\n" +
+                    "    union all\n" +
+                    "    select 'Message', project_id, body, utl_match.jaro_winkler_similarity(body, '" + query + "') Ayy, 2\n" +
+                    "    from messages\n" +
+                    "    where lower(body) like lower('%" + query + "%') and author_id IN (SELECT id from users where company_id=" + companyId + ") \n" +
+                    "    union all\n" +
+                    "    select 'User', id, name, utl_match.jaro_winkler_similarity(name, '" + query + "') Ayy, 3\n" +
+                    "    from users\n" +
+                    "    where lower(name) like lower('%" + query + "t%') and company_id=" + companyId +"\n" +
+                    "    ORDER by 5 ASC, Ayy DESC";
+
+
+        try {
+            statement = con.prepareStatement(SQL);
+            rs = statement.executeQuery();
+            while (rs.next()) {
+                results.add(new Result(
+                        rs.getString(1),
+                        rs.getInt(2),
+                        rs.getString(3),
+                        rs.getInt(4)
+                ));
+            }
+        } catch (Exception e) {
+            System.out.println("Error in ProjectMapper - search()");
+        } finally {
+            if (rs != null) try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
+        }
+
+        return results;
     }
 
 

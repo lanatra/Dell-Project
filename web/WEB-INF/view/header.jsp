@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="css/jquery.fancybox.css" type="text/css" media="screen" />
   <script type="text/javascript" src="js/jquery.fancybox.pack.js"></script>
   <script type="text/javascript" src="js/moment.js"></script>
+  <script type="text/javascript" src="js/typeahead.bundle.min.js"></script>
   <link href="css/normalize.css" rel="stylesheet" media="all">
   <link href="css/skeleton.css" rel="stylesheet" media="all">
   <link href="css/style.css" rel="stylesheet" media="all">

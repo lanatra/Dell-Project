@@ -131,6 +131,66 @@ public class CompanyMapper {
 
         return companies;
     }
+    public ArrayList getCompanyNames(String query, int company_id, Connection con) {
+        ArrayList<String> results = new ArrayList<>();
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        String SQL = "select DISTINCT name\n" +
+                "from companies\n" +
+                "where lower(name) like lower('%" + query + "%')\n";
 
+        System.out.println(SQL);
+
+        try {
+            statement = con.prepareStatement(SQL);
+            rs = statement.executeQuery();
+            while (rs.next()) {
+                results.add(rs.getString(1));
+            }
+        } catch (Exception e) {
+            System.out.println("Error in ProjectMapper - getCompanyNames()");
+        } finally {
+            if (rs != null) try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
+        }
+
+        return results;
+    }
+
+    public int getCompanyIdByName(String name) {
+        Connection con = null;
+        try {
+            con = DatabaseConnection.getInstance().getConnection();
+        } catch (Exception e) { }
+
+        System.out.println("name getcompanyidbyname: " + name);
+
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        String SQL = "select id " +
+                "from companies " +
+                "where name=?";
+
+        int id = -1;
+
+        try {
+            statement = con.prepareStatement(SQL);
+            statement.setString(1, name);
+            rs = statement.executeQuery();
+            if (rs.next()) {
+                id = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Error in CompanyMapper - getCompanyIdByName()");
+        } finally {
+            if (rs != null) try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
+        }
+
+        return id;
+    }
 
 }

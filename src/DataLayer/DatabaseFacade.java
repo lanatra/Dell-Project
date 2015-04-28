@@ -37,6 +37,18 @@ public class DatabaseFacade {
     public ArrayList getProjectsByState(String state, int companyId) {
         return new ProjectMapper().getProjectsByState(state, companyId, getCon());
     }
+    public ArrayList getProjectsByType(String type, int companyId) {
+        return new ProjectMapper().getProjectsByType(type, companyId, getCon());
+    }
+    public ArrayList getProjectsByCompanyName(String companyName, int companyId) {
+        return new ProjectMapper().getProjectsByCompanyName(companyName, companyId, getCon());
+    }
+
+    //Search
+    public ArrayList search(String q, int companyId) {
+        return new ProjectMapper().search(q, companyId, getCon());
+    }
+
     public int[] getStatusCounts(int companyId) {
         return new ProjectMapper().getStatusCounts(companyId, getCon());
     }
@@ -53,6 +65,13 @@ public class DatabaseFacade {
         new ProjectMapper().changeReadStatus(1, project_id, company_id, getCon());
     }
 
+    public ArrayList getDistinctStatuses(String query) {
+        return new ProjectMapper().getDistinctStatuses(query, getCon());
+    }
+    public ArrayList getDistinctTypes(String query, int companyId) {
+        return new ProjectMapper().getDistinctTypes(query, companyId, getCon());
+    }
+
     // COMPANY
     public Company getCompanyById(int id) {
         return new CompanyMapper().getCompanyById(id, getCon());
@@ -63,6 +82,8 @@ public class DatabaseFacade {
     public void updateCompanyLogo(String filename, int id) { new CompanyMapper().updateCompanyLogo(filename, id, getCon()); }
 
     public ArrayList<Company> getCompanies() { return new CompanyMapper().getCompanies(getCon()); }
+    public ArrayList<Company> getCompanyNames(String query, int companyId) { return new CompanyMapper().getCompanyNames(query, companyId, getCon()); }
+    public int getCompanyIdByName(String name) {return new CompanyMapper().getCompanyIdByName(name);}
 
     // USER
     public User getUserByEmail(String email) {

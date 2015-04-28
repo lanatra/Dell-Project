@@ -21,7 +21,7 @@ public class Message {
         this.id = id;
         this.author_id = author_id;
         this.project_id = project_id;
-        this.body = body;
+        this.body = "<p>" + body.replaceAll("\\n","</p><p>")  + "</p>";
         this.creation_date = creation_date;
 
         if(creation_date != null) creation_date_millis = creation_date.getTime();

@@ -44,8 +44,19 @@ public class PresentationServlet extends HttpServlet {
                     case "/project":
                         getProjectView(request, response, cont);
                         break;
+                    case "/search":
+                        search(request, response, cont);
                     case "/create-company":
                         getCreateCompanyView(request, response, cont);
+                        break;
+                    case "/getCompanyNames":
+                        getCompanyNames(request, response, cont);
+                        break;
+                    case "/getStatuses":
+                        getDistinctStatuses(request, response, cont);
+                        break;
+                    case "/getTypes":
+                        getDistinctTypes(request, response, cont);
                         break;
                     case "/logout":
                         logout(request, response, cont);
@@ -161,10 +172,16 @@ public class PresentationServlet extends HttpServlet {
         System.out.println("getDashboard");
 
         User user = (User) request.getAttribute("User");
-        if(request.getParameter("state") == null)
-            request.setAttribute("projects", cont.getProjectsByState("waitingForAction", user.getCompany_id()));
+        System.out.println("state: " + request.getParameter("state"));
+        System.out.println("type: " + request.getParameter("type"));
+        if(request.getParameter("state") != null)
+            request.setAttribute("projects", cont.getProjectsByState(request.getParameter("state"), user.getCompany_id()));
+        else if (request.getParameter("type") != null)
+            request.setAttribute("projects", cont.getProjectsByType(request.getParameter("type"), user.getCompany_id()));
+        else if (request.getParameter("company") != null)
+            request.setAttribute("projects", cont.getProjectsByCompanyName(request.getParameter("company"), user.getCompany_id()));
         else
-            request.setAttribute("projects", cont.getProjectsByState(request.getParameter("state"), user.getCompany_id()));;
+            request.setAttribute("projects", cont.getProjectsByState("waitingForAction", user.getCompany_id()));
 
         request.setAttribute("statusCount", cont.getStatusCounts(user.getCompany_id()));
 
@@ -175,7 +192,12 @@ public class PresentationServlet extends HttpServlet {
         System.out.println("getProjectView");
         User user = (User) request.getAttribute("User");
         int projId = Integer.parseInt(request.getParameter("id"));
-        request.setAttribute("project", cont.getProjectById(projId, user.getCompany_id()));;
+        Object proj = cont.getProjectById(projId, user.getCompany_id());
+        if(proj == null) {
+            error("Project not found", request, response, cont);
+            return;
+        }
+        request.setAttribute("project", proj);
         request.setAttribute("messages", cont.getMessagesByProjectId(projId));
         request.setAttribute("stages", cont.getStagesByProjectId(projId));
         request.setAttribute("poes", cont.getPoe(projId));
@@ -189,7 +211,6 @@ public class PresentationServlet extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
-        String newLine = System.getProperty("line.separator");
 
         int userId = Integer.parseInt(request.getParameter("userId"));
         int companyId = Integer.parseInt(request.getParameter("companyId"));
@@ -413,5 +434,35 @@ public class PresentationServlet extends HttpServlet {
         response.sendRedirect("/create-company");
 
 
+    }
+
+    void getDistinctStatuses(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
+        out.print(cont.getDistinctStatuses(request.getParameter("query")));
+    }
+    void getDistinctTypes(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
+        User user = (User) request.getAttribute("User");
+        out.print(cont.getDistinctTypes(request.getParameter("query"), user.getCompany_id()));
+    }
+    void getCompanyNames(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
+        User user = (User) request.getAttribute("User");
+        out.print(cont.getCompanyNames(request.getParameter("query"), user.getCompany_id()));
+    }
+
+    void search(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        String q = request.getParameter("q");
+        User user = (User) request.getAttribute("User");
+        request.setAttribute("results", cont.search(q, user.getCompany_id()));
+        request.getRequestDispatcher("/WEB-INF/view/search.jsp").forward(request, response);
+    }
+
+    void error(String error, HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        request.setAttribute("error", error);
+        getDashboard(request, response, cont);
     }
 }
