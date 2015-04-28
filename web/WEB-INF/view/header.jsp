@@ -67,7 +67,7 @@
     <c:if test="${User.getCompany_id() == 1}">
         <div class="u-pull-right">
           <a href="/budgets" class="head-button <c:if test="${fn:contains(uri, 'create-company')}">active</c:if>">Budgets</a>
-          <a href="/users" class="head-button <c:if test="${fn:contains(uri, 'create-company')}">active</c:if>">Users</a>
+          <a href="/users" class="head-button <c:if test="${fn:contains(uri, 'user')}">active</c:if>">Users</a>
           <a href="/partners" class="head-button <c:if test="${fn:contains(uri, 'partner')}">active</c:if>">Partners</a>
           <a href="/dashboard" class="head-button <c:if test="${fn:contains(uri, 'index')}">active</c:if>">Dashboard</a>
         </div>

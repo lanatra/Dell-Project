@@ -169,12 +169,42 @@ public class UserMapper {
                 if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
             }
 
-
             return UserCollection;
+    }
+
+    public ArrayList<User> getUsers(Connection con) {
+
+        String SQL = "select * from users";
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        ArrayList<User> UserCollection = new ArrayList<>();
+
+
+        try {
+            statement = con.prepareStatement(SQL);
+            rs = statement.executeQuery();
+
+            while (rs.next()) {
+                UserCollection.add(new User(rs.getInt(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getInt(6)
+                ));
+            }
+
+
+
+        } catch (Exception e) {
+            System.out.println("error in UserMapper - getUsers");
+        }finally {
+            if (rs != null) try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
         }
 
-
-
-
+        return UserCollection;
+    }
 
 }

@@ -8,29 +8,14 @@
   <jsp:include page="header.jsp" />
 
   <div class="container" style="margin-top: 30px; padding-bottom: 30px;">
+      <h3 class="company-name"><c:out value='${user.getName()}' /></h3>
+      <p class="company-desc"><c:out value="${user.getEmail()}" /></p>
+
       <c:if test="${partner.getImg_filename() != null}" >
           <img class="company-image" src="/resources/companies/<c:out value='${partner.getId()}' />/<c:out value='${partner.getImg_filename()}' />" />
       </c:if>
-      <h3 class="company-name"><c:out value='${partner.getName()}' /></h3>
-      <p class="company-desc">You can see all <c:out value='${partner.getName()}' />'s projects below.</p>
+      <p class="company-desc">You can see all <c:out value='${user.getName()}' />'s projects below.</p>
 
-      <h5 class="above-list">Users</h5>
-      <div class="table-head">
-          <span class="id">ID</span>
-          <span class="user-name">Name</span>
-          <span class="email">Email</span>
-      </div>
-      <c:forEach var="user" items="${users}">
-          <a href="user?id=<c:out value="${user.getId()}" />">
-              <div class="project-item">
-                  <span class="id"><strong>#</strong><c:out value="${user.getId()}" /></span>
-                  <span class="user-name"><c:out value="${user.getName()}" /></span>
-                  <span class="email"><c:out value="${user.getEmail()}" /></span>
-              </div>
-          </a>
-      </c:forEach>
-
-      <h5 class="above-list">Projects</h5>
       <div class="table-head">
           <span class="id">ID</span>
           <span class="partner">Partner</span>

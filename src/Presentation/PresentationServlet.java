@@ -46,17 +46,26 @@ public class PresentationServlet extends HttpServlet {
                     case "/partners":
                         getPartners(request, response, cont);
                         break;
+                    case "/partner":
+                        getPartnerView(request, response, cont);
+                        break;
+                    case "/users":
+                        getUsers(request, response, cont);
+                        break;
+                    case "/user":
+                        getUserView(request, response, cont);
+                        break;
                     case "/project-request":
                         request.getRequestDispatcher("/WEB-INF/view/createproject.jsp").forward(request, response);
                         break;
                     case "/project":
                         getProjectView(request, response, cont);
                         break;
-                    case "/partner":
-                        getPartnerView(request, response, cont);
-                        break;
                     case "/create-company":
                         getCreateCompanyView(request, response, cont);
+                        break;
+                    case "/create-user":
+                        getCreateUserView(request, response, cont);
                         break;
                     case "/logout":
                         logout(request, response, cont);
@@ -171,8 +180,6 @@ public class PresentationServlet extends HttpServlet {
         if (user != null) {
             request.getSession().setAttribute("User", user);
             response.sendRedirect("/dashboard");
-            //request.setAttribute("User", user);
-            //getDashboard(request, response, cont);
         } else {
             request.setAttribute("message", "Incorrect login");
             request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
@@ -196,9 +203,24 @@ public class PresentationServlet extends HttpServlet {
 
     void getPartners(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
         System.out.println("getPartners");
+        User user = (User) request.getAttribute("User");
+        if (user.getCompany_id() != 1) {
+            response.sendRedirect("/dashboard");
+        } else {
+            request.setAttribute("partners", cont.getCompanies());
+            request.getRequestDispatcher("/WEB-INF/view/partners.jsp").forward(request, response);
+        }
+    }
 
-        request.setAttribute("partners", cont.getCompanies());
-        request.getRequestDispatcher("/WEB-INF/view/partners.jsp").forward(request, response);
+    void getUsers(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        System.out.println("getUsers");
+        User user = (User) request.getAttribute("User");
+        if (user.getCompany_id() != 1) {
+            response.sendRedirect("/dashboard");
+        } else {
+            request.setAttribute("users", cont.getUsers());
+            request.getRequestDispatcher("/WEB-INF/view/users.jsp").forward(request, response);
+        }
     }
 
     void getProjectView(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
@@ -215,13 +237,30 @@ public class PresentationServlet extends HttpServlet {
 
     void getPartnerView(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
         System.out.println("getPartnerView");
+        User user = (User) request.getAttribute("User");
+        if (user.getCompany_id() != 1) {
+            response.sendRedirect("/dashboard");
+        } else {
+            int partnerId = Integer.parseInt(request.getParameter("id"));
+            request.setAttribute("partner", cont.getCompanyById(partnerId));
+            request.setAttribute("users", cont.getUserByCompanyId(partnerId));
+            request.setAttribute("projects", cont.getProjectsByCompanyId(partnerId));
 
-        int partnerId = Integer.parseInt(request.getParameter("id"));
-        request.setAttribute("partner", cont.getCompanyById(partnerId));
-        request.setAttribute("users", cont.getUserByCompanyId(partnerId));
-        request.setAttribute("projects", cont.getProjectsByCompanyId(partnerId));
+            request.getRequestDispatcher("/WEB-INF/view/partner.jsp").forward(request, response);
+        }
+    }
 
-        request.getRequestDispatcher("/WEB-INF/view/partner.jsp").forward(request, response);
+    void getUserView(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        System.out.println("getUserView");
+        User user = (User) request.getAttribute("User");
+        if (user.getCompany_id() != 1) {
+            response.sendRedirect("/dashboard");
+        } else {
+            int userId = Integer.parseInt(request.getParameter("id"));
+            request.setAttribute("user", cont.getUserById(userId));
+
+            request.getRequestDispatcher("/WEB-INF/view/user.jsp").forward(request, response);
+        }
     }
 
     void postMessage(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
@@ -348,6 +387,12 @@ public class PresentationServlet extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/view/create-company.jsp").forward(request, response);
     }
 
+    void getCreateUserView(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        ArrayList<Company> companies = cont.getCompanies();
+        request.setAttribute("companies", companies);
+        request.getRequestDispatcher("/WEB-INF/view/create-user.jsp").forward(request, response);
+    }
+
     void createCompany(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
         String company_name = request.getParameter("companyName");
         String country_code = request.getParameter("countryCode");
@@ -455,7 +500,7 @@ public class PresentationServlet extends HttpServlet {
         }
         cont.createUser(name, role, email, password, company_id);
 
-        response.sendRedirect("/create-company");
+        response.sendRedirect("/create-user");
 
     }
 

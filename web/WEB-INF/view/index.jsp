@@ -43,8 +43,7 @@
 
   </div>
 
-  <div class="container" style="margin-top: 30px;">
-
+  <div class="container" style="margin-top: 30px; padding-bottom: 30px;">
       <div class="table-head">
           <span class="id">ID</span>
           <span class="partner">Partner</span>

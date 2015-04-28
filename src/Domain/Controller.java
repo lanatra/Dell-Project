@@ -112,6 +112,7 @@ public class Controller {
     public ArrayList<User> getUserByCompanyId(int company_id) {
         return facade.getUserByCompanyId(company_id);
     }
+    public ArrayList<User> getUsers() {return facade.getUsers();}
 
 
     //Project related
