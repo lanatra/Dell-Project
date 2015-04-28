@@ -2,6 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,6 +46,8 @@
   </script>
 </head>
 <body>
+<c:set var="uri" value="${pageContext.request.requestURI}" />
+<!--<c:out value="${pageContext.request.requestURI}" />-->
 
 <div class="header u-full-width">
   <div class="container">
@@ -63,9 +66,13 @@
     </div>
     <c:if test="${User.getCompany_id() == 1}">
         <div class="u-pull-right">
-          <a href="/create-company" class="project-request button-clear">Manage users</a>
+          <a href="/budgets" class="head-button <c:if test="${fn:contains(uri, 'create-company')}">active</c:if>">Budgets</a>
+          <a href="/users" class="head-button <c:if test="${fn:contains(uri, 'create-company')}">active</c:if>">Users</a>
+          <a href="/partners" class="head-button <c:if test="${fn:contains(uri, 'partner')}">active</c:if>">Partners</a>
+          <a href="/dashboard" class="head-button <c:if test="${fn:contains(uri, 'index')}">active</c:if>">Dashboard</a>
         </div>
         <div class="budget-label u-pull-left">
+
             <% if (request.getAttribute("activeBudget") != null) { %>
             <span class="big" style="color:white;"><c:out value="${activeBudget.get(0).getLeftAvailable()}"></c:out> EUR (<c:out value="${activeBudget.get(0).getReserved()}"></c:out> EUR reserved)</span>
             <span class="desc">is left available in this quarter</span>

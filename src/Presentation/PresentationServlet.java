@@ -11,6 +11,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.*;
 import java.io.*;
+import java.lang.reflect.Array;
 import java.net.URLDecoder;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -42,11 +43,17 @@ public class PresentationServlet extends HttpServlet {
                     case "/dashboard":
                         getDashboard(request, response, cont);
                         break;
+                    case "/partners":
+                        getPartners(request, response, cont);
+                        break;
                     case "/project-request":
                         request.getRequestDispatcher("/WEB-INF/view/createproject.jsp").forward(request, response);
                         break;
                     case "/project":
                         getProjectView(request, response, cont);
+                        break;
+                    case "/partner":
+                        getPartnerView(request, response, cont);
                         break;
                     case "/create-company":
                         getCreateCompanyView(request, response, cont);
@@ -180,11 +187,18 @@ public class PresentationServlet extends HttpServlet {
         if(request.getParameter("state") == null)
             request.setAttribute("projects", cont.getProjectsByState("waitingForAction", user.getCompany_id()));
         else
-            request.setAttribute("projects", cont.getProjectsByState(request.getParameter("state"), user.getCompany_id()));;
+            request.setAttribute("projects", cont.getProjectsByState(request.getParameter("state"), user.getCompany_id()));
 
         request.setAttribute("statusCount", cont.getStatusCounts(user.getCompany_id()));
 
         request.getRequestDispatcher("/WEB-INF/view/index.jsp").forward(request, response);
+    }
+
+    void getPartners(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        System.out.println("getPartners");
+
+        request.setAttribute("partners", cont.getCompanies());
+        request.getRequestDispatcher("/WEB-INF/view/partners.jsp").forward(request, response);
     }
 
     void getProjectView(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
@@ -197,6 +211,17 @@ public class PresentationServlet extends HttpServlet {
         request.setAttribute("poes", cont.getPoe(projId));
 
         request.getRequestDispatcher("/WEB-INF/view/project.jsp").forward(request, response);
+    }
+
+    void getPartnerView(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        System.out.println("getPartnerView");
+
+        int partnerId = Integer.parseInt(request.getParameter("id"));
+        request.setAttribute("partner", cont.getCompanyById(partnerId));
+        request.setAttribute("users", cont.getUserByCompanyId(partnerId));
+        request.setAttribute("projects", cont.getProjectsByCompanyId(partnerId));
+
+        request.getRequestDispatcher("/WEB-INF/view/partner.jsp").forward(request, response);
     }
 
     void postMessage(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
@@ -213,7 +238,6 @@ public class PresentationServlet extends HttpServlet {
 
         String body = request.getParameter("body");
 
-        
 
         out.println(cont.postMessage(userId, projectId, body, companyId));
     }
@@ -364,9 +388,7 @@ public class PresentationServlet extends HttpServlet {
         out.flush();
         out.close();
 
-
-         response.sendRedirect("/");
-
+        response.sendRedirect("/");
     }
 
     void serveResource(HttpServletRequest request, HttpServletResponse response, Controller cont) {
@@ -374,7 +396,14 @@ public class PresentationServlet extends HttpServlet {
             String userpath = request.getServletPath();
             boolean download = Boolean.parseBoolean(request.getParameter("download"));
 
-            String filename = System.getenv("POE_FOLDER") + File.separator + userpath.split("/")[2] + File.separator + userpath.split("/")[3];
+            String[] path = userpath.split("/");
+            String filename = System.getenv("POE_FOLDER");
+
+            for (int i=2; i < path.length; i++) {
+                filename+= File.separator + path[i];
+            }
+
+            //String filename = System.getenv("POE_FOLDER") + File.separator + userpath.split("/")[2] + File.separator + userpath.split("/")[3];
             File file = new File(filename);
 
             if(download) {

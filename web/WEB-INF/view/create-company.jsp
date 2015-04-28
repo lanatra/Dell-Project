@@ -10,10 +10,10 @@
 
 <div class="container">
 <div class="big-paper">
-    <h2>Register new company</h2>
+    <h2>Register new partner</h2>
     <form action="/api/createCompany" method="post">
         <div class="input-group">
-            <span>Name of the company</span>
+            <span>Name of the partner</span>
             <input type="text" id="companyName" name="companyName">
         </div>
         <div class="input-group">
@@ -43,7 +43,7 @@
         <h2> Register new user </h2>
         <form action="/createUser" method="post">
             <div class="input-group">
-                <span>Select company</span>
+                <span>Select partner</span>
                 <select name="selectedCompany">
                     <c:forEach var="companies" items="${companies}">
                         <option value="<c:out value='${companies.getId()}'></c:out>"><c:out value='${companies.getName()}'></c:out></option>

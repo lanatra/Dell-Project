@@ -123,6 +123,18 @@ div.login-background {
 	}
 }
 
+.button-clear {
+  padding: 0px 20px;
+  float: right;
+  border-radius: 15px;
+  height: 30px;
+  background-color: transparent;
+  border: 1px solid $color-blue;
+  line-height: 2;
+  text-decoration: none;
+  color: $color-blue;
+}
+
 div.header{
 	background-color: $color-blue;
 	height: 80px;
@@ -226,6 +238,25 @@ div.header{
 	text-decoration: none;
 	color: white;
   }
+
+  a.head-button {
+	float: right;
+	margin-top: 25px;
+	padding-right: 10px;
+	margin-left: 10px;
+	color: rgba(255,255,255,0.6);
+	text-decoration: none;
+	border-right: 1px solid rgba(255,255,255,0.2);
+	transition: color 0.3s;
+	
+	&.active {
+	  color: white;
+	}
+
+	&:hover {
+	  color: rgba(255,255,255,0.95);
+	}
+  }
 }
 
 div.filter {
@@ -249,16 +280,27 @@ div.filter {
 			color: #5B5B5B;
 			background-color: $color-light-gray;
 			border: 2px solid $color-light-gray;
+			&.active {
+			  color: $color-blue;
+			}
 		}
 		&.execution {
 			color: #5B5B5B;
 			background-color: $color-light-gray;
 			border: 2px dashed #5B5B5B;
+			&.active {
+			  color: $color-blue;
+			  border: 2px dashed $color-blue;
+			}
 		}
 		&.waiting {
 			color: #5B5B5B;
 			background-color: $color-light-gray;
 			border: 2px solid #5B5B5B;
+			&.active {
+			  color: $color-blue;
+			  border: 2px solid $color-blue;
+			}
 		}
 		&.unread {
 			color: $color-blue;
@@ -316,13 +358,22 @@ div.table-head, div.project-item {
   }
 }
 
-span.id {width: 7%;}
+span.id {width: 12%;}
 span.partner {width: 20%;}
+span.partner-name {width: 70%;}
+span.user-name {width: 50%;}
+span.country {width: 18%;}
 span.type {width: 30%;}
-span.state, span.notification {width: 30%;}
+span.state, span.notification {width: 25%;}
 span.execution-date {width: 13%;}
+span.email {width: 38%;}
 
-
+h5.above-list {
+  float: left;
+  clear: left;
+  margin-top: 20px;
+  margin-bottom: 0px;
+}
 
 table {
   color: #4F4F4F;
@@ -393,12 +444,27 @@ div.actions {
   h1 {
 	font-size: 2.5em;
 	font-weight: lighter;
-	margin-bottom: 30px;
+	margin-bottom: 50px;
   }
   span {
 	font-size: 1.2em;
 	font-weight: lighter;
 	float: left;
+  }
+  div.amount-box {
+	position: relative;
+	float: left;
+	span.small-label {
+	  left: 40px;
+	  top: -28px;
+	  color: #9F9F9F;
+	  font-size: 13px;
+	  position: absolute;
+	}
+	span.euro-label {
+	  position: absolute;
+	  right: 40px;
+	}
   }
   input.amount {
 	float: left;
@@ -412,10 +478,6 @@ div.actions {
 	padding-left: 20px;
 	font-size: 1.2em;
 	font-weight: lighter;
-
-	&::after {
-	  content: "";
-	}
   }
   textarea {
 	float: left;
@@ -925,4 +987,25 @@ div.logo-box {
 	float: left;
 	clear: left;
   }
+}
+
+img.company-image {
+  float: left;
+  height: 60px;
+  margin-right: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+h3.company-name {
+  float: left;
+  margin-top: 20px;
+  margin-bottom: 1rem;
+}
+
+p.company-desc {
+  color: #9F9F9F;
+  float: left;
+  clear: left;
+  width: 100%;
 }

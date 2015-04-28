@@ -1,3 +1,5 @@
+<%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="dellAndLatest" value="${User.getCompany_id() == 1 && lastStage}"></c:set>
 <c:set var="partnerAndLatest" value="${User.getCompany_id() != 1 && lastStage}"></c:set>
 
@@ -8,8 +10,10 @@
         <div class="inner-bubble <c:if test="${stages.get(stageIndex).getType() == 'Project Approved'}">approved</c:if> <c:if test="${stages.get(stageIndex).getType() == 'Project Rejected' || stages.get(stageIndex).getType() == 'Claim Rejected'}">rejected</c:if>">
 
         <c:if test="${stages.get(stageIndex).getType() == 'Waiting Project Verification'}">
-            <h3><c:out value="${project.getCompanyName()}"></c:out> is requesting <c:out value="${project.getBudget()}"></c:out> for a <c:out value="${project.getType()}"></c:out></h3>
-            <p><c:out value="${project.getBody()}"></c:out> </p>
+            <c:set var="balance" value="${project.getBudget()}" />
+            <fmt:formatNumber var="i" type="number" value="${balance}" />
+            <h3><c:out value="${project.getCompanyName()}"></c:out> is requesting <c:out value="${i}"></c:out>&#8364 for a <c:out value="${project.getType()}"></c:out></h3>
+            <p><c:out value="${project.getBody()}"></c:out></p>
             </div>
             <c:if test="${dellAndLatest}">
                 <p class="status-message">Review the project; approve if satisfactory or reject if not.</p>
