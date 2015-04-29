@@ -64,7 +64,7 @@
             </c:choose>
         </c:forEach>
     </c:if>
-
+        <c:set var="stageIndex" value="${stages.size() - 1}"></c:set>
 
     <c:if test="${User.getCompany_id() != 1 && (project.getStatus() == 'Project Rejected' || project.getStatus() == 'Project Approved' || project.getStatus() == 'Claim Rejected')}">
         <div class="item pull-right u-full-width">
@@ -76,7 +76,7 @@
                         <p class="instructions">Upload your images and documents, one by one.</p>
                         <c:forEach items="${poes}" var="poe" varStatus="ite" >
                             <c:if test="${poe.getF_deletion_date() == 0}">
-                                <div class="proof-container <c:if test="${poe.getF_date() > stages.get(stageIndex).getDate()}"> new</c:if>">
+                                <div class="proof-container <c:if test="${poe.getF_date() > stages.get(stageIndex - 1).getDate()}"> new</c:if>">
                                     <c:choose>
                                         <c:when test="${poe.getFiletype() == 'jpg' || poe.getFiletype() == 'png' || poe.getFiletype() == 'jpeg' || poe.getFiletype() == 'gif' || poe.getFiletype() == 'bmp'}">
                                             <div class="proof" style="background-image: url(/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>)">
@@ -84,26 +84,23 @@
                                                 <div class="download-file"><a href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>?download=true">Download</a></div>
                                             </div>
                                         </c:when>
-                                        <c:when test="${poe.getFiletype() == 'xlsx' || poe.getFiletype() == 'xls' || poe.getFiletype() == 'numbers' || poe.getFiletype() == 'xml'}">
-                                            <div class="proof excel">
-                                                <div class="icon-space"></div>
-                                                <div class="download-file"><a href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>?download=true">Download</a></div>
-                                            </div>
-                                        </c:when>
-                                        <c:when test="${poe.getFiletype() == 'zip' || poe.getFiletype() == 'rar' || poe.getFiletype() == 'tar' || poe.getFiletype() == 'dmg'}">
-                                            <div class="proof archive">
-                                                <div class="icon-space"></div>
-                                                <div class="download-file"><a href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>?download=true">Download</a></div>
-                                            </div>
-                                        </c:when>
-                                        <c:when test="${poe.getFiletype() == 'mp3' || poe.getFiletype() == 'flac' || poe.getFiletype() == 'm4a' || poe.getFiletype() == 'wav' || poe.getFiletype() == 'flv' || poe.getFiletype() == 'mov' || poe.getFiletype() == 'mp4' || poe.getFiletype() == 'mpeg' || poe.getFiletype() == 'avi' || poe.getFiletype() == 'mkv'}">
-                                            <div class="proof media">
-                                                <div class="icon-space"></div>
-                                                <div class="download-file"><a href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>?download=true">Download</a></div>
-                                            </div>
-                                        </c:when>
                                         <c:otherwise>
-                                            <div class="proof document">
+                                            <div class="proof
+                                            <c:choose>
+                                                <c:when test="${poe.getFiletype() == 'xlsx' || poe.getFiletype() == 'xls' || poe.getFiletype() == 'numbers' || poe.getFiletype() == 'xml'}">
+                                                    excel
+                                                </c:when>
+                                                <c:when test="${poe.getFiletype() == 'zip' || poe.getFiletype() == 'rar' || poe.getFiletype() == 'tar' || poe.getFiletype() == 'dmg'}">
+                                                    archive
+                                                </c:when>
+                                                <c:when test="${poe.getFiletype() == 'mp3' || poe.getFiletype() == 'flac' || poe.getFiletype() == 'm4a' || poe.getFiletype() == 'wav' || poe.getFiletype() == 'flv' || poe.getFiletype() == 'mov' || poe.getFiletype() == 'mp4' || poe.getFiletype() == 'mpeg' || poe.getFiletype() == 'avi' || poe.getFiletype() == 'mkv'}">
+                                                    media
+                                                </c:when>
+                                                <c:otherwise>
+                                                    document
+                                                </c:otherwise>
+                                            </c:choose>
+                                            ">
                                                 <div class="icon-space"></div>
                                                 <div class="download-file"><a href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>?download=true">Download</a></div>
                                             </div>
@@ -201,30 +198,15 @@
 
 
 </div>
-
-<!-- Buttons for admin -->
-<!--
-<c:if test="${User.getCompany_id() == 1}">
-    <c:if test="${project.getStatus() == 'Waiting Project Verification'}">
-        <button>Approve Project</button>
-        <button>Deny Project</button>
-    </c:if>
-    <c:if test="${project.getStatus() == 'Waiting Claim Verification'}">
-        <button>Approve and pay project</button>
-        <button>Deny claim</button>
-    </c:if>
-</c:if>-->
-<!-- Buttons for partner -->
-<!--
-<c:if test="${User.getCompany_id() != 1}">
-    <button>Cancel Project</button>
-    <c:if test="${project.getStatus() == 'Project Denied'}">
-        <button>Request new project approval</button>
-    </c:if>
-    <c:if test="${project.getStatus() == 'Project Verified'}">
-        <button>Submit claim</button>
-    </c:if>
-</c:if>-->
+<c:if test="${(project.getStatus() != 'Project Finished')}">
+<c:if test="${(project.getStatus() != 'Cancelled')}">
+<form method="post" action="/api/changeProjectStatus">
+    <input type="hidden" name="currentType" value="${project.getStatus()}">
+    <input type="hidden" name="projectId" value="${project.getId()}">
+    <button type="submit" name="answer" value="cancelled">Cancel Project</button>
+</form>
+</c:if>
+</c:if>
 
 <script>
     $(".fancybox").fancybox();

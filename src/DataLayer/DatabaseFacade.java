@@ -96,12 +96,13 @@ public class DatabaseFacade {
     public User getUserByEmail(String email) {
         return new UserMapper().getUserByEmail(email, getCon());
     }
-    public boolean createUser(String name, String user_role, String user_email, String password, int company_id) {
+    public int createUser(String name, String user_role, String user_email, String password, int company_id) {
         return new UserMapper().createUser(name, user_role, user_email, password, company_id, getCon());
     }
-    public ArrayList<User> getUserByCompanyId(int company_id) {
-        return new UserMapper().getUserByCompanyId(company_id, getCon());
+    public ArrayList<User> getUsersByCompanyId(int company_id) {
+        return new UserMapper().getUsersByCompanyId(company_id, getCon());
     }
+    public ArrayList getEmailsInvolvedInProjectById(int project_id, int user_id) { return new UserMapper().getEmailsInvolvedInProjectById(project_id, user_id, getCon()); }
 
     public ArrayList<User> getUsers() {
         return new UserMapper().getUsers(getCon());
@@ -143,4 +144,10 @@ public class DatabaseFacade {
     public int getAvailableFunds(int year, int quarter) {
         return new BudgetMapper().getAvailableFunds(year, quarter, getCon());
     }
+
+    // Nonce
+    public int addNonce(Nonce nonce) { return new NonceMapper().addNonce(nonce, getCon());}
+    public int getUserIdByNonce(String nonce) { return new NonceMapper().getUserIdByNonce(nonce, getCon());}
+    public boolean createPassword(int id, String password) { return new UserMapper().createPassword(id, password, getCon()); }
+    public void deleteNonce(String nonce) { new NonceMapper().deleteNonce(nonce, getCon()); }
 }

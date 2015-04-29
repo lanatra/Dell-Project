@@ -17,14 +17,15 @@
       <input class="amount" name="budget" type="text" placeholder="Amount"/>
       <span class="euro-label">&#8364</span>
     </div>
-    <span>for</span>
-    <select name="type" id="type">
+    <span>for a </span>
+      <input class="amount custom-type" type="text" name="type" id="type">
+    <!--<select name="type" id="type">
       <option value="Web Campaign">Web campaign</option>
       <option value="Billboard ad">Billboard ad</option>
       <option value="TV Promotion">TV promotion</option>
       <option value="other">Other</option>
     </select>
-    <input class="amount custom-type hidden" id="customType" name="customType" type="text" placeholder="Campaign type"/>
+    <input class="amount custom-type hidden" id="customType" name="customType" type="text" placeholder="Campaign type"/> -->
     <span style="clear: left;">With execution scheduled</span>
     <select name="execution_year" id="year">
       <option value="2015">2015</option>
@@ -62,15 +63,74 @@
     $('select#day').addClass('visible');
   });
 
-  $('select#type').change(function() {
-    if($(this).val() == 'other') {
-      $('input#customType').removeClass('hidden');
-    } else {
-      if($('input#customType').attr('class') != 'hidden'){
-        $('input#customType').addClass('hidden');
-      }
-    }
-  });
+  var searchNext = true;
+
+  var removeNotMatches = function(list, q, sync) {
+          var matches = [];
+          var regex = new RegExp(q, "i");
+          for (var i = 0; i < list.length; i++) {
+              if (regex.test(list[i])) {
+                  if (list == pres) {
+                      matches.push(list[i])
+                  } else if (pres.indexOf(list[i]) < 0) {
+                      matches.push(list[i])
+          }}}
+          return matches;
+  }
+
+
+  var pres = ["Web Campaign",
+      "Billboard ad",
+      "TV Promotion"];
+
+  var preset = function(q, sync) {
+      if(q == '')
+          sync(pres)
+      else
+          sync(removeNotMatches(pres, q));
+  }
+
+  var types = [];
+
+  var typesFilter = function(q, sync, async) {
+      if(q.length == 3 && searchNext) {
+          return $.ajax({
+              dataType: "json",
+              url: "/getTypes",
+              data: {query: q},
+              success: function(data) {
+                  types = data;
+                  async(removeNotMatches(types));
+              }
+          });
+      } else
+          return removeNotMatches(types, q, sync);
+  }
+
+  $('#type').typeahead({
+              hint: false,
+              highlight: true,
+              minLength: 0
+          }, {
+              name: 'preset',
+              source: preset
+          }, {
+              name: "type",
+              source: typesFilter
+          }
+
+  ).change(function() {
+              if($(this).val().length < 3)
+                  searchNext = true;
+              if($(this).val().length > 4)
+                  searchNext = false;
+          });
+
+
+
+
+
+
 
   $('select#month').change(function() {
     if($('select#day').hasClass('visible')){

@@ -57,26 +57,23 @@
                                         <div class="download-file"><a href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>?download=true">Download</a></div>
                                     </div>
                                 </c:when>
-                                <c:when test="${poe.getFiletype() == 'xlsx' || poe.getFiletype() == 'xls' || poe.getFiletype() == 'numbers' || poe.getFiletype() == 'xml'}">
-                                    <div class="proof excel">
-                                        <div class="icon-space"></div>
-                                        <div class="download-file"><a href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>?download=true">Download</a></div>
-                                    </div>
-                                </c:when>
-                                <c:when test="${poe.getFiletype() == 'zip' || poe.getFiletype() == 'rar' || poe.getFiletype() == 'tar' || poe.getFiletype() == 'dmg'}">
-                                    <div class="proof archive">
-                                        <div class="icon-space"></div>
-                                        <div class="download-file"><a href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>?download=true">Download</a></div>
-                                    </div>
-                                </c:when>
-                                <c:when test="${poe.getFiletype() == 'mp3' || poe.getFiletype() == 'flac' || poe.getFiletype() == 'm4a' || poe.getFiletype() == 'wav' || poe.getFiletype() == 'flv' || poe.getFiletype() == 'mov' || poe.getFiletype() == 'mp4' || poe.getFiletype() == 'mpeg' || poe.getFiletype() == 'avi' || poe.getFiletype() == 'mkv'}">
-                                    <div class="proof media">
-                                        <div class="icon-space"></div>
-                                        <div class="download-file"><a href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>?download=true">Download</a></div>
-                                    </div>
-                                </c:when>
                                 <c:otherwise>
-                                    <div class="proof document">
+                                    <div class="proof
+                                            <c:choose>
+                                                <c:when test="${poe.getFiletype() == 'xlsx' || poe.getFiletype() == 'xls' || poe.getFiletype() == 'numbers' || poe.getFiletype() == 'xml'}">
+                                                    excel
+                                                </c:when>
+                                                <c:when test="${poe.getFiletype() == 'zip' || poe.getFiletype() == 'rar' || poe.getFiletype() == 'tar' || poe.getFiletype() == 'dmg'}">
+                                                    archive
+                                                </c:when>
+                                                <c:when test="${poe.getFiletype() == 'mp3' || poe.getFiletype() == 'flac' || poe.getFiletype() == 'm4a' || poe.getFiletype() == 'wav' || poe.getFiletype() == 'flv' || poe.getFiletype() == 'mov' || poe.getFiletype() == 'mp4' || poe.getFiletype() == 'mpeg' || poe.getFiletype() == 'avi' || poe.getFiletype() == 'mkv'}">
+                                                    media
+                                                </c:when>
+                                                <c:otherwise>
+                                                    document
+                                                </c:otherwise>
+                                            </c:choose>
+                                            ">
                                         <div class="icon-space"></div>
                                         <div class="download-file"><a href="/resources/<c:out value='${poe.getProj_id()}'></c:out>/<c:out value='${poe.getFilename()}'></c:out>?download=true">Download</a></div>
                                     </div>

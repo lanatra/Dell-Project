@@ -122,7 +122,7 @@ public class ProjectMapper {
         } else {
             SQL = "UPDATE projects SET status = ?, unread_admin = 1, notification = null where id = ?";
         }
-        if (!new_status.equals("Project Approved")) {
+        if (!new_status.equals("Project Approved") && !new_status.equals("Project Finished") && !new_status.equals("Cancelled")) {
             try {
                 statement = con.prepareStatement(SQL);
                 statement.setString(1, new_status);
@@ -154,7 +154,7 @@ public class ProjectMapper {
             }
         }
         // IF PROJECT BECOMES APPROVED WE NEED A TRANSACTION TO PROCESS CHANGES IN BUDGET SIMULTANEOUSLY
-        else {
+        else if (new_status.equals("Project Approved")){
             PreparedStatement budgetStatement = null;
 
             int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
@@ -179,6 +179,7 @@ public class ProjectMapper {
                 budgetStatement.setInt(2, currentYear);
                 budgetStatement.setInt(3, currentQuarter);
                 budgetStatement.executeUpdate();
+                // COMMIT
                 con.commit();
                 // TRANSACTION OVER
                 updateChangeDate(project_id, companyId);
@@ -212,6 +213,176 @@ public class ProjectMapper {
             }
 
         }
+        // IF PROJECT IS FINISHED (POE APPROVED) WE NEED A TRANSACTION TO PROCESS CHANGES IN BUDGET SIMULTANEOUSLY
+        else if (new_status.equals("Project Finished")){
+            PreparedStatement budgetStatement1 = null;
+            PreparedStatement budgetStatement2 = null;
+
+            long timestamp = getProjectFinishedByProjectId(project_id).getTime();
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(timestamp);
+
+            int currentMonth = cal.get(Calendar.MONTH);
+            int currentYear = cal.get(Calendar.YEAR);
+            int currentQuarter = (currentMonth / 3 ) + 1;
+
+            int project_budget = projectBudgetById(project_id);
+
+            String SQLBudget1 = "update budget set reserved = reserved - ? where yearnum = ? and quarternum = ?";
+            String SQLBudget2 = "update budget set reimbursed = reimbursed + ? where yearnum = ? and quarternum = ?";
+            try {
+                // TRANSACTION BEGIN
+                con.setAutoCommit(false);
+                // PROJECT CHANGES
+                statement = con.prepareStatement(SQL);
+                statement.setString(1, new_status);
+                statement.setInt(2, project_id);
+                statement.executeUpdate();
+                // RESERVED CHANGES
+                budgetStatement1 = con.prepareStatement(SQLBudget1);
+                budgetStatement1.setInt(1, project_budget);
+                budgetStatement1.setInt(2, currentYear);
+                budgetStatement1.setInt(3, currentQuarter);
+                budgetStatement1.executeUpdate();
+                // REIMBURSED CHANGES
+                budgetStatement2 = con.prepareStatement(SQLBudget2);
+                budgetStatement2.setInt(1, project_budget);
+                budgetStatement2.setInt(2, currentYear);
+                budgetStatement2.setInt(3, currentQuarter);
+                budgetStatement2.executeUpdate();
+                // COMMIT
+                con.commit();
+                // TRANSACTION OVER
+                updateChangeDate(project_id, companyId);
+                addStage(userId, project_id, new_status, DatabaseConnection.getInstance().getConnection());
+                DatabaseFacade facade = new DatabaseFacade();
+                if (companyId == 1)
+                    facade.markUnread(project_id, 2); // 2 is just not dell, a la partner
+                else
+                    facade.markUnread(project_id, 1);
+
+
+                return true;
+            } catch (Exception e) {
+                try {
+                    con.rollback();
+                } catch(Exception y) {
+                }
+                return false;
+
+            } finally {
+                if (statement != null) try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                if (con != null) try {
+                    con.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+        else if (new_status.equals("Cancelled")){
+
+            String current_status = projectStatusById(project_id);
+
+            if (current_status.equals("Waiting Project Verification") || current_status.equals("Project Rejected") || current_status.equals("Project Finished")) {
+                try {
+                    statement = con.prepareStatement(SQL);
+                    statement.setString(1, new_status);
+                    statement.setInt(2, project_id);
+                    statement.executeUpdate();
+
+                    updateChangeDate(project_id, companyId);
+                    addStage(userId, project_id, new_status, DatabaseConnection.getInstance().getConnection());
+                    DatabaseFacade facade = new DatabaseFacade();
+                    if (companyId == 1)
+                        facade.markUnread(project_id, 2); // 2 is just not dell, a la partner
+                    else
+                        facade.markUnread(project_id, 1);
+
+                    return true;
+                } catch (Exception e) {
+                    System.out.println("Zzzzz");
+                } finally {
+                    if (statement != null) try {
+                        statement.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    if (con != null) try {
+                        con.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else {
+
+                PreparedStatement budgetStatement = null;
+                String SQLBudget = "update budget set reserved = reserved - ? where yearnum = ? and quarternum = ?";
+
+                long timestamp = getProjectFinishedByProjectId(project_id).getTime();
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(timestamp);
+
+                int currentMonth = cal.get(Calendar.MONTH);
+                int currentYear = cal.get(Calendar.YEAR);
+                int currentQuarter = (currentMonth / 3) + 1;
+
+                int project_budget = projectBudgetById(project_id);
+
+                try {
+                    // TRANSACTION BEGIN
+                    con.setAutoCommit(false);
+                    // PROJECT CHANGES
+                    statement = con.prepareStatement(SQL);
+                    statement.setString(1, new_status);
+                    statement.setInt(2, project_id);
+                    statement.executeUpdate();
+                    // RESERVED CHANGES
+                    budgetStatement = con.prepareStatement(SQLBudget);
+                    budgetStatement.setInt(1, project_budget);
+                    budgetStatement.setInt(2, currentYear);
+                    budgetStatement.setInt(3, currentQuarter);
+                    budgetStatement.executeUpdate();
+                    // COMMIT
+                    con.commit();
+                    // TRANSACTION OVER
+                    updateChangeDate(project_id, companyId);
+                    addStage(userId, project_id, new_status, DatabaseConnection.getInstance().getConnection());
+                    DatabaseFacade facade = new DatabaseFacade();
+                    if (companyId == 1)
+                        facade.markUnread(project_id, 2); // 2 is just not dell, a la partner
+                    else
+                        facade.markUnread(project_id, 1);
+
+
+                    return true;
+                } catch (Exception e) {
+                    try {
+                        con.rollback();
+                    } catch (Exception y) {
+                    }
+                    return false;
+
+                } finally {
+                    if (statement != null) try {
+                        statement.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    if (con != null) try {
+                        con.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+        }
+
         return false;
 
     }
@@ -693,7 +864,7 @@ public class ProjectMapper {
         if(companyId != 1)
             SQL = "select DISTINCT type\n" +
                 "from projects\n" +
-                "where company_id=? lower(type) like lower('%" + query + "%')\n";
+                "where company_id=? and lower(type) like lower('%" + query + "%')\n";
         else
             SQL = "select DISTINCT type\n" +
                     "from projects\n" +
@@ -899,6 +1070,72 @@ public class ProjectMapper {
         }
 
         return -1;
+    }
+
+    public Timestamp getProjectFinishedByProjectId(int project_id) {
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        String SQL = "select stages.time from stages where project_id= ? ";
+        Connection con = null;
+        try {
+            con = DatabaseConnection.getInstance().getConnection();
+        } catch (Exception e) {
+
+        }
+
+        try {
+            statement = con.prepareStatement(SQL);
+
+            statement.setInt(1, project_id);
+
+            rs = statement.executeQuery();
+
+            while (rs.next()) {
+                return rs.getTimestamp(1);
+            }
+
+        } catch (Exception e) {
+            System.out.println("error in timestampgetterererer" );
+        }finally {
+            if (rs != null) try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
+        }
+
+        return null;
+    }
+
+    public String projectStatusById(int project_id) {
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        String SQL = "select status from projects where id= ? ";
+        Connection con = null;
+        try {
+            con = DatabaseConnection.getInstance().getConnection();
+        } catch (Exception e) {
+
+        }
+
+        try {
+            statement = con.prepareStatement(SQL);
+
+            statement.setInt(1, project_id);
+
+            rs = statement.executeQuery();
+
+            while (rs.next()) {
+                return rs.getString(1);
+            }
+
+        } catch (Exception e) {
+            System.out.println("error stringGetetERERERERERR status project blebeleb" );
+        }finally {
+            if (rs != null) try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
+        }
+
+        return null;
     }
 
 

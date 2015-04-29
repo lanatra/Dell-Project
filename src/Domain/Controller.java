@@ -17,26 +17,28 @@ import java.util.HashMap;
 
 import javax.servlet.http.Part;
 import java.io.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Controller {
 
     DatabaseFacade facade;
+    IdGenerator gen;
 
     public Controller() {
 
         this.facade = new DatabaseFacade();
+        this.gen = new IdGenerator();
 
     }
     // Writers
     public int createProjectRequest(String budget, String project_body, User user, String project_type, Timestamp execution_date) {
         return facade.createProjectRequest(budget, project_body, user, project_type, execution_date);
     }
-    public boolean createCompany(String company_name, String country_code, Part logo, String logo_url) {
+    public int createCompany(String company_name, String country_code, Part logo, String logo_url) {
         int company_id = facade.createCompany(company_name, country_code);
         if(company_id != -1) { //if success
             String filename = "";
-            System.out.println("logourl: " + logo_url);
-            System.out.println("logo: " + logo);
             if(logo != null) {
                 FileHandling handler = new FileHandling();
 
@@ -50,18 +52,14 @@ public class Controller {
                 System.out.println(new File(System.getenv("POE_FOLDER") + File.separator + "companies" + File.separator + company_id + File.separator + "logo." + logo_url.substring(logo_url.lastIndexOf(".") + 1, logo_url.length())).getPath());
                 try {
                     URL website = new URL(logo_url);
-                    System.out.println("test1");
                     ReadableByteChannel rbc = Channels.newChannel(website.openStream());
-                    System.out.println("test2");
                     File outputFolder = new File(System.getenv("POE_FOLDER") + File.separator + "companies" + File.separator + company_id );
                     outputFolder.mkdirs();
                     filename = "logo." + logo_url.substring(logo_url.lastIndexOf(".") + 1, logo_url.length());
                     FileOutputStream fos = new FileOutputStream(
                             new File(outputFolder.getAbsolutePath() + File.separator + filename));
-                    System.out.println("test3");
                     fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
                     fos.close();
-                    System.out.println("test4");
                 } catch (IOException e) {
                     System.out.println(e.getMessage());
                     System.out.println("Error in saving logo from url");
@@ -70,9 +68,9 @@ public class Controller {
             }
 
 
-            return true;
+            return company_id;
         } else {
-            return false;
+            return -1;
         }
     }
 
@@ -97,20 +95,40 @@ public class Controller {
         } else if(answer.equals("cancelled")) {
             new_status = "Cancelled";
         }
-        return facade.changeProjectStatus(project_id, new_status, companyId, userId);
+
+        if(facade.changeProjectStatus(project_id, new_status, companyId, userId)) {
+            ArrayList<String> emails = facade.getEmailsInvolvedInProjectById(project_id, userId);
+
+            for (String email : emails) {
+                if(email.matches("^(\\w)+@(\\w)+\\.(\\w){2,}$"))
+                    sendEmail(email, "New Status for project #" + project_id, "Project #" + project_id + " has advanced to a new step, " + new_status + "\n" +
+                        "Click here to review the project: http://localhost:8080/project?id="+project_id);
+            }
+            return true;
+        } else
+            return false;
+
     }
     //User related
     public boolean createUser(String name, String user_role, String user_email, String password, int company_id) {
-        String hashedPassword = Login.createPassword(password);
+        if(password != null)
+            password = Login.createPassword(password);
 
-        return facade.createUser(name, user_role, user_email, hashedPassword, company_id);
+        int id = facade.createUser(name, user_role, user_email, password, company_id);
+
+        if(id != -1) {
+            if (password == null)
+                createPasswordResetNonce(id, user_email);
+        }
+
+        return (id != -1);
     }
 
    //Readers
     //User related
     public User getUserById(int user_id) { return facade.getUserById(user_id); }
-    public ArrayList<User> getUserByCompanyId(int company_id) {
-        return facade.getUserByCompanyId(company_id);
+    public ArrayList<User> getUsersByCompanyId(int company_id) {
+        return facade.getUsersByCompanyId(company_id);
     }
     public ArrayList<User> getUsers() {return facade.getUsers();}
     public User getUserByEmail(String email) {return facade.getUserByEmail(email);}
@@ -324,6 +342,27 @@ public class Controller {
         return facade.getAvailableFunds(year, quarter);
     }
 
+
+    //Nonce / Email
+    public void createPasswordResetNonce(int id, String email){
+        Nonce nonce = new Nonce(-1, gen.nextNonce(), id, null, "PasswordReset");
+        int nonceId = facade.addNonce(nonce);
+        if(email != null && nonceId != -1)
+            sendEmail(email, "Reset Password", "http://localhost:8080/reset-password?n=" + nonce.getNonce());
+    }
+
+    public int getUserIdByNonce(String nonce) {
+        return facade.getUserIdByNonce(nonce);
+    }
+
+    public boolean createPassword(int id, String password, String nonce) {
+        if(facade.createPassword(id, Login.createPassword(password))) {
+            facade.deleteNonce(nonce);
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
 }

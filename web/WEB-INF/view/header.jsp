@@ -49,6 +49,13 @@
 <body>
 <c:set var="uri" value="${pageContext.request.requestURI}" />
 <!--<c:out value="${pageContext.request.requestURI}" />-->
+<c:if test="${error != null}">
+    <div class="notification error"><c:out value="${sessionScope.error}"></c:out></div>
+    <c:remove var="error" scope="session" />
+</c:if><c:if test="${message != null}">
+    <div class="notification message"><c:out value="${sessionScope.message}"></c:out></div>
+    <c:remove var="message" scope="session" />
+</c:if>
 
 <div class="header u-full-width">
   <div class="container">
