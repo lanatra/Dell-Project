@@ -313,9 +313,8 @@ public class PresentationServlet extends HttpServlet {
             request.setAttribute("user", tempUser);
 
             Company company = cont.getCompanyById(tempUser.getCompany_id());
-            request.setAttribute("company", company);
-
-            request.setAttribute("projects", cont.getProjectsByCompanyId(tempUser.getCompany_id()));
+            request.setAttribute("partner", company);
+            request.setAttribute("projects", cont.getProjectsByUserId(userId));
 
             request.getRequestDispatcher("/WEB-INF/view/user.jsp").forward(request, response);
         }

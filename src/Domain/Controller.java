@@ -165,6 +165,9 @@ public class Controller {
     public ArrayList<Project> getProjectsByCompanyId(int company_id) {
         return facade.getProjectsByCompanyId(company_id);
     }
+    public ArrayList<Project> getProjectsByUserId(int company_id) {
+        return facade.getProjectsByUserId(company_id);
+    }
 
     public Company getCompanyById(int id) { return facade.getCompanyById(id); }
 

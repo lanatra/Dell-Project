@@ -436,12 +436,16 @@ div.actions {
 
   .searchbox {
 	width: auto;
-	overflow: hidden;
 	display: block;
+	height: 500px;
+	overflow: hidden;
+	margin-bottom: -440px;
 
 	input {
 	  width: 100%;
-	  float: left;
+	  //position: absolute !important;
+	  z-index: 101;
+	  //margin-top: -17px;
 	  height: 60px;
 	  border-radius: 30px;
 	  margin-bottom: 0px;
@@ -1020,4 +1024,33 @@ p.company-desc {
   float: left;
   clear: left;
   width: 100%;
+}
+
+div.tt-menu {
+  width: 100%;
+  background-color: #EBEBEB;
+  top: 30px !important;
+  box-sizing: border-box;
+  padding: 40px 20px 20px 20px;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  -webkit-box-shadow: 0px 2px 6px 0px rgba(50, 50, 50, 0.05);
+  -moz-box-shadow:    0px 2px 6px 0px rgba(50, 50, 50, 0.05);
+  box-shadow:         0px 2px 6px 0px rgba(50, 50, 50, 0.05);
+
+  div.tt-selectable {
+	border-top: 1px solid #ececec;
+	padding: 5px 0px;
+
+	&.tt-cursor {
+	  color: $color-blue;
+	}
+  }
+
+  h3.typeahead-header {
+	font-size: 15px;
+	font-weight: normal;
+	color: #9F9F9F;
+	margin-bottom: 5px;
+  }
 }

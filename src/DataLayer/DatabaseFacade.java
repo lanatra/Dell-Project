@@ -25,6 +25,9 @@ public class DatabaseFacade {
     public ArrayList<Project> getProjectsByCompanyId(int company_id) {
         return new ProjectMapper().getProjectsByCompanyId(company_id, getCon());
     }
+    public ArrayList<Project> getProjectsByUserId(int user_id) {
+        return new ProjectMapper().getProjectsByCompanyId(user_id, getCon());
+    }
 
     public boolean changeProjectStatus(int project_id, String new_status, int companyId, int userId) {
         return new ProjectMapper().changeProjectStatus(project_id, new_status, companyId, userId, getCon());

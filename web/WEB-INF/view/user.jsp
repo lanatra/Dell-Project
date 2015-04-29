@@ -8,13 +8,19 @@
   <jsp:include page="header.jsp" />
 
   <div class="container" style="margin-top: 30px; padding-bottom: 30px;">
-      <h3 class="company-name"><c:out value='${user.getName()}' /></h3>
-      <p class="company-desc"><c:out value="${user.getEmail()}" /></p>
+      <div class="u-pull-right" style="margin-top: 10px;">
+          <c:if test="${partner.getImg_filename() != null}" >
+              <a href="partner?id=<c:out value='${partner.getId()}' />">
+                <img class="company-image" style="margin-right: 0px;" src="/resources/companies/<c:out value='${partner.getId()}' />/<c:out value='${partner.getImg_filename()}' />" />
+              </a>
+          </c:if>
+      </div>
 
-      <c:if test="${partner.getImg_filename() != null}" >
-          <img class="company-image" src="/resources/companies/<c:out value='${partner.getId()}' />/<c:out value='${partner.getImg_filename()}' />" />
-      </c:if>
-      <p class="company-desc">You can see all <c:out value='${user.getName()}' />'s projects below.</p>
+      <h3 class="company-name"><c:out value='${user.getName()}' /></h3>
+      <div class="u-pull-left" style="clear: left;">
+          <p class="company-desc"><c:out value="${user.getEmail()}" /></p>
+          <p class="company-desc">You can see all <c:out value='${user.getName()}' />'s projects below.</p>
+      </div>
 
       <div class="table-head">
           <span class="id">ID</span>

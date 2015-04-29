@@ -200,6 +200,10 @@
                     searchNext = false;
                 });
 
+       $('span.twitter-typeahead').css('width', '100%');
+       $('div.searchbox input').css('position', 'absolute !important');
+       //$('div.searchbox input').css('margin-top', '-17px');
+
     });
 </script>
 
