@@ -198,6 +198,15 @@
 
 
 </div>
+<c:if test="${(project.getStatus() != 'Project Finished')}">
+<c:if test="${(project.getStatus() != 'Cancelled')}">
+<form method="post" action="/api/changeProjectStatus">
+    <input type="hidden" name="currentType" value="${project.getStatus()}">
+    <input type="hidden" name="projectId" value="${project.getId()}">
+    <button type="submit" name="answer" value="cancelled">Cancel Project</button>
+</form>
+</c:if>
+</c:if>
 
 <script>
     $(".fancybox").fancybox();
