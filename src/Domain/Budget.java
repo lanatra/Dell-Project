@@ -1,8 +1,5 @@
 package Domain;
 
-/**
- * Created by Lasse on 27-04-2015.
- */
 public class Budget {
     int initial_budget;
     int year;

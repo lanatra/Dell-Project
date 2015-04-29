@@ -5,9 +5,6 @@ import Domain.Budget;
 import java.sql.*;
 import java.util.ArrayList;
 
-/**
- * Created by Lasse on 27-04-2015.
- */
 public class BudgetMapper {
 
     public boolean addBudget(int year, int quarter, int budget, Connection con) {
@@ -82,8 +79,8 @@ public class BudgetMapper {
                         rs.getInt(1),
                         rs.getInt(2),
                         rs.getInt(3),
-                        rs.getInt(4),
-                        rs.getInt(5)
+                        rs.getInt(5),
+                        rs.getInt(4)
                 ));
             }
 
@@ -107,12 +104,10 @@ public class BudgetMapper {
         ResultSet rs = null;
         ArrayList<Budget> BudgetCollection = new ArrayList<>();
 
-
         try {
             statement = con.prepareStatement(SQL);
 
             rs = statement.executeQuery();
-
 
             while (rs.next()) {
                 BudgetCollection.add(new Budget(
@@ -124,10 +119,8 @@ public class BudgetMapper {
                 ));
             }
 
-
-
         } catch (Exception e) {
-            System.out.println("error in budgetmapperrerr");
+            System.out.println("error in BudgetMapper");
         }finally {
             if (rs != null) try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
             if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}

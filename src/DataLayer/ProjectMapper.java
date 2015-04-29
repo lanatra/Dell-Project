@@ -10,6 +10,7 @@ import javax.xml.crypto.Data;
 import java.security.interfaces.RSAKey;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 
 public class ProjectMapper {
@@ -121,29 +122,95 @@ public class ProjectMapper {
         } else {
             SQL = "UPDATE projects SET status = ?, unread_admin = 1, notification = null where id = ?";
         }
+        if (!new_status.equals("Project Approved")) {
+            try {
+                statement = con.prepareStatement(SQL);
+                statement.setString(1, new_status);
+                statement.setInt(2, project_id);
+                statement.executeUpdate();
 
+                updateChangeDate(project_id, companyId);
+                addStage(userId, project_id, new_status, DatabaseConnection.getInstance().getConnection());
+                DatabaseFacade facade = new DatabaseFacade();
+                if (companyId == 1)
+                    facade.markUnread(project_id, 2); // 2 is just not dell, a la partner
+                else
+                    facade.markUnread(project_id, 1);
 
+                return true;
+            } catch (Exception e) {
+                System.out.println("Zzzzz");
+            } finally {
+                if (statement != null) try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                if (con != null) try {
+                    con.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        // IF PROJECT BECOMES APPROVED WE NEED A TRANSACTION TO PROCESS CHANGES IN BUDGET SIMULTANEOUSLY
+        else {
+            PreparedStatement budgetStatement = null;
 
-        try {
-            statement = con.prepareStatement(SQL);
-            statement.setString(1, new_status);
-            statement.setInt(2, project_id);
-            statement.executeUpdate();
+            int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
+            int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+            int currentQuarter = (currentMonth / 3 ) + 1;
 
-            updateChangeDate(project_id, companyId);
-            addStage(userId, project_id, new_status, DatabaseConnection.getInstance().getConnection());
-            DatabaseFacade facade = new DatabaseFacade();
-            if(companyId == 1)
-                facade.markUnread(project_id, 2); // 2 is just not dell, a la partner
-            else
-                facade.markUnread(project_id, 1);
+            int project_budget = projectBudgetById(project_id);
 
-            return true;
-        } catch (Exception e) {
-            System.out.println("Zzzzz");
-        } finally {
-            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
-            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
+            String SQLBudget = "update budget set reserved = reserved + ? where yearnum = ? and quarternum = ?";
+
+            try {
+                // TRANSACTION BEGIN
+                con.setAutoCommit(false);
+                // PROJECT CHANGES
+                statement = con.prepareStatement(SQL);
+                statement.setString(1, new_status);
+                statement.setInt(2, project_id);
+                statement.executeUpdate();
+                // BUDGET CHANGES
+                budgetStatement = con.prepareStatement(SQLBudget);
+                budgetStatement.setInt(1, project_budget);
+                budgetStatement.setInt(2, currentYear);
+                budgetStatement.setInt(3, currentQuarter);
+                budgetStatement.executeUpdate();
+                con.commit();
+                // TRANSACTION OVER
+                updateChangeDate(project_id, companyId);
+                addStage(userId, project_id, new_status, DatabaseConnection.getInstance().getConnection());
+                DatabaseFacade facade = new DatabaseFacade();
+                if (companyId == 1)
+                    facade.markUnread(project_id, 2); // 2 is just not dell, a la partner
+                else
+                    facade.markUnread(project_id, 1);
+            
+
+                return true;
+            } catch (Exception e) {
+                try {
+                    con.rollback();
+                } catch(Exception y) {
+                }
+                return false;
+
+            } finally {
+                if (statement != null) try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                if (con != null) try {
+                    con.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
         }
         return false;
 
@@ -757,5 +824,40 @@ public class ProjectMapper {
 
         return ProjectCollection;
     }
+
+
+    public int projectBudgetById(int project_id) {
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        String SQL = "select budget from projects where id= ? ";
+        Connection con = null;
+        try {
+            con = DatabaseConnection.getInstance().getConnection();
+        } catch (Exception e) {
+
+        }
+
+        try {
+            statement = con.prepareStatement(SQL);
+
+            statement.setInt(1, project_id);
+
+            rs = statement.executeQuery();
+
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+
+        } catch (Exception e) {
+            System.out.println("error irgwgew" );
+        }finally {
+            if (rs != null) try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
+        }
+
+        return -1;
+    }
+
 
 }

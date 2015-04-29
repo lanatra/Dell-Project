@@ -131,6 +131,7 @@ public class Controller {
         return facade.getUsersByCompanyId(company_id);
     }
     public ArrayList<User> getUsers() {return facade.getUsers();}
+    public User getUserByEmail(String email) {return facade.getUserByEmail(email);}
 
 
     //Project related

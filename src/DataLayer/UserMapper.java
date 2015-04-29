@@ -159,8 +159,6 @@ public class UserMapper {
                     ));
                 }
 
-
-
             } catch (Exception e) {
                 System.out.println("error in budgetmapperrerr");
             }finally {
@@ -193,8 +191,6 @@ public class UserMapper {
                         rs.getInt(6)
                 ));
             }
-
-
 
         } catch (Exception e) {
             System.out.println("error in UserMapper - getUsers");
