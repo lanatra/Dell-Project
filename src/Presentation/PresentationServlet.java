@@ -65,8 +65,6 @@ public class PresentationServlet extends HttpServlet {
                     case "/project":
                         getProjectView(request, response, cont);
                         break;
-                    case "/search":
-                        search(request, response, cont);
                     case "/create-company":
                         getCreateCompanyView(request, response, cont);
                         break;
@@ -215,16 +213,21 @@ public class PresentationServlet extends HttpServlet {
         System.out.println("getDashboard");
 
         User user = (User) request.getAttribute("User");
-        System.out.println("state: " + request.getParameter("state"));
-        System.out.println("type: " + request.getParameter("type"));
-        if(request.getParameter("state") != null)
-            request.setAttribute("projects", cont.getProjectsByState(request.getParameter("state"), user.getCompany_id()));
-        else if (request.getParameter("type") != null)
-            request.setAttribute("projects", cont.getProjectsByType(request.getParameter("type"), user.getCompany_id()));
-        else if (request.getParameter("company") != null)
-            request.setAttribute("projects", cont.getProjectsByCompanyName(request.getParameter("company"), user.getCompany_id()));
-        else
-            request.setAttribute("projects", cont.getProjectsByState("waitingForAction", user.getCompany_id()));
+
+        //if search
+        if(request.getParameter("q") != null) {
+            String q = request.getParameter("q");
+            request.setAttribute("results", cont.search(q, user.getCompany_id()));
+        } else {
+            if(request.getParameter("state") != null)
+                request.setAttribute("projects", cont.getProjectsByState(request.getParameter("state"), user.getCompany_id()));
+            else if (request.getParameter("type") != null)
+                request.setAttribute("projects", cont.getProjectsByType(request.getParameter("type"), user.getCompany_id()));
+            else if (request.getParameter("company") != null)
+                request.setAttribute("projects", cont.getProjectsByCompanyName(request.getParameter("company"), user.getCompany_id()));
+            else
+                request.setAttribute("projects", cont.getProjectsByState("waitingForAction", user.getCompany_id()));
+        }
 
 
         request.setAttribute("statusCount", cont.getStatusCounts(user.getCompany_id()));
@@ -609,12 +612,7 @@ public class PresentationServlet extends HttpServlet {
         out.print(cont.getCompanyNames(request.getParameter("query"), user.getCompany_id()));
     }
 
-    void search(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
-        String q = request.getParameter("q");
-        User user = (User) request.getAttribute("User");
-        request.setAttribute("results", cont.search(q, user.getCompany_id()));
-        request.getRequestDispatcher("/WEB-INF/view/search.jsp").forward(request, response);
-    }
+
 
     void error(String error, HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
         request.setAttribute("error", error);

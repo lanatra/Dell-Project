@@ -40,19 +40,22 @@
         <input type="text" placeholder="Search" class="search"
                <c:if test="${param.type != null}">value="<c:out value="${param.type}"></c:out>"</c:if>
                <c:if test="${param.company != null}">value="<c:out value="${param.company}"></c:out>"</c:if>
+               <c:if test="${param.q != null}">value="<c:out value="${param.q}"></c:out>"</c:if>
                 />
     </div>
 
   </div>
 
   <div class="container" style="margin-top: 30px; padding-bottom: 30px;">
-      <div class="table-head">
-          <span class="id">ID</span>
-          <span class="partner">Partner</span>
-          <span class="type">Type</span>
-          <span class="state">State</span>
-          <span class="execution-date">Execution date</span>
-      </div>
+
+      <c:if test="${projects != null}">
+          <div class="table-head">
+              <span class="id">ID</span>
+              <span class="partner">Partner</span>
+              <span class="type">Type</span>
+              <span class="state">State</span>
+              <span class="execution-date">Execution date</span>
+          </div>
 
       <c:forEach var="project" items="${projects}">
 
@@ -80,6 +83,29 @@
               </div>
           </a>
       </c:forEach>
+      </c:if><c:if test="${results != null && projects == null}">
+
+
+    <c:forEach items="${results}" var="container">
+        <h5><c:out value="${container.getType()}"></c:out>s</h5>
+        <div class="table-head">
+            <span class="id">ID</span>
+            <span class="type">Type</span>
+            <span class="result">Result</span>
+        </div>
+        <c:forEach items="${container.getContainer()}" var="result">
+
+            <a href="<c:if test="${result.getType() == 'User'}">/user?id=</c:if><c:if test="${result.getType() != 'User'}">/project?id=</c:if><c:out value="${result.getId()}"></c:out>">
+                <div class="project-item">
+                    <span class="id"><strong>#</strong><c:out value="${result.getId()}"></c:out></span>
+                    <span class="type"><c:out value="${result.getType()}"></c:out></span>
+                    <span class="result"><c:out value="${result.getBody()}"></c:out></span>
+                </div>
+            </a>
+        </c:forEach>
+    </c:forEach>
+
+  </c:if>
   </div>
 <script type="application/javascript">
    $(document).ready(function() {
@@ -190,7 +216,7 @@
                         if(val.substr(0, 1) == "#" && !isNaN(val.substr(1)))
                             window.location.href = "/project?id=" + val.substr(1);
                         else
-                            window.location.href = "/search?q=" + val;
+                            window.location.href = "/dashboard?q=" + val;
                     }
         }).change(function() {
                     if($(this).val().length < 3)
