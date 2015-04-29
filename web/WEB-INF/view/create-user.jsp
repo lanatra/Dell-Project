@@ -27,7 +27,7 @@
             </div>
             <div class="input-group">
                 <span>Password</span>
-                <input type="password" name="password">
+                <span>A link will be sent to users email</span>
             </div>
             <div class="input-group">
                 <span>Email</span>

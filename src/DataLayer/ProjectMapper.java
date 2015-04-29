@@ -626,7 +626,7 @@ public class ProjectMapper {
         if(companyId != 1)
             SQL = "select DISTINCT type\n" +
                 "from projects\n" +
-                "where company_id=? lower(type) like lower('%" + query + "%')\n";
+                "where company_id=? and lower(type) like lower('%" + query + "%')\n";
         else
             SQL = "select DISTINCT type\n" +
                     "from projects\n" +
@@ -757,6 +757,5 @@ public class ProjectMapper {
 
         return ProjectCollection;
     }
-
 
 }

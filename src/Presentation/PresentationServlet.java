@@ -11,7 +11,6 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.*;
 import java.io.*;
-import java.lang.reflect.Array;
 import java.net.URLDecoder;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -31,7 +30,6 @@ public class PresentationServlet extends HttpServlet {
             request.setAttribute("User", userObj); // passing user object to request
 
             String userPath = request.getServletPath();
-            System.out.println(userPath);
 
             getActiveBudget(request, response, cont);
 
@@ -74,6 +72,7 @@ public class PresentationServlet extends HttpServlet {
                         break;
                     case "/getTypes":
                         getDistinctTypes(request, response, cont);
+                        break;
                     case "/create-user":
                         getCreateUserView(request, response, cont);
                         break;
@@ -89,9 +88,12 @@ public class PresentationServlet extends HttpServlet {
                 }
             }
         } else {
-            System.out.println(request.getRequestURI());
-            if(request.getRequestURI().equals("/login"))
+            String userpath = request.getRequestURI();
+            System.out.println(userpath);
+            if(userpath.equals("/login"))
                 request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+            else if(userpath.equals("/reset-password"))
+                getCreatePasswordView(request, response, cont);
             else
                 response.sendRedirect("/login");
         }
@@ -146,6 +148,9 @@ public class PresentationServlet extends HttpServlet {
                 break;
             case "/createUser":
                 createUser(request, response, cont);
+                break;
+            case "/reset-password":
+                createPassword(request, response, cont);
                 break;
             case "/createBudget":
                 createBudget(request, response, cont);
@@ -258,14 +263,13 @@ public class PresentationServlet extends HttpServlet {
     }
 
     void getPartnerView(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
-        System.out.println("getPartnerView");
         User user = (User) request.getAttribute("User");
         if (user.getCompany_id() != 1) {
             response.sendRedirect("/dashboard");
         } else {
             int partnerId = Integer.parseInt(request.getParameter("id"));
             request.setAttribute("partner", cont.getCompanyById(partnerId));
-            request.setAttribute("users", cont.getUserByCompanyId(partnerId));
+            request.setAttribute("users", cont.getUsersByCompanyId(partnerId));
             request.setAttribute("projects", cont.getProjectsByCompanyId(partnerId));
 
             request.getRequestDispatcher("/WEB-INF/view/partner.jsp").forward(request, response);
@@ -422,11 +426,15 @@ public class PresentationServlet extends HttpServlet {
             logo = request.getPart("logo");
         String logo_url = request.getParameter("logoUrl");
 
-        if (cont.createCompany(company_name, country_code, logo, logo_url)) {
-            request.setAttribute("createCompanyResult", true);
+        int company_id = cont.createCompany(company_name, country_code, logo, logo_url);
+        if (company_id > 0) { //if success
+            //request.setAttribute("message", "Create the first user for this company by clicking 'Add user'");
+            setMessage("Create the first user for this company by clicking 'Add user'", request);
+            response.sendRedirect("/partner?id=" + company_id);
+        } else {
+            request.setAttribute("error", "Something went wrong, try again");
+            request.getRequestDispatcher("/WEB-INF/view/create-company.jsp").forward(request, response);
         }
-        request.setAttribute("createCompanyResult", false);
-        request.getRequestDispatcher("/WEB-INF/view/create-company.jsp").forward(request, response);
     }
 
     void getPoes(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
@@ -603,6 +611,35 @@ public class PresentationServlet extends HttpServlet {
         cont.modifyBudget(newBudget, year, quarter);
 
         response.sendRedirect("/budget_view");
+    }
+
+    void getCreatePasswordView(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        String nonce = request.getParameter("n");
+        int userId = cont.getUserIdByNonce(nonce);
+        request.setAttribute("userId", userId);
+
+        request.getRequestDispatcher("/WEB-INF/view/reset.jsp").forward(request, response);
+    }
+
+    void createPassword(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        String nonce = request.getParameter("nonce");
+        String password = request.getParameter("pw");
+        int id = Integer.parseInt(request.getParameter("user_id"));
+
+        if(cont.createPassword(id, password, nonce)) {
+            request.getSession().setAttribute("User", cont.getUserById(id));
+            response.sendRedirect("/dashboard");
+        } else {
+            request.setAttribute("error", "Something went wrong, try recovering password again");
+            request.getRequestDispatcher("/WEB-INF/view/reset.jsp").forward(request, response);
+        }
+    }
+
+    void setMessage(String message, HttpServletRequest request) {
+        request.getSession().setAttribute("message", message);
+    }
+    void setError(String error, HttpServletRequest request) {
+        request.getSession().setAttribute("error", error);
     }
 
 }

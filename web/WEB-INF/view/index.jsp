@@ -7,8 +7,6 @@
 
   <jsp:include page="header.jsp" />
 
-<div class="error"><c:out value="${error}"></c:out></div>
-
   <div class="container actions" style="margin-top: 40px;">
       <c:if test="${User.getCompany_id() == 1}">
       <a href="/dashboard">
@@ -122,6 +120,7 @@
                    data: {query: q},
                    success: function(data) {
                        types = data;
+                       console.log(types);
                        async(types);
                    }
                });

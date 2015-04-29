@@ -80,7 +80,7 @@ public class UserMapper {
         return user;
     }
     
-    public boolean createUser(String name, String user_role, String user_email, String password, int company_id, Connection con) {
+    public int createUser(String name, String user_role, String user_email, String password, int company_id, Connection con) {
         String SQL = "insert into users values (?, ?, ?, ?, ? ,?)";
 
         PreparedStatement statement = null;
@@ -98,7 +98,7 @@ public class UserMapper {
 
             statement.executeUpdate();
 
-            return true;
+            return nextUserId;
         } catch (Exception e) {
             System.out.println("error in user creation");
         } finally {
@@ -106,7 +106,7 @@ public class UserMapper {
             if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
         }
 
-        return false;
+        return -1;
     }
 
     public int getNextUserId(Connection con) {
@@ -134,7 +134,7 @@ public class UserMapper {
     }
 
 
-    public ArrayList<User> getUserByCompanyId(int company_id, Connection con) {
+    public ArrayList<User> getUsersByCompanyId(int company_id, Connection con) {
 
             String SQL = "select * from users where company_id = ?";
             PreparedStatement statement = null;
@@ -205,6 +205,66 @@ public class UserMapper {
         }
 
         return UserCollection;
+    }
+
+    public boolean createPassword(int id, String password, Connection con) {
+        String SQL = "update users set password=? where id=?";
+
+        PreparedStatement statement = null;
+
+        System.out.println(id +", " + password);
+
+        try {
+            statement = con.prepareStatement(SQL);
+            statement.setString(1, password);
+            statement.setInt(2, id);
+
+            statement.executeUpdate();
+
+            return true;
+        } catch (Exception e) {
+            System.out.println("error in createPassword, in mapper");
+        } finally {
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
+        }
+
+        return false;
+    }
+
+    public ArrayList getEmailsInvolvedInProjectById(int project_id, int user_id, Connection con) {
+        ArrayList<String> emails = new ArrayList<>();
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+
+        String SQL = "select email from users \n" +
+                "where id <> ? and \n" +
+                "  id in (select user_id from stages where project_id=?) or\n" +
+                "  id in (select author_id from messages where project_id=?)";
+
+        try {
+            statement = con.prepareStatement(SQL);
+            statement.setInt(1, user_id);
+            statement.setInt(2, project_id);
+            statement.setInt(3, project_id);
+            rs = statement.executeQuery();
+
+            while (rs.next()) {
+                emails.add(rs.getString(1));
+            }
+
+
+
+        } catch (Exception e) {
+            System.out.println("error in UserMapper - getEmailsInvolvedInProjectById()");
+        }finally {
+            if (rs != null) try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
+        }
+
+        return emails;
+
     }
 
 }
