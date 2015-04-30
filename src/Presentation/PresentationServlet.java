@@ -27,6 +27,8 @@ public class PresentationServlet extends HttpServlet {
 
         System.out.println(request.getRequestURI());
 
+        //request.setAttribute("error", false);
+
         // if logged in
         Object userObj = request.getSession().getAttribute("User");
         if (userObj != null) {
@@ -112,6 +114,8 @@ public class PresentationServlet extends HttpServlet {
         String path = request.getRequestURI();
 
         System.out.println(path);
+
+        //request.setAttribute("error", false);
 
         Object userObj = request.getSession().getAttribute("User");
         if (userObj != null)
@@ -218,20 +222,19 @@ public class PresentationServlet extends HttpServlet {
         User user = (User) request.getAttribute("User");
 
         //if search
-        if(getString("q", request) != null) {
-            String q = getString("q", request);
+        if(getLazyString("q", request) != null) {
+            String q = getLazyString("q", request);
             request.setAttribute("results", cont.search(q, user.getCompany_id()));
         } else {
-            if(getString("state", request) != null)
-                request.setAttribute("projects", cont.getProjectsByState(getString("state", request), user.getCompany_id()));
-            else if (getString("type", request) != null)
-                request.setAttribute("projects", cont.getProjectsByType(getString("type", request), user.getCompany_id()));
-            else if (getString("company", request) != null)
-                request.setAttribute("projects", cont.getProjectsByCompanyName(getString("company", request), user.getCompany_id()));
+            if(getLazyString("state", request) != null)
+                request.setAttribute("projects", cont.getProjectsByState(getLazyString("state", request), user.getCompany_id()));
+            else if (getLazyString("type", request) != null)
+                request.setAttribute("projects", cont.getProjectsByType(getLazyString("type", request), user.getCompany_id()));
+            else if (getLazyString("company", request) != null)
+                request.setAttribute("projects", cont.getProjectsByCompanyName(getLazyString("company", request), user.getCompany_id()));
             else
                 request.setAttribute("projects", cont.getProjectsByState("waitingForAction", user.getCompany_id()));
         }
-
 
         request.setAttribute("statusCount", cont.getStatusCounts(user.getCompany_id()));
 
@@ -363,7 +366,7 @@ public class PresentationServlet extends HttpServlet {
 
     void createProjectRequest(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
         String project_body = getString("body", request);
-        String budget = getString("budget", request);
+        int budget = getInt("budget", request);
         String project_type = getString("type", request);
 
 
@@ -378,8 +381,19 @@ public class PresentationServlet extends HttpServlet {
         } else {
             execution_time = Timestamp.valueOf(execution_year + "-" + execution_month + "-" + execution_day + " 00:00:00");
         }
+        System.out.println("error?: " + request.getAttribute("error"));
+        if((boolean) request.getAttribute("error")) {
+            ArrayList<String[]> formData = new ArrayList<>();
+            formData.add(new String[]{"body", project_body.replaceAll("\r\n", "\\\\n")});
+            formData.add(new String[] {"budget", request.getParameter("budget")});
+            formData.add(new String[] {"type", project_type});
+            formData.add(new String[] {"execution_year", String.valueOf(execution_year)});
+            formData.add(new String[] {"execution_month", String.valueOf(execution_month)});
+            formData.add(new String[] {"execution_day", String.valueOf(execution_day)});
 
-        if(!(boolean) request.getAttribute("error")) {
+            request.getSession().setAttribute("formData", formData);
+            response.sendRedirect("/project-request");
+        } else {
             User user = (User) request.getAttribute("User");
 
             int projectId = cont.createProjectRequest(budget, project_body, user, project_type, execution_time);
@@ -389,8 +403,6 @@ public class PresentationServlet extends HttpServlet {
             } else {
                 System.out.println("Project ID is 0!");
             }
-        } else {
-            response.sendRedirect("/project-request");
         }
     }
 
@@ -676,25 +688,28 @@ public class PresentationServlet extends HttpServlet {
 
     String getString(String p, HttpServletRequest request) {
         String s = request.getParameter(p);
-        if(s == null || s.length() > 32) {
-            setError("Invalid field: " + p, request);
+        if(s == null || s.length() == 0 || s.equals("") || s.length() > 32) {
+            setError("Invalid field", p, request);
             request.setAttribute("error", true);
         }
         s = escapeHtml4(s);
         return s;
     }
+    String getLazyString(String p, HttpServletRequest request) {
+        return escapeHtml4(request.getParameter(p));
+    }
     int getInt(String p, HttpServletRequest request) {
         String s = request.getParameter(p);
-        if(s == null) {
+        if(s == null || s.length() == 0 || s.equals("")) {
             request.setAttribute("error", true);
-            setError("Missing field: " + p, request);
+            setError("Missing field", p, request);
         }
         int i = -1;
         if(isNumeric(s))
             i = Integer.parseInt(s);
         else {
             request.setAttribute("error", true);
-            setError("Enter only numbers in field " + p, request);
+            setError("Enter only numbers ",p , request);
         }
 
         return i;
@@ -703,8 +718,13 @@ public class PresentationServlet extends HttpServlet {
     void setMessage(String message, HttpServletRequest request) {
         request.getSession().setAttribute("message", message);
     }
-    void setError(String error, HttpServletRequest request) {
-        request.getSession().setAttribute("error", error);
+    void setError(String error, String field, HttpServletRequest request) {
+        String e = (String) (request.getSession().getAttribute("error"));
+        if(e == null)
+            request.getSession().setAttribute("errorMessage", error + "|" + field);
+        else {
+            request.getSession().setAttribute("errorMessage", e + "," + field);
+        }
     }
 
     void deleteUser(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {

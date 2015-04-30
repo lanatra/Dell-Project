@@ -16,16 +16,11 @@ import java.util.Calendar;
 public class ProjectMapper {
 
 
-    public int createProjectRequest(String budget, String project_body, User user, String project_type, Timestamp execution_date, Connection con) {
+    public int createProjectRequest(int budget, String project_body, User user, String project_type, Timestamp execution_date, Connection con) {
 
         String SQL = "insert into projects values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-        double parsedBudget;
-        try {
-            parsedBudget = Double.parseDouble(budget);
-        } catch (NumberFormatException e) {
-            return 0;
-        }
+
 /* Figure out how to handle dates from frontend; would be ideal if we could have input such that we can convert it to timestamp instead of int
         int execDateParsed;
         try {
@@ -51,7 +46,7 @@ public class ProjectMapper {
             statement.setInt(4, user.company_id);
             statement.setInt(5, user.id);
             statement.setString(6, "Waiting Project Verification");
-            statement.setDouble(7, parsedBudget);
+            statement.setInt(7, budget);
             statement.setString(8, project_body);
             statement.setTimestamp(9, execution_date);
             statement.setTimestamp(10, null);
