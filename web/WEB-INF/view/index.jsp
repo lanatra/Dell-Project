@@ -111,7 +111,7 @@
    $(document).ready(function() {
        var searchNext = true;
 
-       var removeNotMatches = function(list, q, sync) {
+       var removeNotMatches = function(list, q) {
            var matches = [];
 
            var regex = new RegExp(q, "i");
@@ -121,7 +121,7 @@
                    matches.push(list[i])
            }
 
-           sync(matches);
+           return matches;
        }
 
         var statuses = new Bloodhound({
@@ -151,7 +151,7 @@
                    }
                });
            } else
-               return removeNotMatches(types, q, sync);
+               sync(removeNotMatches(types, q));
        }
 
 
@@ -170,15 +170,26 @@
                        }
                    });
                } else
-                   return removeNotMatches(companies, q, sync);
+                   sync(removeNotMatches(companies, q));
            }
+       }
+
+       var lsFilter = function(q, sync) {
+            sync(removeNotMatches(localStorage.typeahead.split(","), q));
        }
 
         $('.search').typeahead({
             hint: false,
             highlight: true,
-            minLength: 3
+            minLength: 1
                 }, {
+            name: "typeahead",
+            source: lsFilter,
+            limit: 3,
+                    templates: {
+                        header: '<h3 class="typeahead-header">History</h3>'
+                    }
+        }, {
             name: 'statuses',
             source: statuses,
             limit: 4,
@@ -213,6 +224,8 @@
         }).keypress(function(e) {
                     if(e.keyCode == 13) { // enter
                         var val = $(".search").val();
+                        if(val.length > 3)
+                            localStorage.typeahead = localStorage.typeahead + "," + val;
                         if(val.substr(0, 1) == "#" && !isNaN(val.substr(1)))
                             window.location.href = "/project?id=" + val.substr(1);
                         else
