@@ -11,7 +11,7 @@ public class UserMapper {
     public User getUserById(int user_id, Connection con) {
 
         User user = null;
-        String SQL = "select * from users where id=?";
+        String SQL = "select * from users where id=? and deleted = 0";
 
 
         PreparedStatement statement = null;
@@ -29,8 +29,9 @@ public class UserMapper {
                         rs.getString(2),
                         rs.getString(3),
                         rs.getString(4),
-                        rs.getString(5),
-                        rs.getInt(6));
+                        rs.getInt(5),
+                        rs.getBoolean(6)
+                        );
 
             }
 
@@ -47,7 +48,7 @@ public class UserMapper {
 
     public User getUserByEmail(String email, Connection con) {
         User user = null;
-        String SQL = "select * from users where email= ? ";
+        String SQL = "select * from users where email= ?  and deleted = 0";
 
         PreparedStatement statement = null;
         System.out.println(SQL);
@@ -63,8 +64,8 @@ public class UserMapper {
                         rs.getString(2),
                         rs.getString(3),
                         rs.getString(4),
-                        rs.getString(5),
-                        rs.getInt(6));
+                        rs.getInt(5),
+                        rs.getBoolean(6));
             }
 
 
@@ -80,8 +81,8 @@ public class UserMapper {
         return user;
     }
     
-    public int createUser(String name, String user_role, String user_email, String password, int company_id, Connection con) {
-        String SQL = "insert into users values (?, ?, ?, ?, ? ,?)";
+    public int createUser(String name, String user_email, String password, int company_id, Connection con) {
+        String SQL = "insert into users values (?, ?, ?, ? ,?, ?)";
 
         PreparedStatement statement = null;
 
@@ -91,10 +92,10 @@ public class UserMapper {
 
             statement.setInt(1, nextUserId);
             statement.setString(2, name);
-            statement.setString(3, user_role);
-            statement.setString(4, user_email);
-            statement.setString(5, password);
-            statement.setInt(6, company_id);
+            statement.setString(3, user_email);
+            statement.setString(4, password);
+            statement.setInt(5, company_id);
+            statement.setInt(6, 0);
 
             statement.executeUpdate();
 
@@ -136,7 +137,7 @@ public class UserMapper {
 
     public ArrayList<User> getUsersByCompanyId(int company_id, Connection con) {
 
-            String SQL = "select * from users where company_id = ?";
+            String SQL = "select * from users where company_id = ?  and deleted = 0";
             PreparedStatement statement = null;
             ResultSet rs = null;
             ArrayList<User> UserCollection = new ArrayList<>();
@@ -154,8 +155,8 @@ public class UserMapper {
                             rs.getString(2),
                             rs.getString(3),
                             rs.getString(4),
-                            rs.getString(5),
-                            rs.getInt(6)
+                            rs.getInt(5),
+                            rs.getBoolean(6)
                     ));
                 }
 
@@ -172,7 +173,7 @@ public class UserMapper {
 
     public ArrayList<User> getUsers(Connection con) {
 
-        String SQL = "select * from users";
+        String SQL = "select * from users where deleted = 0";
         PreparedStatement statement = null;
         ResultSet rs = null;
         ArrayList<User> UserCollection = new ArrayList<>();
@@ -187,8 +188,8 @@ public class UserMapper {
                         rs.getString(2),
                         rs.getString(3),
                         rs.getString(4),
-                        rs.getString(5),
-                        rs.getInt(6)
+                        rs.getInt(5),
+                        rs.getBoolean(6)
                 ));
             }
 
@@ -234,7 +235,7 @@ public class UserMapper {
         ResultSet rs = null;
 
         String SQL = "select email, name from users \n" +
-                "where id <> ? and \n" +
+                "where id <> ? and deleted = 0 and \n" +
                 "  id in (select user_id from stages where project_id=?) or\n" +
                 "  id in (select author_id from messages where project_id=?)";
 
@@ -263,4 +264,26 @@ public class UserMapper {
 
     }
 
+    public boolean markUserDeleted(int user_id, Connection con) {
+        PreparedStatement statement = null;
+
+        String SQL = "update users set deleted = '1' where id = ?";
+
+        try {
+            statement = con.prepareStatement(SQL);
+            statement.setInt(1, user_id);
+
+            statement.executeUpdate();
+
+            return true;
+        } catch (Exception e) {
+            System.out.println("error in markuserdeleted, in mapper");
+        } finally {
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
+        }
+
+        return false;
+
+    }
 }

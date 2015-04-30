@@ -168,6 +168,9 @@ public class PresentationServlet extends HttpServlet {
             case "/modifyBudget":
                 modifyBudget(request, response, cont);
                 break;
+            case "/markUserDeleted":
+                deleteUser(request, response, cont);
+                break;
             default:
                 getDashboard(request, response, cont);
         }
@@ -321,10 +324,14 @@ public class PresentationServlet extends HttpServlet {
             int userId = getInt("id", request);
             User tempUser = cont.getUserById(userId);
             request.setAttribute("user", tempUser);
-
-            Company company = cont.getCompanyById(tempUser.getCompany_id());
-            request.setAttribute("partner", company);
-            request.setAttribute("projects", cont.getProjectsByUserId(userId));
+            try {
+                Company company = cont.getCompanyById(tempUser.getCompany_id());
+                request.setAttribute("partner", company);
+                request.setAttribute("projects", cont.getProjectsByUserId(userId));
+            } catch (NullPointerException e) {
+                getUsers(request, response, cont);
+                return;
+            }
 
             request.getRequestDispatcher("/WEB-INF/view/user.jsp").forward(request, response);
         }
@@ -429,7 +436,7 @@ public class PresentationServlet extends HttpServlet {
         if(getString("stage", request) != null)
             stage = getInt("stage", request);
         if(cont.addPoeFile(project_id, file, user_id, stage)) {
-            response.sendRedirect("/project?id="+project_id);
+            response.sendRedirect("/project?id=" + project_id);
         }
     }
 
@@ -560,7 +567,6 @@ public class PresentationServlet extends HttpServlet {
     }
 
     void createUser(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
-
         String name = getString("userName", request);
         String email = getString("userEmail", request);
         String password = getString("password", request);
@@ -571,6 +577,7 @@ public class PresentationServlet extends HttpServlet {
         } else {
             response.sendRedirect("/create-user");
         }
+
     }
 
     void createBudget(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
@@ -710,6 +717,13 @@ public class PresentationServlet extends HttpServlet {
     }
     void setError(String error, HttpServletRequest request) {
         request.getSession().setAttribute("error", error);
+    }
+
+    void deleteUser(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        int viewedUser = Integer.parseInt(request.getParameter("viewedUser"));
+
+        cont.markUserDeleted(viewedUser);
+        response.sendRedirect("/user?id="+viewedUser);
     }
 
 }

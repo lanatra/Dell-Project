@@ -40,6 +40,12 @@
               </div>
           </a>
       </c:forEach>
+
+      <form action="/markUserDeleted" method="post">
+          <input type="hidden" value="<c:out value="${user.getId()}"></c:out>" name="viewedUser">
+      <button action="/markUserDeleted" method="post" class="submit">Delete user</button>
+      </form>
+
   </div>
 
   </body>
