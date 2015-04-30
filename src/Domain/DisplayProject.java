@@ -30,6 +30,8 @@ public class DisplayProject extends Project{
     public DisplayProject(int id, Timestamp start_time, Timestamp end_time, int company_id, int owner_id, String status, double budget, String body, Timestamp execution_date, Timestamp last_change_admin, Timestamp last_change_partner, boolean unread_admin, boolean unread_partner, String notification, String type) {
         super(id, start_time, end_time, company_id, owner_id, status, budget, body, execution_date, last_change_admin, last_change_partner, unread_admin, unread_partner, notification, type);
 
+        this.body = "<p>" + body.replaceAll("\\n","</p><p>")  + "</p>";
+
         if(start_time != null) f_start_time = start_time.getTime();
         if(end_time != null) f_end_time = end_time.getTime();
         if(execution_date != null) f_execution_date = execution_date.getTime();

@@ -13,7 +13,7 @@
             <c:set var="balance" value="${project.getBudget()}" />
             <fmt:formatNumber var="i" type="number" value="${balance}" />
             <h3><c:out value="${project.getCompanyName()}"></c:out> is requesting <c:out value="${i}"></c:out>&#8364 for a <c:out value="${project.getType()}"></c:out></h3>
-            <p><c:out value="${project.getBody()}"></c:out></p>
+            <c:out value="${project.getBody()}" escapeXml="false"></c:out>
             </div>
             <c:if test="${dellAndLatest}">
                 <p class="status-message">Review the project; approve if satisfactory or reject if not.</p>

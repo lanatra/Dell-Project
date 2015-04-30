@@ -120,7 +120,11 @@ public class Controller {
 
    //Readers
     //User related
-    public User getUserById(int user_id) { return facade.getUserById(user_id); }
+    public User getUserById(int user_id) {
+        User user = facade.getUserById(user_id);
+        user.company = getCompanyById(user.getCompany_id());
+        return user;
+    }
     public ArrayList<User> getUsersByCompanyId(int company_id) {
         return facade.getUsersByCompanyId(company_id);
     }
