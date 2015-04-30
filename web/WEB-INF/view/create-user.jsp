@@ -17,7 +17,7 @@
                 <span>Select partner</span>
                 <select name="selectedCompany">
                     <c:forEach var="companies" items="${companies}">
-                        <option value="<c:out value='${companies.getId()}'></c:out>"><c:out value='${companies.getName()}'></c:out></option>
+                        <option value="<c:out value='${companies.getId()}'></c:out>" <c:if test="${companies.getName().equals(partnerName)}">selected</c:if>><c:out value='${companies.getName()}'></c:out></option>
                     </c:forEach>
                 </select>
             </div>
@@ -26,13 +26,11 @@
                 <input type="text" name="userName">
             </div>
             <div class="input-group">
-                <span>Password</span>
-                <span>A link will be sent to users email</span>
-            </div>
-            <div class="input-group">
                 <span>Email</span>
                 <input type="email" name="userEmail">
             </div>
+
+            <p style="float:left; clear: left;">Users will set their password via email.</p>
 
             <input class="button" type="submit" value="Register User">
         </form>

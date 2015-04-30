@@ -89,9 +89,6 @@ public class PresentationServlet extends HttpServlet {
                     case "/logout":
                         logout(request, response, cont);
                         break;
-                    case "/budget_view":
-                        getBudgetView(request, response, cont);
-                        break;
                     default:
                         response.sendRedirect("/dashboard");
                         break;
@@ -462,6 +459,7 @@ public class PresentationServlet extends HttpServlet {
     void getCreateUserView(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
         ArrayList<Company> companies = cont.getCompanies();
         request.setAttribute("companies", companies);
+        request.setAttribute("partnerName", request.getParameter("partnerName"));
         request.getRequestDispatcher("/WEB-INF/view/create-user.jsp").forward(request, response);
     }
 
@@ -597,15 +595,6 @@ public class PresentationServlet extends HttpServlet {
             response.sendRedirect("/create-budget");
     }
 
-    void getBudgetView(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
-
-        request.setAttribute("budgetCollection", cont.getAllBudgets());
-
-        getActiveBudget(request, response, cont);
-
-        request.getRequestDispatcher("/WEB-INF/view/budget_view.jsp").forward(request, response);
-    }
-
 
     void getDistinctStatuses(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
         response.setContentType("application/json");
@@ -624,7 +613,6 @@ public class PresentationServlet extends HttpServlet {
         User user = (User) request.getAttribute("User");
         out.print(cont.getCompanyNames(getString("query", request), user.getCompany_id()));
     }
-
 
 
     void error(String error, HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {

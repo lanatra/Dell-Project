@@ -16,6 +16,7 @@
   <script type="text/javascript" src="js/jquery.fancybox.pack.js"></script>
   <script type="text/javascript" src="js/moment.js"></script>
   <script type="text/javascript" src="js/typeahead.bundle.min.js"></script>
+  <script type="text/javascript" src="js/jensabox.js"></script>
   <link href="css/normalize.css" rel="stylesheet" media="all">
   <link href="css/skeleton.css" rel="stylesheet" media="all">
   <link href="css/style.css" rel="stylesheet" media="all">

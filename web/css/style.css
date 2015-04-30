@@ -5,6 +5,11 @@ body, html {
 h1 {
   font-weight: normal; }
 
+div.container > h5 {
+  margin-bottom: 0px;
+  margin-top: 20px;
+  float: left; }
+
 button, .button {
   border-radius: 2px;
   height: 40px;
@@ -497,6 +502,15 @@ div.actions .searchbox {
   margin-top: 40px;
   margin-bottom: 40px;
   color: #4F4F4F; }
+  .project-container button.cancel-button {
+    background-color: transparent;
+    height: auto;
+    color: #C2C2C2;
+    margin-top: 23px;
+    padding: 0px 10px; }
+    .project-container button.cancel-button:hover {
+      box-shadow: none;
+      color: #C20000; }
   .project-container h1 {
     font-size: 2.5em;
     font-weight: lighter;
@@ -564,16 +578,16 @@ div.project-items {
         margin-right: 6px; }
         div.project-items div.item div.bubble button.red {
           background-color: white;
-          color: #CD5050;
-          border: 1px solid #CD5050; }
+          color: #111111;
+          border: 1px solid #DDDDDD; }
           div.project-items div.item div.bubble button.red:hover {
-            background-color: rgba(205, 80, 80, 0.05); }
+            color: #c70000; }
         div.project-items div.item div.bubble button.green {
-          background-color: white;
-          color: #9BCE63;
-          border: 1px solid #9BCE63; }
+          background-color: #0085C3;
+          color: white;
+          border: 1px solid #0085C3; }
           div.project-items div.item div.bubble button.green:hover {
-            background-color: rgba(155, 206, 99, 0.05); }
+            background-color: #0085C3; }
         div.project-items div.item div.bubble button.blue {
           background-color: white;
           color: #0085C3;
@@ -588,12 +602,12 @@ div.project-items {
     div.project-items div.item span.date {
       float: left;
       margin-bottom: 5px;
-      color: #9F9F9F; }
+      color: #C5C5C5; }
     div.project-items div.item span.user-data {
       float: left;
       margin-left: 20px;
       margin-right: 20px;
-      color: #787878; }
+      color: #C5C5C5; }
     div.project-items div.item.message {
       width: 70%; }
       div.project-items div.item.message div.inner-bubble {
@@ -874,3 +888,59 @@ div.tt-menu {
     color: #9F9F9F;
     margin-top: 10px;
     margin-bottom: 0px; }
+
+.button-red {
+  line-height: 2.7;
+  background-color: red; }
+  .button-red:hover {
+    color: white; }
+
+.button-cancel {
+  line-height: 2.7;
+  background-color: #A6A6A6;
+  color: white; }
+  .button-cancel:hover {
+    color: white; }
+
+div.cancel-box {
+  float: right;
+  background-color: #ececec;
+  border-radius: 2px;
+  padding: 5px 15px; }
+
+.cancel-button {
+  color: #7C7C7C;
+  text-decoration: none; }
+  .cancel-button:hover {
+    color: #c70000; }
+
+div.jensabox {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 110;
+  display: table;
+  visibility: hidden;
+  opacity: 0;
+  background-color: rgba(255, 255, 255, 0.9);
+  transition: opacity .4s; }
+  div.jensabox.visible {
+    opacity: 1; }
+    div.jensabox.visible div.content-box {
+      transform: translateY(0px);
+      opacity: 1; }
+  div.jensabox div.fill-box {
+    position: relative;
+    display: table-cell;
+    vertical-align: middle;
+    height: 100%; }
+  div.jensabox div.content-box {
+    opacity: 0;
+    max-width: 600px;
+    padding: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    transition: transform .3s, opacity .3s;
+    transform: translateY(200px); }

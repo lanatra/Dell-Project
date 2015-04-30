@@ -16,6 +16,12 @@
 
 <div class="container project-container">
     <h1><span style="color: #9F9F9F;">#<c:out value="${project.getId()}" /></span> <c:out value="${project.getType()}" /></h1>
+
+    <c:if test="${(project.getStatus() != 'Project Finished')}">
+        <c:if test="${(project.getStatus() != 'Cancelled')}">
+            <div class="cancel-box"><a href="#" class="cancel-button jensabox-trigger">Cancel Project</a></div>
+        </c:if>
+    </c:if>
     <div class="project-state"><c:out value="${project.getStatus()}" /></div>
     <span class="state">State</span>
 
@@ -196,17 +202,22 @@
         <button id="submitMessage" class="submit">Send message</button>
     </form>
 
-
 </div>
-<c:if test="${(project.getStatus() != 'Project Finished')}">
-<c:if test="${(project.getStatus() != 'Cancelled')}">
-<form method="post" action="/api/changeProjectStatus">
-    <input type="hidden" name="currentType" value="${project.getStatus()}">
-    <input type="hidden" name="projectId" value="${project.getId()}">
-    <button type="submit" name="answer" value="cancelled">Cancel Project</button>
-</form>
-</c:if>
-</c:if>
+
+<div class="jensabox">
+    <div class="fill-box">
+    <div class="content-box">
+        <h2>Do you really want to cancel this project?</h2>
+        <p>It's your call.</p>
+        <form class="u-pull-left" method="post" action="/api/changeProjectStatus">
+            <input type="hidden" name="currentType" value="${project.getStatus()}">
+            <input type="hidden" name="projectId" value="${project.getId()}">
+            <button class="button button-red" type="submit" name="answer" value="cancelled">Cancel Project</button>
+        </form>
+        <a href="#" class="button button-cancel">No</a>
+    </div>
+    </div>
+</div>
 
 <script>
     $(".fancybox").fancybox();

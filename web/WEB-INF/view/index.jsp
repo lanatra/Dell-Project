@@ -4,8 +4,9 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-  <jsp:include page="header.jsp" />
+<jsp:include page="header.jsp" />
 
   <div class="container actions" style="margin-top: 40px;">
       <c:if test="${User.getCompany_id() == 1}">
@@ -99,14 +100,14 @@
                 <div class="project-item">
                     <span class="id"><strong>#</strong><c:out value="${result.getId()}"></c:out></span>
                     <span class="type"><c:out value="${result.getType()}"></c:out></span>
-                    <span class="result"><c:out value="${result.getBody()}"></c:out></span>
+                    <span class="result"><c:out value="${fn:substring(result.getBody(), 0, 70)}" ></c:out></span>
                 </div>
             </a>
         </c:forEach>
     </c:forEach>
-
   </c:if>
   </div>
+
 <script type="application/javascript">
    $(document).ready(function() {
        var searchNext = true;
@@ -240,8 +241,6 @@
 
        $('span.twitter-typeahead').css('width', '100%');
        $('div.searchbox input').css('position', 'absolute !important');
-       //$('div.searchbox input').css('margin-top', '-17px');
-
     });
 </script>
 
