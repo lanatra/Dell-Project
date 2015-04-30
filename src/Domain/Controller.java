@@ -104,11 +104,11 @@ public class Controller {
 
     }
     //User related
-    public int createUser(String name, String user_role, String user_email, String password, int company_id) {
+    public int createUser(String name, String user_email, String password, int company_id) {
         if(password != null)
             password = Login.createPassword(password);
 
-        int id = facade.createUser(name, user_role, user_email, password, company_id);
+        int id = facade.createUser(name, user_email, password, company_id);
 
         if(id != -1) {
             if (password == null)

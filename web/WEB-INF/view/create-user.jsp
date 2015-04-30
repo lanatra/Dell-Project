@@ -33,13 +33,6 @@
                 <span>Email</span>
                 <input type="email" name="userEmail">
             </div>
-            <div class="input-group">
-                <span>User type</span>
-                <select name="role">
-                    <option value="Partner">Partner</option>
-                    <option value="Dell">Dell</option>
-                </select>
-            </div>
 
             <input class="button" type="submit" value="Register User">
         </form>

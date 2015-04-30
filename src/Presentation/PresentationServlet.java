@@ -321,10 +321,14 @@ public class PresentationServlet extends HttpServlet {
             int userId = Integer.parseInt(request.getParameter("id"));
             User tempUser = cont.getUserById(userId);
             request.setAttribute("user", tempUser);
-
-            Company company = cont.getCompanyById(tempUser.getCompany_id());
-            request.setAttribute("partner", company);
-            request.setAttribute("projects", cont.getProjectsByUserId(userId));
+            try {
+                Company company = cont.getCompanyById(tempUser.getCompany_id());
+                request.setAttribute("partner", company);
+                request.setAttribute("projects", cont.getProjectsByUserId(userId));
+            } catch (NullPointerException e) {
+                getUsers(request, response, cont);
+                return;
+            }
 
             request.getRequestDispatcher("/WEB-INF/view/user.jsp").forward(request, response);
         }
@@ -559,16 +563,12 @@ public class PresentationServlet extends HttpServlet {
     void createUser(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
 
         String name = request.getParameter("userName");
-        String role = request.getParameter("role");
         String email = request.getParameter("userEmail");
         String password = request.getParameter("password");
-        int company_id;
-        if (role.equals("Dell")) {
-            company_id = 1;
-        } else {
-            company_id = Integer.parseInt(request.getParameter("selectedCompany"));
-        }
-        int id = cont.createUser(name, role, email, password, company_id);
+        int company_id = Integer.parseInt(request.getParameter("selectedCompany"));
+
+
+        int id = cont.createUser(name, email, password, company_id);
         response.sendRedirect("/user?id="+id);
     }
 
