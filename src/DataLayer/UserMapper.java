@@ -30,7 +30,10 @@ public class UserMapper {
                         rs.getString(3),
                         rs.getString(4),
                         rs.getString(5),
-                        rs.getInt(6));
+                        rs.getInt(6),
+                        rs.getString(7)
+                        
+                        );
 
             }
 
@@ -64,7 +67,8 @@ public class UserMapper {
                         rs.getString(3),
                         rs.getString(4),
                         rs.getString(5),
-                        rs.getInt(6));
+                        rs.getInt(6),
+                        rs.getString(7));
             }
 
 
@@ -81,7 +85,7 @@ public class UserMapper {
     }
     
     public int createUser(String name, String user_role, String user_email, String password, int company_id, Connection con) {
-        String SQL = "insert into users values (?, ?, ?, ?, ? ,?)";
+        String SQL = "insert into users values (?, ?, ?, ?, ? ,?, ?)";
 
         PreparedStatement statement = null;
 
@@ -95,6 +99,7 @@ public class UserMapper {
             statement.setString(4, user_email);
             statement.setString(5, password);
             statement.setInt(6, company_id);
+            statement.setString(7, "Active");
 
             statement.executeUpdate();
 
@@ -155,7 +160,8 @@ public class UserMapper {
                             rs.getString(3),
                             rs.getString(4),
                             rs.getString(5),
-                            rs.getInt(6)
+                            rs.getInt(6),
+                            rs.getString(7)
                     ));
                 }
 
@@ -188,7 +194,8 @@ public class UserMapper {
                         rs.getString(3),
                         rs.getString(4),
                         rs.getString(5),
-                        rs.getInt(6)
+                        rs.getInt(6),
+                        rs.getString(7)
                 ));
             }
 
@@ -263,4 +270,26 @@ public class UserMapper {
 
     }
 
+    public boolean markUserDeleted(int user_id, Connection con) {
+        PreparedStatement statement = null;
+
+        String SQL = "update users set deleted = 'Deleted' where id = ?";
+
+        try {
+            statement = con.prepareStatement(SQL);
+            statement.setInt(1, user_id);
+
+            statement.executeUpdate();
+
+            return true;
+        } catch (Exception e) {
+            System.out.println("error in markuserdeleted, in mapper");
+        } finally {
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
+        }
+
+        return false;
+
+    }
 }

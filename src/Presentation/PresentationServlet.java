@@ -165,6 +165,9 @@ public class PresentationServlet extends HttpServlet {
             case "/modifyBudget":
                 modifyBudget(request, response, cont);
                 break;
+            case "/markUserDeleted":
+                deleteUser(request, response, cont);
+                break;
             default:
                 getDashboard(request, response, cont);
         }
@@ -427,7 +430,7 @@ public class PresentationServlet extends HttpServlet {
         if(request.getParameter("stage") != null)
             stage = Integer.parseInt(request.getParameter("stage"));
         if(cont.addPoeFile(project_id, file, user_id, stage)) {
-            response.sendRedirect("/project?id="+project_id);
+            response.sendRedirect("/project?id=" + project_id);
         }
     }
 
@@ -671,6 +674,13 @@ public class PresentationServlet extends HttpServlet {
     }
     void setError(String error, HttpServletRequest request) {
         request.getSession().setAttribute("error", error);
+    }
+
+    void deleteUser(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        int viewedUser = Integer.parseInt(request.getParameter("viewedUser"));
+
+        cont.markUserDeleted(viewedUser);
+        response.sendRedirect("/user?id="+viewedUser);
     }
 
 }

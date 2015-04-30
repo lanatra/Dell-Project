@@ -108,6 +108,10 @@ public class DatabaseFacade {
         return new UserMapper().getUsers(getCon());
     }
 
+    public boolean markUserDeleted(int user_id) {
+        return new UserMapper().markUserDeleted(user_id, getCon());
+    }
+
     // POE
     public boolean addPoeFile(int project_id, String filename, int user_id, String filetype, int stage) {
         return new PoeMapper().addPoeFile(project_id, filename, user_id, filetype, stage, getCon());

@@ -127,6 +127,9 @@ public class Controller {
     public ArrayList<User> getUsers() {return facade.getUsers();}
     public User getUserByEmail(String email) {return facade.getUserByEmail(email);}
 
+    public boolean markUserDeleted(int user_id) {
+        return facade.markUserDeleted(user_id);
+    }
 
     //Project related
     public DisplayProject getProjectById(int id, int companyId) {
@@ -138,12 +141,16 @@ public class Controller {
         return  dp; }
     public ArrayList getStagesByProjectId(int project_id) {
         return proccessStages(facade.getStagesByProjectId(project_id)); }
-    public ArrayList getMessagesByProjectId(int projId) { return processMessages(facade.getMessagesByProjectId(projId)); }
+    public ArrayList getMessagesByProjectId(int projId) {
+        return processMessages(facade.getMessagesByProjectId(projId)); }
 
     public String postMessage(int userId, int projId, String body, int companyId) { return processMessage(facade.postMessage(userId, projId, body, companyId)).toHTML();}
-    public ArrayList getProjectsByState(String state, int companyId) { return  facade.getProjectsByState(state, companyId); }
-    public ArrayList getProjectsByType(String type, int companyId) { return  facade.getProjectsByType(type, companyId); }
-    public ArrayList getProjectsByCompanyName(String companyName, int companyId) { return  facade.getProjectsByCompanyName(companyName, companyId); }
+    public ArrayList getProjectsByState(String state, int companyId) {
+        return  facade.getProjectsByState(state, companyId); }
+    public ArrayList getProjectsByType(String type, int companyId) {
+        return  facade.getProjectsByType(type, companyId); }
+    public ArrayList getProjectsByCompanyName(String companyName, int companyId) {
+        return facade.getProjectsByCompanyName(companyName, companyId); }
 
     //Search
     public ArrayList search(String q, int companyId) {

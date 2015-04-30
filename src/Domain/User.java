@@ -8,7 +8,7 @@ public class User {
     public String role;
     public String email;
     public int company_id;
-
+    public String deleted;
     public Company company;
 
     public int getId() {
@@ -33,10 +33,11 @@ public class User {
 
     public int getCompany_id() { return company_id; }
 
+    public String getDeleted() { return deleted; }
+
     public Company getCompany() { return company; }
 
-    public User(int id1, String name1, String role1, String email1, String password1, int company_id1) {
-
+    public User(int id1, String name1, String role1, String email1, String password1, int company_id1, String deleted) {
 
         this.id = id1;
         this.name = name1;
@@ -44,6 +45,7 @@ public class User {
         this.role = role1;
         this.email = email1;
         this.company_id = company_id1;
+        this.deleted = deleted;
 
     }
 
