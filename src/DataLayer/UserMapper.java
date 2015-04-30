@@ -228,12 +228,12 @@ public class UserMapper {
         return false;
     }
 
-    public ArrayList getEmailsInvolvedInProjectById(int project_id, int user_id, Connection con) {
-        ArrayList<String> emails = new ArrayList<>();
+    public ArrayList getUserInfoInvolvedInProjectById(int project_id, int user_id, Connection con) {
+        ArrayList<String[]> emails = new ArrayList<>();
         PreparedStatement statement = null;
         ResultSet rs = null;
 
-        String SQL = "select email from users \n" +
+        String SQL = "select email, name from users \n" +
                 "where id <> ? and \n" +
                 "  id in (select user_id from stages where project_id=?) or\n" +
                 "  id in (select author_id from messages where project_id=?)";
@@ -246,13 +246,13 @@ public class UserMapper {
             rs = statement.executeQuery();
 
             while (rs.next()) {
-                emails.add(rs.getString(1));
+                emails.add(new String[]{rs.getString(1), rs.getString(2)});
             }
 
 
 
         } catch (Exception e) {
-            System.out.println("error in UserMapper - getEmailsInvolvedInProjectById()");
+            System.out.println("error in UserMapper - getUserInfoInvolvedInProjectById()");
         }finally {
             if (rs != null) try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
             if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}

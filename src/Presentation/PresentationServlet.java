@@ -565,9 +565,8 @@ public class PresentationServlet extends HttpServlet {
         } else {
             company_id = Integer.parseInt(request.getParameter("selectedCompany"));
         }
-        cont.createUser(name, role, email, password, company_id);
-        User user = cont.getUserByEmail(email);
-        response.sendRedirect("/user?id="+user.getId());
+        int id = cont.createUser(name, role, email, password, company_id);
+        response.sendRedirect("/user?id="+id);
     }
 
     void createBudget(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {

@@ -1,24 +1,19 @@
 package Domain;
 
-import DataLayer.BudgetMapper;
 import DataLayer.DatabaseFacade;
 
 
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
-import java.sql.Connection;
 import java.sql.Timestamp;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 
 import javax.servlet.http.Part;
 import java.io.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Controller {
 
@@ -97,12 +92,11 @@ public class Controller {
         }
 
         if(facade.changeProjectStatus(project_id, new_status, companyId, userId)) {
-            ArrayList<String> emails = facade.getEmailsInvolvedInProjectById(project_id, userId);
+            ArrayList<String[]> users = facade.getUserInfoInvolvedInProjectById(project_id, userId);
 
-            for (String email : emails) {
-                if(email.matches("^(\\w)+@(\\w)+\\.(\\w){2,}$"))
-                    sendEmail(email, "New Status for project #" + project_id, "Project #" + project_id + " has advanced to a new step, " + new_status + "\n" +
-                        "Click here to review the project: http://localhost:8080/project?id="+project_id);
+            for (String[] user : users) {
+                if(user[0].matches("^(\\w)+@(\\w)+\\.(\\w){2,}$"))
+                    sendEmail(user[0], "New Status for project #" + project_id, Notifications.createNotificationHTML(user[1], project_id, new_status));
             }
             return true;
         } else
@@ -110,7 +104,7 @@ public class Controller {
 
     }
     //User related
-    public boolean createUser(String name, String user_role, String user_email, String password, int company_id) {
+    public int createUser(String name, String user_role, String user_email, String password, int company_id) {
         if(password != null)
             password = Login.createPassword(password);
 
@@ -121,7 +115,7 @@ public class Controller {
                 createPasswordResetNonce(id, user_email);
         }
 
-        return (id != -1);
+        return id;
     }
 
    //Readers
@@ -347,8 +341,9 @@ public class Controller {
     public void createPasswordResetNonce(int id, String email){
         Nonce nonce = new Nonce(-1, gen.nextNonce(), id, null, "PasswordReset");
         int nonceId = facade.addNonce(nonce);
+        User user = facade.getUserById(id);
         if(email != null && nonceId != -1)
-            sendEmail(email, "Reset Password", "http://localhost:8080/reset-password?n=" + nonce.getNonce());
+            sendEmail(email, "Welcomes!", Notifications.createWelcomeHTML(user.getName() , "http://localhost:8080/reset-password?n=" + nonce.getNonce()));
     }
 
     public int getUserIdByNonce(String nonce) {

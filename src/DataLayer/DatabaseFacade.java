@@ -102,7 +102,7 @@ public class DatabaseFacade {
     public ArrayList<User> getUsersByCompanyId(int company_id) {
         return new UserMapper().getUsersByCompanyId(company_id, getCon());
     }
-    public ArrayList getEmailsInvolvedInProjectById(int project_id, int user_id) { return new UserMapper().getEmailsInvolvedInProjectById(project_id, user_id, getCon()); }
+    public ArrayList getUserInfoInvolvedInProjectById(int project_id, int user_id) { return new UserMapper().getUserInfoInvolvedInProjectById(project_id, user_id, getCon()); }
 
     public ArrayList<User> getUsers() {
         return new UserMapper().getUsers(getCon());
