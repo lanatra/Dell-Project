@@ -78,7 +78,7 @@
     });
   </script>
 </head>
-<body>
+<body onload="document.body.setAttribute('class','loaded')">
 <c:set var="uri" value="${pageContext.request.requestURI}" />
 <c:if test="${errorMessage != null}">
     <div class="notification error"><c:out value="${sessionScope.errorMessage}"></c:out></div>

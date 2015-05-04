@@ -208,7 +208,7 @@
     <div class="fill-box">
     <div class="content-box">
         <h2>Do you really want to cancel this project?</h2>
-        <p>It's your call.</p>
+        <p>This change will be irreversible.</p>
         <form class="u-pull-left" method="post" action="/api/changeProjectStatus">
             <input type="hidden" name="currentType" value="${project.getStatus()}">
             <input type="hidden" name="projectId" value="${project.getId()}">
