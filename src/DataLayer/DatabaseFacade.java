@@ -134,7 +134,7 @@ public class DatabaseFacade {
     }
 
     public boolean modifyBudget(int new_budget, int year, int quarter) {
-    return new BudgetMapper().modifyBudget(new_budget,year, quarter, getCon());
+    return new BudgetMapper().modifyBudget(new_budget, year, quarter, getCon());
     }
 
     public ArrayList<Budget> getActiveBudget(int year, int quarter) {
@@ -154,4 +154,8 @@ public class DatabaseFacade {
     public int getUserIdByNonce(String nonce) { return new NonceMapper().getUserIdByNonce(nonce, getCon());}
     public boolean createPassword(int id, String password) { return new UserMapper().createPassword(id, password, getCon()); }
     public void deleteNonce(String nonce) { new NonceMapper().deleteNonce(nonce, getCon()); }
+
+
+    // Statistics
+    public ArrayList<String[]> getDistinctTypesCounts() { return StatisticsGetter.getDistinctTypesCounts(getCon()); }
 }

@@ -17,6 +17,7 @@
   <script type="text/javascript" src="js/moment.js"></script>
   <script type="text/javascript" src="js/typeahead.bundle.min.js"></script>
   <script type="text/javascript" src="js/jensabox.js"></script>
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
   <link href="css/normalize.css" rel="stylesheet" media="all">
   <link href="css/skeleton.css" rel="stylesheet" media="all">
   <link href="css/style.css" rel="stylesheet" media="all">
@@ -46,6 +47,7 @@
         if($('.notification.error').length > 0) {
             var $this = $('.notification.error');
             var inputErrorField = $this.text().split("|")[1].split(",");
+            console.log("errorInputFields: " + inputErrorField);
             $this.text($this.text().substring(0, $this.text().indexOf("|")));
 
             for(var i = 0; i < inputErrorField.length; i++) {
@@ -79,19 +81,22 @@
 <body>
 <c:set var="uri" value="${pageContext.request.requestURI}" />
 <c:if test="${errorMessage != null}">
-<div class="notification error"><c:out value="${sessionScope.errorMessage}"></c:out></div>
-<c:if test="${sessionScope.delete != null}">
-    <c:remove var="formData" scope="session" />
-    <c:remove var="errorMessage" scope="session" />
-    </c:if><c:if test="${sessionScope.errorMessage != null}">
-    <c:set var="delete" scope="session" value="true"></c:set>
-</c:if>
+    <div class="notification error"><c:out value="${sessionScope.errorMessage}"></c:out></div>
+    <c:if test="${sessionScope.deleteE != null}">
+        <c:remove var="formData" scope="session" />
+        <c:remove var="errorMessage" scope="session" />
+    </c:if>
+    <c:if test="${sessionScope.errorMessage != null}">
+        <c:set var="deleteE" scope="session" value="true"></c:set>
+    </c:if>
 </c:if><c:if test="${message != null}">
-<div class="notification message"><c:out value="${sessionScope.message}"></c:out></div>
-<c:if test="${sessionScope.delete != null}">
-    <c:remove var="error" scope="session" />
-</c:if>
-    <c:set var="delete" scope="session" value="true"></c:set>
+    <div class="notification message"><c:out value="${sessionScope.message}"></c:out></div>
+    <c:if test="${sessionScope.deleteM != null}">
+        <c:remove var="message" scope="session" />
+    </c:if>
+    <c:if test="${sessionScope.message != null}">
+        <c:set var="deleteM" scope="session" value="true"></c:set>
+    </c:if>
 </c:if>
 
 <div class="header u-full-width">

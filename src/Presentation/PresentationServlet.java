@@ -76,6 +76,9 @@ public class PresentationServlet extends HttpServlet {
                     case "/getCompanyNames":
                         getCompanyNames(request, response, cont);
                         break;
+                    case "/statistics":
+                        getStatisticsView(request, response, cont);
+                        break;
                     case "/getStatuses":
                         getDistinctStatuses(request, response, cont);
                         break;
@@ -350,7 +353,7 @@ public class PresentationServlet extends HttpServlet {
 
         String body = getString("body", request);
 
-        if((boolean) request.getAttribute("error"))
+        if(request.getAttribute("error") != null)
             out.println("Error - Invalid input");
         else
             out.println(cont.postMessage(userId, projectId, body, companyId));
@@ -382,7 +385,7 @@ public class PresentationServlet extends HttpServlet {
             execution_time = Timestamp.valueOf(execution_year + "-" + execution_month + "-" + execution_day + " 00:00:00");
         }
         System.out.println("error?: " + request.getAttribute("error"));
-        if((boolean) request.getAttribute("error")) {
+        if(request.getAttribute("error") != null) {
             ArrayList<String[]> formData = new ArrayList<>();
             formData.add(new String[]{"body", project_body.replaceAll("\r\n", "\\\\n")});
             formData.add(new String[] {"budget", request.getParameter("budget")});
@@ -422,7 +425,7 @@ public class PresentationServlet extends HttpServlet {
         int companyId = u.getCompany_id();
         int userId = u.getId();
 
-        if(!(boolean) request.getAttribute("error"))
+        if(request.getAttribute("error") == null)
             cont.changeProjectStatus(projectId, currentType, answer, companyId, userId);
         response.sendRedirect("/project?id=" + projectId);
     }
@@ -479,12 +482,12 @@ public class PresentationServlet extends HttpServlet {
         String company_name = getString("companyName", request);
         String country_code = getString("countryCode", request);
         Part logo = null;
-        if(getString("logo", request) != null)
+        if(request.getParameter("logo") != null)
             logo = request.getPart("logo");
-        String logo_url = getString("logoUrl", request);
+        String logo_url = getLazyString("logoUrl", request);
 
         
-        if(!(boolean) request.getAttribute("error")) {
+        if(request.getAttribute("error") == null) {
             int company_id = cont.createCompany(company_name, country_code, logo, logo_url);
             if (company_id > 0) { //if success
                 //request.setAttribute("message", "Create the first user for this company by clicking 'Add user'");
@@ -581,7 +584,7 @@ public class PresentationServlet extends HttpServlet {
         String email = getString("userEmail", request);
         String password = getString("password", request);
         int company_id = getInt("selectedCompany", request);
-        if(!(boolean) request.getAttribute("error")) {
+        if(request.getAttribute("error") != null) {
             int id = cont.createUser(name, email, password, company_id);
             response.sendRedirect("/user?id=" + id);
         } else {
@@ -595,7 +598,7 @@ public class PresentationServlet extends HttpServlet {
         int quarter = getInt("quarter", request);
         int budget = getInt("initial_budget", request);
 
-        if(!(boolean) request.getAttribute("error")) {
+        if(request.getAttribute("error") != null) {
             if (cont.addBudget(year, quarter, budget)) {
                 cont.sendEmail("noobglivestream@gmail.com", "budget created", "hope this works!");
                 response.sendRedirect("/budgets");
@@ -605,6 +608,12 @@ public class PresentationServlet extends HttpServlet {
             }
         } else
             response.sendRedirect("/create-budget");
+    }
+
+    void getStatisticsView(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
+        request.setAttribute("distinctTypesCounts", cont.getDistinctTypesCounts());
+
+        request.getRequestDispatcher("/WEB-INF/view/statistics.jsp").forward(request, response);
     }
 
 
@@ -654,7 +663,7 @@ public class PresentationServlet extends HttpServlet {
         int quarter = getInt("quarter", request);
 
 
-        if(!(boolean) request.getAttribute("error")) {
+        if(request.getAttribute("error") != null) {
             cont.modifyBudget(newBudget, year, quarter);
         }
         response.sendRedirect("/budget_view");
@@ -673,7 +682,7 @@ public class PresentationServlet extends HttpServlet {
         String password = getString("pw", request);
         int id = getInt("user_id", request);
 
-        if(!(boolean) request.getAttribute("error")) {
+        if(request.getAttribute("error") != null) {
 
             if (cont.createPassword(id, password, nonce)) {
                 request.getSession().setAttribute("User", cont.getUserById(id));

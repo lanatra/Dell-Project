@@ -560,9 +560,9 @@ public class ProjectMapper {
                 SQL = "select * from projects where status='" + state + "' order by last_change_partner DESC, start_time DESC";
         } else {
             if(state.equals("waitingForAction"))
-                SQL = "select * from projects where (status='Project Verified' or status='Waiting Project Verification' or status='Waiting Claim Verification' or status='Project Approved' or status='Claim Rejected') and company_id=? order by case when last_change_admin is null then 0 else 1 end DESC, last_change_admin DESC, start_time DESC";
+                SQL = "select * from projects where status not in ('Project Finished', 'Cancelled') and company_id=? order by case when last_change_admin is null then 0 else 1 end DESC, last_change_admin DESC, start_time DESC";
             else if(state.equals("finished"))
-                SQL = "select * from projects where (status='Project Finished' or status='Cancelled') and company_id=? order by case when last_change_admin is null then 0 else 1 end DESC, last_change_admin DESC, start_time DESC";
+                SQL = "select * from projects where status in ('Project Finished', 'Cancelled') and company_id=? order by case when last_change_admin is null then 0 else 1 end DESC, last_change_admin DESC, start_time DESC";
             else
                 SQL = "select * from projects where status='" + state + "' and company_id=? order by case when last_change_admin is null then 0 else 1 end DESC, last_change_admin DESC, start_time DESC";
         }
@@ -722,7 +722,7 @@ public class ProjectMapper {
             SQL = "select \n" +
                     "  sum(case when (status not in ('Project Finished', 'Cancelled')) and company_id=" + companyId + " then 1 else 0 end) WaitingForAction,\n" +
                     "  sum(case when status='' and company_id=" + companyId + "  then 1 else 0 end) InExecution,\n" +
-                    "  sum(case when (status='Project Finished' or status='Cancelled') and company_id=" + companyId + "   then 1 else 0 end) Finished\n" +
+                    "  sum(case when status in ('Project Finished', 'Cancelled') and company_id=" + companyId + "   then 1 else 0 end) Finished\n" +
                     " from projects";
         }
 

@@ -156,6 +156,10 @@ public class Controller {
     public ArrayList getProjectsByCompanyName(String companyName, int companyId) {
         return facade.getProjectsByCompanyName(companyName, companyId); }
 
+
+    // Statistics
+    public String getDistinctTypesCounts() { return JSONTranslator.stringArrayArrayList(facade.getDistinctTypesCounts()); }
+
     //Search
     public ArrayList search(String q, int companyId) {
         ArrayList<Result> res = facade.search(q, companyId);
