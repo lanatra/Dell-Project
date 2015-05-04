@@ -4,6 +4,7 @@ import DataLayer.DatabaseFacade;
 
 
 import java.net.URL;
+import java.net.URLConnection;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.sql.Timestamp;
@@ -50,11 +51,27 @@ public class Controller {
                     ReadableByteChannel rbc = Channels.newChannel(website.openStream());
                     File outputFolder = new File(System.getenv("POE_FOLDER") + File.separator + "companies" + File.separator + company_id );
                     outputFolder.mkdirs();
-                    filename = "logo." + logo_url.substring(logo_url.lastIndexOf(".") + 1, logo_url.length());
-                    FileOutputStream fos = new FileOutputStream(
-                            new File(outputFolder.getAbsolutePath() + File.separator + filename));
-                    fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-                    fos.close();
+                    String ext = logo_url.substring(logo_url.lastIndexOf(".") + 1);
+                    if(ext.equals("png") || ext.equals("jpg") || ext.equals("jpeg") || ext.equals("gif") || ext.equals("bmp"))
+                        filename = company_name + "-logo." + ext;
+                    else {
+                        URLConnection conn = website.openConnection();
+                        String type = conn.getContentType();
+                        System.out.println("type: " + type);
+                        if(type.contains("image")) {
+                            ext = type.substring(6);
+                        } else
+                            ext = null;
+                    }
+                    if(ext != null) {
+                        filename = company_name + "-logo." + ext;
+                        System.out.println(website.toString());
+                        System.out.println(filename);
+                        FileOutputStream fos = new FileOutputStream(
+                                new File(outputFolder.getAbsolutePath() + File.separator + filename));
+                        fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+                        fos.close();
+                    }
                 } catch (IOException e) {
                     System.out.println(e.getMessage());
                     System.out.println("Error in saving logo from url");
@@ -104,16 +121,11 @@ public class Controller {
 
     }
     //User related
-    public int createUser(String name, String user_email, String password, int company_id) {
-        if(password != null)
-            password = Login.createPassword(password);
+    public int createUser(String name, String user_email, int company_id) {
+        int id = facade.createUser(name, user_email, company_id);
 
-        int id = facade.createUser(name, user_email, password, company_id);
-
-        if(id != -1) {
-            if (password == null)
+        if(id != -1)
                 createPasswordResetNonce(id, user_email);
-        }
 
         return id;
     }

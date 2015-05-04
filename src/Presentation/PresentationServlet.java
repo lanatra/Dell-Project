@@ -582,10 +582,9 @@ public class PresentationServlet extends HttpServlet {
     void createUser(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
         String name = getString("userName", request);
         String email = getString("userEmail", request);
-        String password = getString("password", request);
         int company_id = getInt("selectedCompany", request);
         if(request.getAttribute("error") != null) {
-            int id = cont.createUser(name, email, password, company_id);
+            int id = cont.createUser(name, email, company_id);
             response.sendRedirect("/user?id=" + id);
         } else {
             response.sendRedirect("/create-user");
@@ -682,7 +681,7 @@ public class PresentationServlet extends HttpServlet {
         String password = getString("pw", request);
         int id = getInt("user_id", request);
 
-        if(request.getAttribute("error") != null) {
+        if(request.getAttribute("error") == null) {
 
             if (cont.createPassword(id, password, nonce)) {
                 request.getSession().setAttribute("User", cont.getUserById(id));

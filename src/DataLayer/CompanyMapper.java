@@ -46,7 +46,7 @@ public class CompanyMapper {
 
             statement.setInt(1, nextCompanyId);
             statement.setString(2, company_name);
-            statement.setString(3, "N/A");
+            statement.setString(3, null);
             statement.setString(4, country_code);
 
             statement.executeUpdate();

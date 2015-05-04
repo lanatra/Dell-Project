@@ -96,8 +96,8 @@ public class DatabaseFacade {
     public User getUserByEmail(String email) {
         return new UserMapper().getUserByEmail(email, getCon());
     }
-    public int createUser(String name,String user_email, String password, int company_id) {
-        return new UserMapper().createUser(name, user_email, password, company_id, getCon());
+    public int createUser(String name,String user_email, int company_id) {
+        return new UserMapper().createUser(name, user_email, company_id, getCon());
     }
     public ArrayList<User> getUsersByCompanyId(int company_id) {
         return new UserMapper().getUsersByCompanyId(company_id, getCon());

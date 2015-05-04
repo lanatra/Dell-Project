@@ -48,7 +48,7 @@ public class UserMapper {
 
     public User getUserByEmail(String email, Connection con) {
         User user = null;
-        String SQL = "select * from users where email= ?  and deleted = 0";
+        String SQL = "select * from users where lower(email)=?  and deleted = 0";
 
         PreparedStatement statement = null;
         System.out.println(SQL);
@@ -56,7 +56,7 @@ public class UserMapper {
         ResultSet rs = null;
         try {
             statement = con.prepareStatement(SQL);
-            statement.setString(1, email);
+            statement.setString(1, email.toLowerCase());
             rs = statement.executeQuery();
             if (rs.next())
             {
@@ -81,7 +81,7 @@ public class UserMapper {
         return user;
     }
     
-    public int createUser(String name, String user_email, String password, int company_id, Connection con) {
+    public int createUser(String name, String user_email, int company_id, Connection con) {
         String SQL = "insert into users values (?, ?, ?, ? ,?, ?)";
 
         PreparedStatement statement = null;
@@ -93,7 +93,7 @@ public class UserMapper {
             statement.setInt(1, nextUserId);
             statement.setString(2, name);
             statement.setString(3, user_email);
-            statement.setString(4, password);
+            statement.setString(4, null);
             statement.setInt(5, company_id);
             statement.setInt(6, 0);
 
