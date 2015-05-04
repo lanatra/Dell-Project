@@ -498,7 +498,7 @@ public class PresentationServlet extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/view/create-company.jsp").forward(request, response);
             }
         } else
-            request.getRequestDispatcher("/WEB-INF/view/create-company.jsp").forward(request, response);
+            response.sendRedirect("/create-company");
     }
 
     void getPoes(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
@@ -583,7 +583,7 @@ public class PresentationServlet extends HttpServlet {
         String name = getString("userName", request);
         String email = getString("userEmail", request);
         int company_id = getInt("selectedCompany", request);
-        if(request.getAttribute("error") != null) {
+        if(request.getAttribute("error") == null) {
             int id = cont.createUser(name, email, company_id);
             response.sendRedirect("/user?id=" + id);
         } else {
@@ -597,7 +597,7 @@ public class PresentationServlet extends HttpServlet {
         int quarter = getInt("quarter", request);
         int budget = getInt("initial_budget", request);
 
-        if(request.getAttribute("error") != null) {
+        if(request.getAttribute("error") == null) {
             if (cont.addBudget(year, quarter, budget)) {
                 cont.sendEmail("noobglivestream@gmail.com", "budget created", "hope this works!");
                 response.sendRedirect("/budgets");
@@ -662,7 +662,7 @@ public class PresentationServlet extends HttpServlet {
         int quarter = getInt("quarter", request);
 
 
-        if(request.getAttribute("error") != null) {
+        if(request.getAttribute("error") == null) {
             cont.modifyBudget(newBudget, year, quarter);
         }
         response.sendRedirect("/budget_view");
@@ -696,8 +696,8 @@ public class PresentationServlet extends HttpServlet {
 
     String getString(String p, HttpServletRequest request) {
         String s = request.getParameter(p);
-        if(s == null || s.length() == 0 || s.equals("") || s.length() > 32) {
-            setError("Invalid field", p, request);
+        if(s == null || s.length() == 0 || s.equals("")) {
+            setError("Empty field", p, request);
             request.setAttribute("error", true);
         }
         s = escapeHtml4(s);
