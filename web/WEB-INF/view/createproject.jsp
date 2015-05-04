@@ -19,13 +19,7 @@
     </div>
     <span>for a </span>
       <input class="amount custom-type" type="text" name="type" id="type">
-    <!--<select name="type" id="type">
-      <option value="Web Campaign">Web campaign</option>
-      <option value="Billboard ad">Billboard ad</option>
-      <option value="TV Promotion">TV promotion</option>
-      <option value="other">Other</option>
-    </select>
-    <input class="amount custom-type hidden" id="customType" name="customType" type="text" placeholder="Campaign type"/> -->
+
     <span style="clear: left;">With execution scheduled</span>
     <select name="execution_year" id="year">
       <option value="2015">2015</option>
@@ -63,6 +57,15 @@
     $('select#day').addClass('visible');
   });
 
+  $('select#month option').each(function(){
+      var d = new Date();
+      var m = d.getMonth();
+
+      if($(this).val() < m+1) {
+          $(this).remove();
+      }
+  });
+
   var searchNext = true;
 
   var removeNotMatches = function(list, q, sync) {
@@ -79,9 +82,12 @@
   }
 
 
-  var pres = ["Web Campaign",
+  var pres = ["Online advertising",
       "Billboard ad",
-      "TV Promotion"];
+      "TV Promotion",
+      "Face-to-face event",
+        "Webinar",
+        "Direct mail"];
 
   var preset = function(q, sync) {
       if(q == '')

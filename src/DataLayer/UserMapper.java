@@ -11,7 +11,7 @@ public class UserMapper {
     public User getUserById(int user_id, Connection con) {
 
         User user = null;
-        String SQL = "select * from users where id=? and deleted = 0";
+        String SQL = "select * from users where id=?";
 
 
         PreparedStatement statement = null;

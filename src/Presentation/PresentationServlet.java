@@ -585,7 +585,11 @@ public class PresentationServlet extends HttpServlet {
         int company_id = getInt("selectedCompany", request);
         if(request.getAttribute("error") == null) {
             int id = cont.createUser(name, email, company_id);
-            response.sendRedirect("/user?id=" + id);
+            if (id == -1) {
+                setError("Something went wrong.", null, request);
+                response.sendRedirect("/create-user");
+            } else
+                response.sendRedirect("/user?id=" + id);
         } else {
             response.sendRedirect("/create-user");
         }
@@ -727,19 +731,18 @@ public class PresentationServlet extends HttpServlet {
         request.getSession().setAttribute("message", message);
     }
     void setError(String error, String field, HttpServletRequest request) {
-        String e = (String) (request.getSession().getAttribute("error"));
+        String e = (String) (request.getSession().getAttribute("errorMessage"));
         if(e == null)
             request.getSession().setAttribute("errorMessage", error + "|" + field);
-        else {
+        else
             request.getSession().setAttribute("errorMessage", e + "," + field);
-        }
     }
 
     void deleteUser(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
         int viewedUser = Integer.parseInt(request.getParameter("viewedUser"));
 
         cont.markUserDeleted(viewedUser);
-        response.sendRedirect("/user?id="+viewedUser);
+        response.sendRedirect("/users");
     }
 
 }

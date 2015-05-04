@@ -15,15 +15,16 @@
 <c:if test="${project.getMessage() != null}"><c:out value="${project.getMessage()}"></c:out></c:if>
 
 <div class="container project-container">
-    <h1><span style="color: #9F9F9F;">#<c:out value="${project.getId()}" /></span> <c:out value="${project.getType()}" /></h1>
-
-    <c:if test="${(project.getStatus() != 'Project Finished')}">
-        <c:if test="${(project.getStatus() != 'Cancelled')}">
-            <div class="cancel-box"><a href="#" class="cancel-button jensabox-trigger">Cancel Project</a></div>
+    <div class="u-pull-right" style="margin-bottom: 20px;">
+        <c:if test="${(project.getStatus() != 'Project Finished')}">
+            <c:if test="${(project.getStatus() != 'Cancelled')}">
+                <div class="cancel-box"><a href="#" class="cancel-button jensabox-trigger">Cancel Project</a></div>
+            </c:if>
         </c:if>
-    </c:if>
-    <div class="project-state"><c:out value="${project.getStatus()}" /></div>
-    <span class="state">State</span>
+        <div class="project-state"><c:out value="${project.getStatus()}" /></div>
+        <span class="state">State</span>
+    </div>
+    <h1><span style="color: #9F9F9F;">#<c:out value="${project.getId()}" /></span> <c:out value="${project.getType()}" /></h1>
 
     <div class="project-items">
     <c:if test="${(stages.size() + messages.size()) > 0}">

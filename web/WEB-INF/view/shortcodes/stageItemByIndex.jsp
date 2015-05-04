@@ -12,7 +12,7 @@
         <c:if test="${stages.get(stageIndex).getType() == 'Waiting Project Verification'}">
             <c:set var="balance" value="${project.getBudget()}" />
             <fmt:formatNumber var="i" type="number" value="${balance}" />
-            <h3><c:out value="${project.getCompanyName()}"></c:out> is requesting <c:out value="${i}"></c:out>&#8364 for a <c:out value="${project.getType()}"></c:out></h3>
+            <h3><c:out value="${project.getCompanyName()}"></c:out> <strong>is requesting</strong> <c:out value="${i}"></c:out>&#8364 <strong>for a</strong> <c:out value="${project.getType()}"></c:out></h3>
             <c:out value="${project.getBody()}" escapeXml="false"></c:out>
             </div>
             <c:if test="${dellAndLatest}">

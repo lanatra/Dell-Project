@@ -8,12 +8,13 @@
   <jsp:include page="header.jsp" />
 
   <div class="container" style="margin-top: 30px; padding-bottom: 30px;">
-      <a href="/create-user?partnerName=<c:out value='${partner.getName()}' />" class="button-clear u-pull-right">Add user</a>
       <c:if test="${partner.getImg_filename() != null}" >
           <img class="company-image" src="/resources/companies/<c:out value='${partner.getId()}' />/<c:out value='${partner.getImg_filename()}' />" />
       </c:if>
       <h3 class="company-name"><c:out value='${partner.getName()}' /></h3>
       <p class="company-desc">You can see all <c:out value='${partner.getName()}' />'s projects below.</p>
+
+      <a href="/create-user?partnerName=<c:out value='${partner.getName()}' />" class="button-clear u-pull-right">Add user</a>
 
       <h5 class="above-list">Users</h5>
       <div class="table-head">
