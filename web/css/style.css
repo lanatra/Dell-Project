@@ -447,13 +447,15 @@ div.actions .searchbox {
   height: 40px;
   border-radius: 2px;
   background-color: #ECECEC;
-  border: none;
+  border: 1px solid #ECECEC;
   margin-left: 20px;
   margin-right: 20px;
   margin-top: -5px;
   padding-left: 20px;
   font-size: 1.2em;
   font-weight: lighter; }
+  .project input.amount.error {
+    border: 1px solid #c70000; }
 .project textarea {
   float: left;
   clear: left;
@@ -467,6 +469,8 @@ div.actions .searchbox {
   max-width: 600px;
   min-height: 300px;
   box-sizing: border-box; }
+  .project textarea.error {
+    border: 1px solid #c70000; }
 .project button {
   float: left;
   clear: left;
@@ -944,3 +948,63 @@ div.jensabox {
     margin-right: auto;
     transition: transform .3s, opacity .3s;
     transform: translateY(200px); }
+
+input.error {
+  border: 1px solid #c70000; }
+
+div.notification {
+  position: fixed;
+  z-index: 200;
+  top: 6px;
+  right: 6px;
+  max-width: 300px;
+  background-color: rgba(255, 255, 255, 0.94);
+  font-size: 13px;
+  padding: 10px 12px;
+  border-radius: 3px;
+  -webkit-box-shadow: 0px 2px 6px 0px rgba(50, 50, 50, 0.3);
+  -moz-box-shadow: 0px 2px 6px 0px rgba(50, 50, 50, 0.3);
+  box-shadow: 0px 2px 6px 0px rgba(50, 50, 50, 0.3);
+  -webkit-animation: fadeIn ease-in 1;
+  -moz-animation: fadeIn ease-in 1;
+  animation: fadeIn ease-in 1;
+  -webkit-animation-fill-mode: forwards;
+  -moz-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  -webkit-animation-duration: 0.5s;
+  -moz-animation-duration: 0.5s;
+  animation-duration: 0.5s;
+  -webkit-animation-delay: 6s;
+  -moz-animation-delay: 6s;
+  animation-delay: 6s;
+  transition: opacity .5s, transform .5s;
+  opacity: 0;
+  transform: translateY(-40px); }
+  div.notification.error {
+    color: #c70000; }
+
+body.loaded div.notification {
+  opacity: 1;
+  transform: translateY(0px); }
+
+@-webkit-keyframes fadeIn {
+  from {
+    transform: translateY(0px);
+    opacity: 1; }
+  to {
+    transform: translateY(-40px);
+    opacity: 0; } }
+@-moz-keyframes fadeIn {
+  from {
+    transform: translateY(0px);
+    opacity: 1; }
+  to {
+    transform: translateY(-40px);
+    opacity: 0; } }
+@keyframes fadeIn {
+  from {
+    transform: translateY(0px);
+    opacity: 1; }
+  to {
+    transform: translateY(-40px);
+    opacity: 0; } }

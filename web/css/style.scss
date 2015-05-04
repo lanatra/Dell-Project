@@ -553,13 +553,16 @@ div.actions {
 	height: 40px;
 	border-radius: 2px;
 	background-color: #ECECEC;
-	border: none;
+	border: 1px solid #ECECEC;
 	margin-left: 20px;
 	margin-right: 20px;
 	margin-top: -5px;
 	padding-left: 20px;
 	font-size: 1.2em;
 	font-weight: lighter;
+	&.error {
+		border: 1px solid #c70000;
+	}
   }
   textarea {
 	float: left;
@@ -574,6 +577,9 @@ div.actions {
 	max-width: 600px;
 	min-height: 300px;
 	box-sizing: border-box;
+	&.error {
+		border: 1px solid #c70000;
+	}
   }
   button {
 	float: left;
@@ -1198,6 +1204,10 @@ div.jensabox {
 	}
 }
 
+input.error {
+	border: 1px solid #c70000;
+}
+
 div.notification {
 	position: fixed;
 	z-index: 200;
@@ -1232,6 +1242,10 @@ div.notification {
 
   	opacity:0;
   	transform: translateY(-40px);
+
+  	&.error {
+  		color: #c70000;
+  	}
 }
 
 body.loaded div.notification {
