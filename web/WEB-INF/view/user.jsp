@@ -16,6 +16,8 @@
           </c:if>
       </div>
 
+      <div class="cancel-box" style="margin-top: 10px; margin-right: 10px;"><a href="#" class="cancel-button jensabox-trigger">Delete user</a></div>
+
       <h3 class="company-name"><c:out value='${user.getName()}' /></h3>
       <div class="u-pull-left" style="clear: left;">
           <p class="company-desc"><c:out value="${user.getEmail()}" /></p>
@@ -41,12 +43,21 @@
           </a>
       </c:forEach>
 
-      <form action="/markUserDeleted" method="post">
-          <input type="hidden" value="<c:out value="${user.getId()}"></c:out>" name="viewedUser">
-      <button action="/markUserDeleted" method="post" class="submit">Delete user</button>
-      </form>
-
   </div>
+
+<div class="jensabox">
+    <div class="fill-box">
+        <div class="content-box">
+            <h2>Do you really want to delete this user?</h2>
+            <p>This change will be irreversible.</p>
+            <form class="u-pull-left" action="/markUserDeleted" method="post">
+                <input type="hidden" value="<c:out value="${user.getId()}"></c:out>" name="viewedUser">
+                <button class="button button-red" type="submit">Delete user</button>
+                <a href="#" class="button button-cancel">No</a>
+            </form>
+        </div>
+    </div>
+</div>
 
   </body>
 </html>

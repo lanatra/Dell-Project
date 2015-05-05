@@ -107,6 +107,16 @@
             toggle.addEventListener( "click", function(e) {
                 e.preventDefault();
                 (this.classList.contains("active") === true) ? this.classList.remove("active") : this.classList.add("active");
+                var menu = $('div.mobile-menu');
+                if(menu.hasClass('active')) {
+                    menu.removeClass('active');
+                    setTimeout(function(){
+                        menu.css('visibility','hidden');
+                    },500);
+                } else {
+                    menu.css('visibility','visible');
+                    menu.addClass('active');
+                }
             });
         }
     });
@@ -179,4 +189,11 @@
     </c:if>
 
   </div>
+</div>
+
+<div class="mobile-menu" id="mobile-menu">
+    <a href="/budgets" class="head-button <c:if test="${fn:contains(uri, 'budget')}">active</c:if>">Budgets</a>
+    <a href="/users" class="head-button <c:if test="${fn:contains(uri, 'user')}">active</c:if>">Users</a>
+    <a href="/partners" class="head-button <c:if test="${fn:contains(uri, 'partner')}">active</c:if>">Partners</a>
+    <a href="/dashboard" class="head-button <c:if test="${fn:contains(uri, 'index')}">active</c:if>">Dashboard</a>
 </div>

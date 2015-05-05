@@ -2,9 +2,6 @@ package Domain;
 
 import java.sql.Timestamp;
 
-/**
- * Created by Andreas Poulsen on 28-Apr-15.
- */
 public class Nonce {
 
     public int id;
@@ -24,10 +21,6 @@ public class Nonce {
         this.timestamp = timestamp;
         this.type = type;
     }
-
-
-
-
 
     public int getId() {
         return id;
