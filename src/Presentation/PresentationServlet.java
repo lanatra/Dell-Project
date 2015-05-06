@@ -591,6 +591,11 @@ public class PresentationServlet extends HttpServlet {
             } else
                 response.sendRedirect("/user?id=" + id);
         } else {
+            ArrayList<String[]> formData = new ArrayList<>();
+            formData.add(new String[] {"userName", name});
+            formData.add(new String[] {"userEmail", email});
+            formData.add(new String[] {"selectedCompany", String.valueOf(company_id)});
+            request.getSession().setAttribute("formData", formData);
             response.sendRedirect("/create-user");
         }
 
@@ -614,8 +619,8 @@ public class PresentationServlet extends HttpServlet {
     }
 
     void getStatisticsView(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
-        request.setAttribute("distinctTypesCounts", cont.getDistinctTypesCounts());
-
+        request.setAttribute("statistics", cont.getStatistics(getLazyString("quarter", request)));
+        request.setAttribute("budgets", cont.getAllBudgets());
         request.getRequestDispatcher("/WEB-INF/view/statistics.jsp").forward(request, response);
     }
 
@@ -646,16 +651,12 @@ public class PresentationServlet extends HttpServlet {
 
     void getActiveBudget(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {
         int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
+        System.out.println(currentMonth);
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-
         int currentQuarter = (currentMonth / 3 ) + 1;
 
-        ArrayList<Budget> budgets = cont.getActiveBudget(currentYear, currentQuarter);
-        if (budgets.isEmpty()) {
-            request.setAttribute("activeBudget", null);
-        } else {
-            request.setAttribute("activeBudget", cont.getActiveBudget(currentYear, currentQuarter));
-        }
+        request.setAttribute("activeBudget", cont.getActiveBudget(currentYear, currentQuarter));
+
 
 
     }

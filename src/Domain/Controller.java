@@ -7,11 +7,10 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.sql.Time;
 import java.sql.Timestamp;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
 
 import javax.servlet.http.Part;
 import java.io.*;
@@ -170,7 +169,41 @@ public class Controller {
 
 
     // Statistics
-    public String getDistinctTypesCounts() { return JSONTranslator.stringArrayArrayList(facade.getDistinctTypesCounts()); }
+    public ArrayList<String> getStatistics(String quarter) {
+        int y, q, sM, eM;
+        Timestamp start, end;
+        Calendar cal = new GregorianCalendar();
+        if(quarter != null) {
+            y=Integer.parseInt(quarter.substring(0,4));
+            q=Integer.parseInt(quarter.substring(5));
+            start = quarterToTimestamp(y, q, false);
+            end = quarterToTimestamp(y, q, true);
+        } else {
+            //use current quarter
+            int m = Calendar.getInstance().get(Calendar.MONTH);
+            y = Calendar.getInstance().get(Calendar.YEAR);
+            int currentQuarter = (m / 3 ) + 1;
+            start = quarterToTimestamp(y, currentQuarter, false);
+            end = quarterToTimestamp(y, currentQuarter, true);
+        }
+        ArrayList<String> stats = new ArrayList<>();
+
+        stats.add(JSONTranslator.stringArrayArrayListWithOptions(facade.getBudgetProgression(start, end), "Budget Progression,line"));
+        stats.add(JSONTranslator.stringArrayArrayListWithOptions(facade.getCompaniesByLargestApprovedBudget(start, end), "Companies with largest approved budget,donut"));
+        stats.add(JSONTranslator.stringArrayArrayListWithOptions(facade.getCountOfProjectsByCountry(start, end), "Projects by country,geomap"));
+        stats.add(JSONTranslator.stringArrayArrayListWithOptions(facade.getAvgCostPerType(start, end), "Average cost per type,donut"));
+        stats.add(JSONTranslator.stringArrayArrayListWithOptions(facade.getAvgCostOfProjectsByCountry(start, end), "Average cost of projects by country,donut"));
+        stats.add(JSONTranslator.stringArrayArrayListWithOptions(facade.getCostPerType(start, end), "Total cost of each type,donut"));
+        stats.add(JSONTranslator.stringArrayArrayListWithOptions(facade.getTypesWithHighestSuccessRate(start, end), "Types with highest success rate,donut"));
+        stats.add(JSONTranslator.stringArrayArrayListWithOptions(facade.getDistinctTypesCounts(start, end), "Count of projects for each type,donut"));
+        stats.add(JSONTranslator.stringArrayArrayListWithOptions(facade.getAvgMessagesPerProject(start, end), "Average messages per project,number"));
+        stats.add(JSONTranslator.stringArrayArrayListWithOptions(facade.getCountOfFinishedProjects(start, end), "Number of finished projects,number"));
+        stats.add(JSONTranslator.stringArrayArrayListWithOptions(facade.getCountOfMessages(start, end), "Messages sent,number"));
+        stats.add(JSONTranslator.stringArrayArrayListWithOptions(facade.getMoneyReimbursed(start, end), "Money reimbursed,number"));
+
+
+        return stats;
+    }
 
     //Search
     public ArrayList search(String q, int companyId) {
@@ -351,7 +384,7 @@ public class Controller {
         return facade.modifyBudget(new_budget, year, quarter);
     }
 
-    public ArrayList<Budget> getActiveBudget(int year, int quarter) {
+    public Budget getActiveBudget(int year, int quarter) {
         return facade.getActiveBudget(year, quarter);
     }
 
@@ -386,6 +419,21 @@ public class Controller {
         }
     }
 
+    public Timestamp quarterToTimestamp(int y, int q, boolean endOfQuarter) {
+        Calendar cal = new GregorianCalendar();
+        int m;
+        if(endOfQuarter)
+            m = q*(12/4);
+        else
+            m = (q-1)*(12/4) + 1;
+        cal.set(Calendar.YEAR, y);
+        cal.set(Calendar.MONTH, m);
+        if(endOfQuarter)
+            cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+        else
+            cal.set(Calendar.DAY_OF_MONTH, 1);
+        return new Timestamp(cal.getTimeInMillis());
+    }
 
 }
 

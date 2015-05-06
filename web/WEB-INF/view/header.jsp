@@ -172,21 +172,21 @@
         </div>
         <div class="budget-label u-pull-left">
 
-            <% if (request.getAttribute("activeBudget") != null) { %>
-            <span class="big"><c:out value="${activeBudget.get(0).getLeftAvailable()}"></c:out>&#8364 <strong>(<c:out value="${activeBudget.get(0).getReserved()}"></c:out>&#8364 reserved)</strong></span>
-            <span class="desc">is left available in this quarter</span>
-            <% } else { %>
-            <span class="big"> <a href="/budget_view">Set budget</a> </span>
-            <span class="desc">No budget available</span>
-            <% } %>
+            <c:if test="${activeBudget != null}">
+                <span class="big"><c:out value="${activeBudget.getLeftAvailable()}"></c:out>&#8364 <strong>(<c:out value="${activeBudget.getReserved()}"></c:out>&#8364 reserved)</strong></span>
+                <span class="desc">is left available in this quarter</span>
+            </c:if><c:if test="${activeBudget == null}">
+                <span class="big"> <a href="/budgets">Set budget</a> </span>
+                <span class="desc">No budget available</span>
+            </c:if>
 
         </div>
     </c:if>
-    <c:if test="${User.getCompany_id() != 1}">
-    <div class="u-pull-right">
-      <a href="/project-request" class="project-request button">Project request</a>
-    </div>
-    </c:if>
+      <c:if test="${User.getCompany_id() != 1}">
+          <div class="u-pull-right">
+              <a href="/project-request" class="project-request button">Project request</a>
+          </div>
+      </c:if>
 
   </div>
 </div>

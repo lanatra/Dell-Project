@@ -2,7 +2,6 @@ package Domain;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
-import static org.apache.commons.lang3.StringUtils.*;
 
 /**
  * Created by Andreas Poulsen on 27-Apr-15.
@@ -25,7 +24,7 @@ public class JSONTranslator {
         for(String[] itemSet : list) {
             res += "[";
             for(String item : itemSet) {
-                if(isNumeric(item))
+                if(item.matches("^[\\d\\.]+$"))
                     res += item + ",";
                 else
                     res += "\"" + item + "\",";
@@ -37,4 +36,14 @@ public class JSONTranslator {
 
         return res + "]";
     }
+    public static String stringArrayArrayListWithOptions(ArrayList<String[]> list, String o) {
+        String res = stringArrayArrayList(list);
+        String options = "";
+        for(int i = 0; i < o.split(",").length; i++)
+            options += "\"" + o.split(",")[i] + "\",";
+        options = options.substring(0, options.length() - 1);
+        res = res.substring(0,1) + "[" + options + "]," + res.substring(1);
+        return res;
+    }
+
 }

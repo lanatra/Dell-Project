@@ -58,11 +58,11 @@ public class BudgetMapper {
 
     }
 
-    public ArrayList<Budget> getActiveBudget(int year, int quarter, Connection con) {
+    public Budget getActiveBudget(int year, int quarter, Connection con) {
         String SQL = "select * from budget where yearnum = ? and quarternum = ?";
         PreparedStatement statement = null;
         ResultSet rs = null;
-        ArrayList<Budget> BudgetCollection = new ArrayList<>();
+        Budget Budget = null;
 
 
         try {
@@ -75,13 +75,13 @@ public class BudgetMapper {
 
 
             while (rs.next()) {
-                BudgetCollection.add(new Budget(
+                Budget = new Budget(
                         rs.getInt(1),
                         rs.getInt(2),
                         rs.getInt(3),
                         rs.getInt(5),
                         rs.getInt(4)
-                ));
+                );
             }
 
 
@@ -95,7 +95,7 @@ public class BudgetMapper {
         }
 
 
-        return BudgetCollection;
+        return Budget;
     }
 
     public ArrayList<Budget> getAllBudgets(Connection con) {

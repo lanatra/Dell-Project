@@ -137,7 +137,7 @@ public class DatabaseFacade {
     return new BudgetMapper().modifyBudget(new_budget, year, quarter, getCon());
     }
 
-    public ArrayList<Budget> getActiveBudget(int year, int quarter) {
+    public Budget getActiveBudget(int year, int quarter) {
     return new BudgetMapper().getActiveBudget(year, quarter, getCon());
     }
 
@@ -157,5 +157,16 @@ public class DatabaseFacade {
 
 
     // Statistics
-    public ArrayList<String[]> getDistinctTypesCounts() { return StatisticsGetter.getDistinctTypesCounts(getCon()); }
+    public ArrayList<String[]> getDistinctTypesCounts               (Timestamp start, Timestamp end) { return StatisticsGetter.getDistinctTypesCounts(start, end, getCon()); }
+    public ArrayList<String[]> getAvgCostOfProjectsByCountry        (Timestamp start, Timestamp end) { return StatisticsGetter.getAvgCostOfProjectsByCountry(start, end, getCon()); }
+    public ArrayList<String[]> getAvgCostPerType                    (Timestamp start, Timestamp end) { return StatisticsGetter.getAvgCostPerType(start, end, getCon()); }
+    public ArrayList<String[]> getAvgMessagesPerProject             (Timestamp start, Timestamp end) { return StatisticsGetter.getAvgMessagesPerProject(start, end, getCon()); }
+    public ArrayList<String[]> getBudgetProgression                 (Timestamp start, Timestamp end) { return StatisticsGetter.getBudgetProgression(start, end, getCon()); }
+    public ArrayList<String[]> getCompaniesByLargestApprovedBudget  (Timestamp start, Timestamp end) { return StatisticsGetter.getCompaniesByLargestApprovedBudget(start, end, getCon()); }
+    public ArrayList<String[]> getCostPerType                       (Timestamp start, Timestamp end) { return StatisticsGetter.getCostPerType(start, end, getCon()); }
+    public ArrayList<String[]> getCountOfFinishedProjects           (Timestamp start, Timestamp end) { return StatisticsGetter.getCountOfFinishedProjects(start, end, getCon()); }
+    public ArrayList<String[]> getCountOfMessages                   (Timestamp start, Timestamp end) { return StatisticsGetter.getCountOfMessages(start, end, getCon()); }
+    public ArrayList<String[]> getCountOfProjectsByCountry          (Timestamp start, Timestamp end) { return StatisticsGetter.getCountOfProjectsByCountry(start, end, getCon()); }
+    public ArrayList<String[]> getMoneyReimbursed                   (Timestamp start, Timestamp end) { return StatisticsGetter.getMoneyReimbursed(start, end, getCon()); }
+    public ArrayList<String[]> getTypesWithHighestSuccessRate       (Timestamp start, Timestamp end) { return StatisticsGetter.getTypesWithHighestSuccessRate(start, end, getCon()); }
 }

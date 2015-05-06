@@ -41,6 +41,7 @@
         <input type="text" placeholder="Search" class="search"
                <c:if test="${param.type != null}">value="<c:out value="${param.type}"></c:out>"</c:if>
                <c:if test="${param.company != null}">value="<c:out value="${param.company}"></c:out>"</c:if>
+               <c:if test="${param.state != null}">value="<c:out value="${param.state}"></c:out>"</c:if>
                <c:if test="${param.q != null}">value="<c:out value="${param.q}"></c:out>"</c:if>
                 />
     </div>
@@ -176,7 +177,8 @@
        }
 
        var lsFilter = function(q, sync) {
-            sync(removeNotMatches(localStorage.typeahead.split(","), q));
+           if(localStorage.typeahead != null)
+                sync(removeNotMatches(localStorage.typeahead.split(","), q));
        }
 
         $('.search').typeahead({
@@ -214,19 +216,13 @@
         }
 
         ).bind("typeahead:selected", function () {
-            var header = $(".searchbox .tt-cursor").parent().find("h3").text(),
-            selected = $(".search").val();
-            if(header == "Statuses"){
-                window.location.href = "/dashboard?state=" + selected;
-            }else if(header == "Types") {
-                window.location.href = "/dashboard?type=" + selected;
-            }else if(header == "Companies")
-                window.location.href = "/dashboard?company=" + selected;
+                    console.log("ed");
+                    onTypeaheadSelect();
         }).keypress(function(e) {
                     if(e.keyCode == 13) { // enter
                         var val = $(".search").val();
-                        if(val.length > 3)
-                            localStorage.typeahead = localStorage.typeahead + "," + val;
+                        if(val.length > 3 && (localStorage.typeahead == null || localStorage.typeahead.toLowerCase().indexOf(val.toLowerCase()) == -1))
+                            localStorage.typeahead = localStorage.typeahead == undefined ? val : localStorage.typeahead + "," + val;
                         if(val.substr(0, 1) == "#" && !isNaN(val.substr(1)))
                             window.location.href = "/project?id=" + val.substr(1);
                         else
@@ -238,6 +234,20 @@
                     if($(this).val().length > 4)
                     searchNext = false;
                 });
+       var onTypeaheadSelect = function() {
+           var header, selected = $(".search").val();
+           $('.tt-suggestion').each(function() {
+               if($(this).text() == selected)
+                   header = $(this).parent().find("h3").text()
+           })
+           if(header == "Statuses"){
+               window.location.href = "/dashboard?state=" + selected;
+           }else if(header == "Types") {
+               window.location.href = "/dashboard?type=" + selected;
+           }else if(header == "Companies")
+               window.location.href = "/dashboard?company=" + selected;
+       }
+
 
        $('span.twitter-typeahead').css('width', '100%');
        $('div.searchbox input').css('position', 'absolute !important');
