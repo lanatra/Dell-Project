@@ -336,7 +336,6 @@ public static ArrayList<String[]> getMoneyReimbursed(Timestamp start, Timestamp 
         ResultSet rs = null;
         ArrayList<String[]> res = new ArrayList<>();
 
-
         try {
             statement = con.prepareStatement(SQL);
             rs = statement.executeQuery();

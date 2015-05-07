@@ -189,8 +189,8 @@ public class Controller {
         ArrayList<String> stats = new ArrayList<>();
 
         stats.add(JSONTranslator.stringArrayArrayListWithOptions(facade.getBudgetProgression(start, end), "Budget Progression,line"));
-        stats.add(JSONTranslator.stringArrayArrayListWithOptions(facade.getCompaniesByLargestApprovedBudget(start, end), "Companies with largest approved budget,donut"));
         stats.add(JSONTranslator.stringArrayArrayListWithOptions(facade.getCountOfProjectsByCountry(start, end), "Projects by country,geomap"));
+        stats.add(JSONTranslator.stringArrayArrayListWithOptions(facade.getCompaniesByLargestApprovedBudget(start, end), "Companies with largest approved budget,donut"));
         stats.add(JSONTranslator.stringArrayArrayListWithOptions(facade.getAvgCostPerType(start, end), "Average cost per type,donut"));
         stats.add(JSONTranslator.stringArrayArrayListWithOptions(facade.getAvgCostOfProjectsByCountry(start, end), "Average cost of projects by country,donut"));
         stats.add(JSONTranslator.stringArrayArrayListWithOptions(facade.getCostPerType(start, end), "Total cost of each type,donut"));

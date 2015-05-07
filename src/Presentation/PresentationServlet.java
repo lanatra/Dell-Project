@@ -346,7 +346,6 @@ public class PresentationServlet extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
-
         int userId = getInt("userId", request);
         int companyId = getInt("companyId", request);
         int projectId = getInt("projectId", request);

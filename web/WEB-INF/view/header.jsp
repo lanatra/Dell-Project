@@ -165,6 +165,7 @@
             </button>
         </div>
         <div class="u-pull-right desktop">
+          <a href="/statistics" class="head-button <c:if test="${fn:contains(uri, 'statistics')}">active</c:if>">Stats</a>
           <a href="/budgets" class="head-button <c:if test="${fn:contains(uri, 'budget')}">active</c:if>">Budgets</a>
           <a href="/users" class="head-button <c:if test="${fn:contains(uri, 'user')}">active</c:if>">Users</a>
           <a href="/partners" class="head-button <c:if test="${fn:contains(uri, 'partner')}">active</c:if>">Partners</a>

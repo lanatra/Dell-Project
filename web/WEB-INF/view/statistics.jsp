@@ -43,7 +43,7 @@
     // Set chart options
     var o = {'title':options[0][0],
       'backgroundColor':'transparent',
-      'width':400,
+      'width':450,
       'height':300,
       'pieHole':0.4};
 
@@ -86,7 +86,7 @@
     // Instantiate and draw our chart, passing in some options.
     var div = document.createElement('div');
     div.id = id;
-    var title = document.createElement('h3');
+    var title = document.createElement('h5');
     title.innerText = options[0][0];
     document.getElementById('graphs').appendChild(title);
     document.getElementById('graphs').appendChild(div);
@@ -130,7 +130,7 @@
     var o = {
       title: options[0][0],
       backgroundColor: 'transparent',
-      width:600,
+      width:700,
       height:300,
       hAxis: {
         minValue: sD,
@@ -159,7 +159,6 @@
           labelInLegend: 'Trendline',
           pointSize: 2
         }
-
       }
     };
 
@@ -174,15 +173,21 @@
 
   function drawNumber(options) {
     console.log(options);
-    //var id = options[0][0].split(" ").join("");
-    var div = document.createElement('div');
-    //div.id = id;
-    div.innerHTML = '<span class="title">' + options[0][0] + '</span><span class="number">' + options[1][0] + '</span>';
-    document.getElementById('numbers').appendChild(div);
+
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td>' + options[0][0] + '</td><td>' + options[1][0] + '</td>';
+    document.getElementById('numbersBody').appendChild(tr);
   }
 </script>
 
-<div class="container">
+<div class="container" style="padding-bottom: 30px;">
+<div class="big-paper">
+
+  <div class="u-pull-left">
+    <h3>Statistics</h3>
+    <p class="company-desc">Select quarter and see the graphical representation of projects and partners.</p>
+  </div>
+
   <div class="quarter-selector">
     <form action="/statistics" method="get">
       <select name="quarter">
@@ -193,11 +198,18 @@
       <input type="submit" value="Go!">
     </form>
   </div>
+
   <div id="graphs">
   </div>
   <div id="numbers">
-    <h3>Since the beginning of time</h3>
+    <h5>Since the beginning of time</h5>
+    <table class="u-full-width">
+      <tbody id="numbersBody">
+      </tbody>
+    </table>
   </div>
+
+</div>
 </div>
 
 </body>

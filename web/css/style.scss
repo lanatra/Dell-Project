@@ -286,7 +286,7 @@ div.header{
 	color: white;
   	font-size: 1em;
 
-  	@media (max-width: 750px) {
+  	@media (max-width: 800px) {
 		div.logo span {
 			display: none;
 		}
@@ -370,7 +370,7 @@ div.header{
 			clear: left;
 		}
 	}
-	@media (max-width: 1050px) {
+	@media (max-width: 1100px) {
 		  div.budget-label {
 		  	display: none;
 		  }
@@ -412,6 +412,11 @@ div.header{
 	text-decoration: none;
 	border-right: 1px solid rgba(255,255,255,0.2);
 	transition: color 0.3s;
+
+	&:first-child {
+		padding-right: 0px;
+		border-right: none;
+	}
 
 	&.active {
 	  color: white;
@@ -590,6 +595,10 @@ table {
   box-sizing: border-box;
   border-color: transparent;
 
+  tr {
+  	border-bottom: 1px solid $color-light-gray;
+  }
+
   td:first-child {
 	padding-left: 10px;
 	span {
@@ -612,13 +621,9 @@ table {
   }
 
   tr {
-	background-color: #FAFAFA;
+	//background-color: #FAFAFA;
 	display: table-row;
 	margin-bottom: 3px;
-	-webkit-box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2);
-	-moz-box-shadow:    0px 1px 3px 0px rgba(0, 0, 0, 0.2);
-	box-shadow:         0px 1px 3px 0px rgba(0, 0, 0, 0.2);
-	border: none;
   }
 
   span.small {
@@ -1426,7 +1431,7 @@ div.mobile {
 	display: none;
 }
 
-@media (max-width: 630px) {
+@media (max-width: 660px) {
 	div.item {
 		span.date {
 			display: none;
@@ -1473,3 +1478,60 @@ div.mobile-menu {
 		font-size: 18px;
 	}
 }
+
+.quarter-selector {
+	float: right;
+
+	input, select {
+		height: 40px;
+		border-radius: 2px;
+		font-weight: lighter;
+		font-size: 1em;
+		border: 1px solid #ECECEC;
+		margin-top: 10px;
+
+		&:focus {
+			border: 1px solid #ECECEC;
+		}
+	}
+	input {
+		background-color: #ECECEC;
+		margin-right: 20px;
+		padding-left: 20px;
+	}
+	select {
+		margin-right: 20px;
+		-webkit-appearance: none;
+		padding-left: 20px;
+		padding-right: 40px;
+		background: #ECECEC url(../img/dark_dropdown.svg) no-repeat right 20px center;
+	}
+}
+
+div#graphs, div#numbers {
+	float: left;
+	clear: left;
+	width: 100%;
+
+	div#BudgetProgression > div > div {
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	div#Projectsbycountry {
+		margin-bottom: 30px;
+	}
+
+	div#Projectsbycountry > div > div {
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	div#Companieswithlargestapprovedbudget, div#Averagecostpertype, div#Averagecostofprojectsbycountry,
+	div#Totalcostofeachtype, div#Typeswithhighestsuccessrate, div#Countofprojectsforeachtype {
+		float: left;
+		width: 50%;
+	}
+}
+
+
