@@ -21,9 +21,7 @@ public class BudgetMapper {
             statement.setInt(3, quarter);
             statement.setInt(4, 0);
             statement.setInt(5, 0);
-
             statement.executeUpdate();
-
 
         } catch(Exception e) {
             return false;
@@ -44,7 +42,6 @@ public class BudgetMapper {
             statement.setInt(1, new_budget);
             statement.setInt(2, year);
             statement.setInt(3, quarter);
-
             statement.executeUpdate();
 
         } catch(Exception e) {
@@ -55,7 +52,6 @@ public class BudgetMapper {
         }
 
         return true;
-
     }
 
     public Budget getActiveBudget(int year, int quarter, Connection con) {
@@ -64,13 +60,10 @@ public class BudgetMapper {
         ResultSet rs = null;
         Budget Budget = null;
 
-
         try {
             statement = con.prepareStatement(SQL);
-
             statement.setInt(1, year);
             statement.setInt(2, quarter);
-
             rs = statement.executeQuery();
 
 
@@ -83,8 +76,6 @@ public class BudgetMapper {
                         rs.getInt(4)
                 );
             }
-
-
 
         } catch (Exception e) {
             return null;
@@ -157,11 +148,6 @@ public class BudgetMapper {
         }
 
         return availablefunds;
-
     }
-
-
-
-
 
 }

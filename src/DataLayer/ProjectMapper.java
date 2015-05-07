@@ -20,16 +20,6 @@ public class ProjectMapper {
 
         String SQL = "insert into projects values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-
-/* Figure out how to handle dates from frontend; would be ideal if we could have input such that we can convert it to timestamp instead of int
-        int execDateParsed;
-        try {
-            execDateParsed = Integer.parseInt(execution_date);
-        } catch (NumberFormatException e) {
-            return false;
-        }
-*/
-        System.out.println("IM HERE");
         PreparedStatement statement = null;
 
         try {
@@ -184,7 +174,6 @@ public class ProjectMapper {
                     facade.markUnread(project_id, 2); // 2 is just not dell, a la partner
                 else
                     facade.markUnread(project_id, 1);
-            
 
                 return true;
             } catch (Exception e) {

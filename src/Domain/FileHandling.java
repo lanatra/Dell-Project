@@ -1,9 +1,5 @@
 package Domain;
 
-/**
- * Created by Lasse on 19-04-2015.
- */
-
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.Part;
 import java.io.*;
