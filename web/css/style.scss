@@ -706,8 +706,8 @@ div.actions {
   	margin-left: 20px;
 	margin-right: 20px;
   	input.amount {
-  		margin-left: 0px;
-  		margin-right: 0px;
+  		margin-left: 0px !important;
+  		margin-right: 0px !important;
   	}
   }
   input.amount {
@@ -967,6 +967,27 @@ div.project-items {
 	  &.rejected {
 		background-color: rgb(250, 227, 227);
 		color: rgb(211, 38, 38);
+	  }
+
+	  &>span {
+	  	float: left;
+	  }
+
+	  input.amount {
+		float: left;
+		height: 40px;
+		border-radius: 2px;
+		background-color: #ECECEC;
+		border: 1px solid #ECECEC;
+		margin-left: 20px;
+		margin-right: 20px;
+		margin-top: -5px;
+		padding-left: 20px;
+		font-size: 1em;
+		font-weight: lighter;
+		&.error {
+			border: 1px solid #c70000;
+		}
 	  }
 
 	  h3 {

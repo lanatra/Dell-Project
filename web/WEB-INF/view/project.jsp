@@ -140,15 +140,16 @@
                     <input type="hidden" name="projectId" value="${project.getId()}">
 
                     <c:if test="${project.getStatus() == 'Project Rejected'}">
+                    <div class="inner-bubble project">
                         <h3>Resubmit Project</h3>
                         <span><c:out value="${User.getCompany().getName()}" /> is requesting</span>
-                        <input class="amount" name="budget" type="text" placeholder="Amount"/>
-                        <span>for</span>
-                        <select name="type" id="type">
-                            <option value="Web Campaign">Web campaign</option>
-                            <option value="Billboard ad">Billboard ad</option>
-                            <option value="TV Promotion">TV promotion</option>
-                        </select>
+                        <div class="amount-box">
+                            <span class="small-label">Euro is binding currency</span>
+                            <input class="amount" name="budget" type="text" placeholder="Amount"/>
+                            <span class="euro-label">&#8364</span>
+                        </div>
+                        <span>for a</span>
+                        <input class="amount custom-type" type="text" name="type" id="type">
                         <span style="clear: left;">With execution scheduled</span>
                         <select name="execution_year" id="year">
                             <option value="2015">2015</option>
@@ -174,8 +175,10 @@
                         </select>
                         <textarea name="body" id="description" placeholder="Describe your project here."></textarea>
 
-
-                        <button name="answer" value="approved" class="green">Resubmit project</button>
+                    </div>
+                        <div class="stage-actions" style="margin-top: 20px;">
+                            <button name="answer" value="approved" class="blue">Resubmit project</button>
+                        </div>
                     </c:if><c:if test="${project.getStatus() == 'Project Approved'}">
                     <p class="status-message">When the project is finished, upload images and documents as a proof of execution.</p>
                     <div class="stage-actions">
@@ -222,6 +225,114 @@
 
 <script>
     $(".fancybox").fancybox();
+
+    $('span.add_day').click(function() {
+        setDays();
+        $('span.add_day').css('display', 'none');
+        $('select#day').css('display', 'block');
+        $('select#day').addClass('visible');
+    });
+
+    $('select#month option').each(function(){
+        var d = new Date();
+        var m = d.getMonth();
+
+        if($(this).val() < m+1) {
+            $(this).remove();
+        }
+    });
+
+    var searchNext = true;
+
+    var removeNotMatches = function(list, q, sync) {
+        var matches = [];
+        var regex = new RegExp(q, "i");
+        for (var i = 0; i < list.length; i++) {
+            if (regex.test(list[i])) {
+                if (list == pres) {
+                    matches.push(list[i])
+                } else if (pres.indexOf(list[i]) < 0) {
+                    matches.push(list[i])
+                }}}
+        return matches;
+    }
+
+
+    var pres = ["Online advertising",
+        "Billboard ad",
+        "TV Promotion",
+        "Face-to-face event",
+        "Webinar",
+        "Direct mail"];
+
+    var preset = function(q, sync) {
+        if(q == '')
+            sync(pres)
+        else
+            sync(removeNotMatches(pres, q));
+    }
+
+    var types = [];
+
+    var typesFilter = function(q, sync, async) {
+        if(q.length == 3 && searchNext) {
+            return $.ajax({
+                dataType: "json",
+                url: "/getTypes",
+                data: {query: q},
+                success: function(data) {
+                    types = data;
+                    async(removeNotMatches(types));
+                }
+            });
+        } else
+            return removeNotMatches(types, q, sync);
+    }
+
+    $('#type').typeahead({
+                hint: false,
+                highlight: true,
+                minLength: 0
+            }, {
+                name: 'preset',
+                source: preset
+            }, {
+                name: "type",
+                source: typesFilter
+            }
+
+    ).change(function() {
+                if($(this).val().length < 3)
+                    searchNext = true;
+                if($(this).val().length > 4)
+                    searchNext = false;
+            });
+
+    $('select#month').change(function() {
+        if($('select#day').hasClass('visible')){
+            setDays();
+        }
+    });
+
+    function setDays() {
+        var days = 31;
+        var e = document.getElementById("month");
+        var strMonth = e.options[e.selectedIndex].value;
+
+        if(strMonth == "1" || strMonth == "3" || strMonth == "5" ||
+                strMonth == "7" || strMonth == "8" || strMonth == "10" || strMonth == "12") {
+            days = 31;
+        } else if(strMonth == "4" || strMonth == "6" || strMonth == "9" || strMonth == "11") {
+            days = 30;
+        } else if(strMonth == "2") {
+            days = 28;
+        }
+
+        $('select#day').html("");
+        for(var i=1; i<=days; i++) {
+            $('select#day').append("<option value='" + i + "'>" + i +".</option>");
+        }
+    }
 </script>
 <script type="text/javascript" src="js/project-functions.js"></script>
 

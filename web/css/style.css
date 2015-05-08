@@ -566,8 +566,8 @@ div.actions .searchbox {
   margin-left: 20px;
   margin-right: 20px; }
   .project span.twitter-typeahead input.amount {
-    margin-left: 0px;
-    margin-right: 0px; }
+    margin-left: 0px !important;
+    margin-right: 0px !important; }
 .project input.amount {
   float: left;
   height: 40px;
@@ -767,6 +767,22 @@ div.project-items {
       div.project-items div.item div.inner-bubble.rejected {
         background-color: #fae3e3;
         color: #d32626; }
+      div.project-items div.item div.inner-bubble > span {
+        float: left; }
+      div.project-items div.item div.inner-bubble input.amount {
+        float: left;
+        height: 40px;
+        border-radius: 2px;
+        background-color: #ECECEC;
+        border: 1px solid #ECECEC;
+        margin-left: 20px;
+        margin-right: 20px;
+        margin-top: -5px;
+        padding-left: 20px;
+        font-size: 1em;
+        font-weight: lighter; }
+        div.project-items div.item div.inner-bubble input.amount.error {
+          border: 1px solid #c70000; }
       div.project-items div.item div.inner-bubble h3 {
         font-size: 1.5em;
         line-height: 1.5; }

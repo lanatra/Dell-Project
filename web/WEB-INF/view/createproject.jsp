@@ -132,12 +132,6 @@
                   searchNext = false;
           });
 
-
-
-
-
-
-
   $('select#month').change(function() {
     if($('select#day').hasClass('visible')){
       setDays();
