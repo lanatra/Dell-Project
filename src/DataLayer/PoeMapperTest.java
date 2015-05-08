@@ -53,9 +53,7 @@ public class PoeMapperTest {
         } else {
             fail();
         }
-
     }
-
 
     @After
     public void resetDbChanges() throws Exception {
@@ -70,8 +68,6 @@ public class PoeMapperTest {
 
     @org.junit.Test
     public void testGetPoe() throws Exception {
-
-
 
     }
 

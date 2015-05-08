@@ -328,34 +328,36 @@ div.filter {
   div.filter div.circle {
     float: left;
     box-sizing: border-box;
-    border-radius: 2px;
     width: 46px;
     height: 46px;
     text-align: center;
-    font-size: 1.4em;
+    font-size: 1.6em;
     font-weight: lighter;
-    padding-top: 7px;
-    -webkit-box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
-    -moz-box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
-    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1); }
-    div.filter div.circle.finished {
-      color: #5B5B5B;
-      background-color: white; }
-      div.filter div.circle.finished.active {
-        background-color: #0085C3;
-        color: white; }
-    div.filter div.circle.execution {
-      color: #5B5B5B;
-      background-color: white; }
-      div.filter div.circle.execution.active {
-        background-color: #0085C3;
-        color: white; }
-    div.filter div.circle.waiting {
-      color: #5B5B5B;
-      background-color: white; }
-      div.filter div.circle.waiting.active {
-        background-color: #0085C3;
-        color: white; }
+    padding-top: 4px;
+    /* 		&.finished {
+    			color: #5B5B5B;
+    			background-color: white;
+    			&.active {
+    			  background-color: $color-blue;
+    			  color: white;
+    			}
+    		}
+    		&.execution {
+    			color: #5B5B5B;
+    			background-color: white;
+    			&.active {
+    			  background-color: $color-blue;
+    			  color: white;
+    			}
+    		}
+    		&.waiting {
+    			color: #5B5B5B;
+    			background-color: white;
+    			&.active {
+    			  background-color: $color-blue;
+    			  color: white;
+    			}
+    		} */ }
     div.filter div.circle.unread {
       color: #0085C3;
       background-color: transparent; }
@@ -363,7 +365,7 @@ div.filter {
     float: left;
     font-size: 0.8em;
     line-height: 1;
-    margin-top: 13px;
+    margin-top: 16px;
     margin-left: 12px;
     margin-right: 12px; }
 
