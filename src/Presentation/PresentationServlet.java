@@ -27,8 +27,6 @@ public class PresentationServlet extends HttpServlet {
 
         System.out.println(request.getRequestURI());
 
-        //request.setAttribute("error", false);
-
         // if logged in
         Object userObj = request.getSession().getAttribute("User");
         if (userObj != null) {

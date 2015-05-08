@@ -7,7 +7,6 @@ import Domain.*;
 
 public class UserMapper {
 
-
     public User getUserById(int user_id, Connection con) {
 
         User user = null;

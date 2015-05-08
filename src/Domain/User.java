@@ -47,14 +47,6 @@ public class User {
     public String toString()
     {
         return "IM HERE";
-        /*
-        return "  User_id: " + user_id
-                + "  Name: " + name
-                + "  Password: " + password
-                + "  Role: " + role
-                + "  Email: " + email
-                + "  Company_id: " +  company_id;
-                */
     }
 
 }

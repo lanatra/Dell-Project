@@ -15,14 +15,6 @@ public class DisplayProject extends Project{
 
     public String message;
 
-    //public ArrayList<Message> messages;
-
-    //public ArrayList<POE> poes;
-
-    /*public ArrayList<Message> messages;
-
-    public ArrayList<POE> poes;*/
-
     public DisplayProject() {
 
     }

@@ -6,9 +6,6 @@ import Domain.Stage;
 import java.sql.*;
 import java.util.ArrayList;
 
-/**
- * Created by Andreas Poulsen on 28-Apr-15.
- */
 public class NonceMapper {
 
     public int addNonce(Nonce nonce, Connection con) {
@@ -113,8 +110,4 @@ public class NonceMapper {
         }
 
     }
-
-
-
-
 }

@@ -32,8 +32,8 @@
         </a>
       </c:if>
     <a href="?state=finished">
-      <div class="filter">
-        <div class="circle finished <c:if test="${param.state != null && param.state.equals('finished')}">active</c:if>"><c:out value="${statusCount[2]}" /></div>
+      <div class="filter <c:if test="${param.state != null && param.state.equals('finished')}">active</c:if>">
+        <div class="circle finished"><c:out value="${statusCount[2]}" /></div>
         <span>Finished</span>
       </div>
     </a>
