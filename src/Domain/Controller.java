@@ -21,10 +21,8 @@ public class Controller {
     IdGenerator gen;
 
     public Controller() {
-
         this.facade = new DatabaseFacade();
         this.gen = new IdGenerator();
-
     }
     // Writers
     public int createProjectRequest(int budget, String project_body, User user, String project_type, Timestamp execution_date) {
