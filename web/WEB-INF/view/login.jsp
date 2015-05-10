@@ -17,12 +17,12 @@
       <div class="row">
         <div class="eight columns" style="padding-right: 30px;">
           <h1>Login instructions</h1>
-          <p>Please fill-in login credentials. Testing login credentials for DELL access are: <br>
-          Email: honason@gmail.com <br>
-          Password: horse <br/><br/>
-          Credentials for PARTNER access are: <br/>
+          <p>Please fill-in login credentials. Testing login credentials for DELL user are: <br>
           Email: Anden702@gmail.com <br>
-          Password: hest
+          Password: hest <br/><br/>
+          Credentials for PARTNER access are: <br/>
+          Email: honason@gmail.com <br>
+          Password: ahoj
           </p>
         </div>
         <div class="four columns login-form">
