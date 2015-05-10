@@ -2,9 +2,6 @@ package Domain;
 
 import java.util.ArrayList;
 
-/**
- * Created by Andreas Poulsen on 28-Apr-15.
- */
 public class ResultsContainer {
 
     public String type;

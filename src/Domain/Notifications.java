@@ -1,9 +1,5 @@
 package Domain;
 
-/**
- * Created by Lasse on 21-04-2015.
- */
-
     import java.util.Properties;
 
     import javax.mail.Message;

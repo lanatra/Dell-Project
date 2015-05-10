@@ -3,9 +3,6 @@ package Domain;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-/**
- * Created by Andreas Poulsen on 27-Apr-15.
- */
 public class JSONTranslator {
 
     public static String stringArrayList(ArrayList list) {

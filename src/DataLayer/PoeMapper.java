@@ -19,8 +19,6 @@ import java.util.ArrayList;
 
 public class PoeMapper {
 
-    // bros before poes
-
     public boolean addPoeFile(int project_id, String filename, int user_id, String filetype, int stage, Connection con) {
 
         String SQL = "insert into poes values(?, ?, ?, ?, ?, ?, ?, ?)";
@@ -149,39 +147,7 @@ public class PoeMapper {
         return PoeCollection;
 
     }
- /* excessive; never needed this method
-    public int getAmountPoesByProjectId(int project_id) {
-        String SQL = "select count(id) from poes where project_id = ?";
-        PreparedStatement statement = null;
-        ResultSet rs = null;
-        Connection con = null;
-        try {
-            con = DatabaseConnection.getInstance().getConnection();
-        } catch (Exception e) {};
-        int amountPoes = 0;
 
-        try {
-            statement = con.prepareStatement(SQL);
-
-            statement.setInt(1, project_id);
-
-            statement.executeQuery();
-
-            while (rs.next()) {
-                amountPoes = rs.getInt(1);
-            }
-
-        } catch (Exception e) {
-            System.out.println("Error in getAmountPoesByProjectId");
-        }finally {
-            if (rs != null) try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
-            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
-            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
-        }
-
-        return amountPoes;
-    }
-*/
     public int getNextPoEId() {
         PreparedStatement statement = null;
         ResultSet rs = null;

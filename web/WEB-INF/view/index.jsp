@@ -11,29 +11,29 @@
   <div class="container actions" style="margin-top: 40px;">
       <c:if test="${User.getCompany_id() == 1}">
       <a href="/dashboard">
-          <div class="filter">
-              <div class="circle waiting <c:if test="${param.state == null}">active</c:if>"><c:out value="${statusCount[0]}" /> </div>
-              <span>Waiting<br/>for action</span>
+          <div class="filter <c:if test="${param.state == null}">active</c:if>">
+              <div class="circle waiting"><c:out value="${statusCount[0]}" /> </div>
+              <span>Waiting for action</span>
           </div>
       </a>
       <a href="?state=inExecution">
-          <div class="filter">
-              <div class="circle execution <c:if test="${param.state != null && param.state.equals('inExecution')}">active</c:if>"><c:out value="${statusCount[1]}" /></div>
+          <div class="filter <c:if test="${param.state != null && param.state.equals('inExecution')}">active</c:if>">
+              <div class="circle execution"><c:out value="${statusCount[1]}" /></div>
               <span>In execution</span>
           </div>
       </a>
       </c:if>
       <c:if test="${User.getCompany_id() != 1}">
         <a href="/dashboard">
-          <div class="filter">
-              <div class="circle execution <c:if test="${param.state == null}">active</c:if>"><c:out value="${statusCount[0]}" /></div>
+          <div class="filter <c:if test="${param.state == null}">active</c:if>">
+              <div class="circle execution"><c:out value="${statusCount[0]}" /></div>
             <span>Active</span>
           </div>
         </a>
       </c:if>
     <a href="?state=finished">
-      <div class="filter">
-        <div class="circle finished <c:if test="${param.state != null && param.state.equals('finished')}">active</c:if>"><c:out value="${statusCount[2]}" /></div>
+      <div class="filter <c:if test="${param.state != null && param.state.equals('finished')}">active</c:if>">
+        <div class="circle finished"><c:out value="${statusCount[2]}" /></div>
         <span>Finished</span>
       </div>
     </a>

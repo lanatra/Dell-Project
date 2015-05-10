@@ -286,7 +286,7 @@ div.header{
 	color: white;
   	font-size: 1em;
 
-  	@media (max-width: 750px) {
+  	@media (max-width: 800px) {
 		div.logo span {
 			display: none;
 		}
@@ -370,7 +370,7 @@ div.header{
 			clear: left;
 		}
 	}
-	@media (max-width: 1050px) {
+	@media (max-width: 1100px) {
 		  div.budget-label {
 		  	display: none;
 		  }
@@ -413,6 +413,11 @@ div.header{
 	border-right: 1px solid rgba(255,255,255,0.2);
 	transition: color 0.3s;
 
+	&:first-child {
+		padding-right: 0px;
+		border-right: none;
+	}
+
 	&.active {
 	  color: white;
 	}
@@ -425,26 +430,30 @@ div.header{
 
 div.filter {
 	float: left;
+	width: 160px;
 	color: $color-dark;
-	margin-right: 20px;
+	margin-right: 5px;
 	background-color: $color-light-gray;
 	border-radius: 2px;
+
+	&.active {
+		background-color: white;
+		-webkit-box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
+		-moz-box-shadow:    0px 1px 3px 0px rgba(0, 0, 0, 0.1);
+		box-shadow:         0px 1px 3px 0px rgba(0, 0, 0, 0.1);
+	}
 
 	div.circle {
 		float: left;
 		box-sizing: border-box;
-		border-radius: 2px;
 		width: 46px;
 		height: 46px;
 		text-align: center;
-		font-size: 1.4em;
+		font-size: 1.6em;
 		font-weight: lighter;
-		padding-top: 7px;
-		 -webkit-box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
-		-moz-box-shadow:    0px 1px 3px 0px rgba(0, 0, 0, 0.1);
-		box-shadow:         0px 1px 3px 0px rgba(0, 0, 0, 0.1);
+		padding-top: 4px;
 
-		&.finished {
+/* 		&.finished {
 			color: #5B5B5B;
 			background-color: white;
 			&.active {
@@ -467,7 +476,7 @@ div.filter {
 			  background-color: $color-blue;
 			  color: white;
 			}
-		}
+		} */
 		&.unread {
 			color: $color-blue;
 			background-color: transparent;
@@ -478,8 +487,7 @@ div.filter {
 		float: left;
 		font-size: 0.8em;
 		line-height: 1;
-		margin-top: 13px;
-		margin-left: 12px;
+		margin-top: 17px;
 		margin-right: 12px;
 	}
 }
@@ -502,6 +510,8 @@ div.filter {
 			width: 100%;
 			text-align: center;
 			margin-left: 0px;
+			margin-top: 0px;
+			margin-bottom: 10px;
 		}
 	}
 }
@@ -590,6 +600,10 @@ table {
   box-sizing: border-box;
   border-color: transparent;
 
+  tr {
+  	border-bottom: 1px solid $color-light-gray;
+  }
+
   td:first-child {
 	padding-left: 10px;
 	span {
@@ -612,13 +626,9 @@ table {
   }
 
   tr {
-	background-color: #FAFAFA;
+	//background-color: #FAFAFA;
 	display: table-row;
 	margin-bottom: 3px;
-	-webkit-box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2);
-	-moz-box-shadow:    0px 1px 3px 0px rgba(0, 0, 0, 0.2);
-	box-shadow:         0px 1px 3px 0px rgba(0, 0, 0, 0.2);
-	border: none;
   }
 
   span.small {
@@ -648,7 +658,7 @@ div.actions {
 	  border: none;
 	  border-radius: 2px;
 	  padding: 10px 20px 10px 56px;
-	  background: #EBEBEB url("../img/search_icon.svg") no-repeat 19px 14px;
+	  background: #DADADA url("../img/search_icon.svg") no-repeat 19px 14px;
 
 	  &:focus {
 	  	background-color: #DADADA;
@@ -701,8 +711,8 @@ div.actions {
   	margin-left: 20px;
 	margin-right: 20px;
   	input.amount {
-  		margin-left: 0px;
-  		margin-right: 0px;
+  		margin-left: 0px !important;
+  		margin-right: 0px !important;
   	}
   }
   input.amount {
@@ -962,6 +972,27 @@ div.project-items {
 	  &.rejected {
 		background-color: rgb(250, 227, 227);
 		color: rgb(211, 38, 38);
+	  }
+
+	  &>span {
+	  	float: left;
+	  }
+
+	  input.amount {
+		float: left;
+		height: 40px;
+		border-radius: 2px;
+		background-color: #ECECEC;
+		border: 1px solid #ECECEC;
+		margin-left: 20px;
+		margin-right: 20px;
+		margin-top: -5px;
+		padding-left: 20px;
+		font-size: 1em;
+		font-weight: lighter;
+		&.error {
+			border: 1px solid #c70000;
+		}
 	  }
 
 	  h3 {
@@ -1426,7 +1457,7 @@ div.mobile {
 	display: none;
 }
 
-@media (max-width: 630px) {
+@media (max-width: 660px) {
 	div.item {
 		span.date {
 			display: none;
@@ -1473,3 +1504,60 @@ div.mobile-menu {
 		font-size: 18px;
 	}
 }
+
+.quarter-selector {
+	float: right;
+
+	input, select {
+		height: 40px;
+		border-radius: 2px;
+		font-weight: lighter;
+		font-size: 1em;
+		border: 1px solid #ECECEC;
+		margin-top: 10px;
+
+		&:focus {
+			border: 1px solid #ECECEC;
+		}
+	}
+	input {
+		background-color: #ECECEC;
+		margin-right: 20px;
+		padding-left: 20px;
+	}
+	select {
+		margin-right: 20px;
+		-webkit-appearance: none;
+		padding-left: 20px;
+		padding-right: 40px;
+		background: #ECECEC url(../img/dark_dropdown.svg) no-repeat right 20px center;
+	}
+}
+
+div#graphs, div#numbers {
+	float: left;
+	clear: left;
+	width: 100%;
+
+	div#BudgetProgression > div > div {
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	div#Projectsbycountry {
+		margin-bottom: 30px;
+	}
+
+	div#Projectsbycountry > div > div {
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	div#Companieswithlargestapprovedbudget, div#Averagecostpertype, div#Averagecostofprojectsbycountry,
+	div#Totalcostofeachtype, div#Typeswithhighestsuccessrate, div#Countofprojectsforeachtype {
+		float: left;
+		width: 50%;
+	}
+}
+
+

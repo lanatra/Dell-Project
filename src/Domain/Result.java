@@ -1,8 +1,5 @@
 package Domain;
 
-/**
- * Created by Andreas Poulsen on 23-Apr-15.
- */
 public class Result {
 
     public String type;

@@ -21,10 +21,8 @@ public class Controller {
     IdGenerator gen;
 
     public Controller() {
-
         this.facade = new DatabaseFacade();
         this.gen = new IdGenerator();
-
     }
     // Writers
     public int createProjectRequest(int budget, String project_body, User user, String project_type, Timestamp execution_date) {
@@ -192,8 +190,8 @@ public class Controller {
         ArrayList<String> stats = new ArrayList<>();
 
         stats.add(JSONTranslator.stringArrayArrayListWithOptions(facade.getBudgetProgression(start, end), "Budget Progression,line"));
-        stats.add(JSONTranslator.stringArrayArrayListWithOptions(facade.getCompaniesByLargestApprovedBudget(start, end), "Companies with largest approved budget,donut"));
         stats.add(JSONTranslator.stringArrayArrayListWithOptions(facade.getCountOfProjectsByCountry(start, end), "Projects by country,geomap"));
+        stats.add(JSONTranslator.stringArrayArrayListWithOptions(facade.getCompaniesByLargestApprovedBudget(start, end), "Companies with largest approved budget,donut"));
         stats.add(JSONTranslator.stringArrayArrayListWithOptions(facade.getAvgCostPerType(start, end), "Average cost per type,donut"));
         stats.add(JSONTranslator.stringArrayArrayListWithOptions(facade.getAvgCostOfProjectsByCountry(start, end), "Average cost of projects by country,donut"));
         stats.add(JSONTranslator.stringArrayArrayListWithOptions(facade.getCostPerType(start, end), "Total cost of each type,donut"));

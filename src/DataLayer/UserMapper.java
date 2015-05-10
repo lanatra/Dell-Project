@@ -7,15 +7,12 @@ import Domain.*;
 
 public class UserMapper {
 
-
     public User getUserById(int user_id, Connection con) {
 
         User user = null;
         String SQL = "select * from users where id=?";
 
-
         PreparedStatement statement = null;
-
         ResultSet rs = null;
         try {
             statement = con.prepareStatement(SQL);
@@ -24,7 +21,6 @@ public class UserMapper {
             rs = statement.executeQuery();
             if (rs.next())
             {
-
                 user = new User(rs.getInt(1),
                         rs.getString(2),
                         rs.getString(3),
@@ -32,7 +28,6 @@ public class UserMapper {
                         rs.getInt(5),
                         rs.getBoolean(6)
                         );
-
             }
 
         } catch (Exception e) {
@@ -67,7 +62,6 @@ public class UserMapper {
                         rs.getInt(5),
                         rs.getBoolean(6));
             }
-
 
         } catch (Exception e) {
             System.out.println("Error in UserMapper");

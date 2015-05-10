@@ -27,8 +27,6 @@ public class PresentationServlet extends HttpServlet {
 
         System.out.println(request.getRequestURI());
 
-        //request.setAttribute("error", false);
-
         // if logged in
         Object userObj = request.getSession().getAttribute("User");
         if (userObj != null) {
@@ -345,7 +343,6 @@ public class PresentationServlet extends HttpServlet {
 
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-
 
         int userId = getInt("userId", request);
         int companyId = getInt("companyId", request);

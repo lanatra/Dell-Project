@@ -3,9 +3,6 @@ package DataLayer;
 import java.sql.*;
 import java.util.ArrayList;
 
-/**
- * Created by Anden702 on 03-05-2015.
- */
 public class StatisticsGetter {
     public static ArrayList<String[]> getDistinctTypesCounts(Timestamp start, Timestamp end, Connection con) {
 
@@ -336,7 +333,6 @@ public static ArrayList<String[]> getMoneyReimbursed(Timestamp start, Timestamp 
         ResultSet rs = null;
         ArrayList<String[]> res = new ArrayList<>();
 
-
         try {
             statement = con.prepareStatement(SQL);
             rs = statement.executeQuery();
@@ -353,9 +349,5 @@ public static ArrayList<String[]> getMoneyReimbursed(Timestamp start, Timestamp 
         }
         return res;
     }
-
-
-
-
 
 }

@@ -2,9 +2,6 @@ package Domain;
 
 import java.sql.Timestamp;
 
-/**
- * Created by Lasse on 09-04-2015.
- */
 public class Project {
 
     public int id;
