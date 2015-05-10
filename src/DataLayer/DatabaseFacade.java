@@ -20,8 +20,11 @@ public class DatabaseFacade {
     // PROJECT
     public int createProjectRequest(int budget, String project_body, User user, String project_type, Timestamp execution_date) {
         return new ProjectMapper().createProjectRequest(budget, project_body, user, project_type, execution_date, getCon());
-
     }
+    public void resubmitProject(int budget, String project_body, int project_id, String project_type, Timestamp execution_date, int user_id) {
+        new ProjectMapper().resubmitProject(budget, project_body, project_id, project_type, execution_date, user_id, getCon());
+    }
+
     public ArrayList<Project> getProjectsByCompanyId(int company_id) {
         return new ProjectMapper().getProjectsByCompanyId(company_id, getCon());
     }

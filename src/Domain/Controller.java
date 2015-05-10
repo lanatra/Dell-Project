@@ -30,6 +30,9 @@ public class Controller {
     public int createProjectRequest(int budget, String project_body, User user, String project_type, Timestamp execution_date) {
         return facade.createProjectRequest(budget, project_body, user, project_type, execution_date);
     }
+    public void resubmitProject(int budget, String project_body, int project_id, String project_type, Timestamp execution_date, int user_id) {
+        facade.resubmitProject(budget, project_body, project_id, project_type, execution_date, user_id);
+    }
     public int createCompany(String company_name, String country_code, Part logo, String logo_url) {
         int company_id = facade.createCompany(company_name, country_code);
         if(company_id != -1) { //if success
@@ -375,7 +378,7 @@ public class Controller {
         return JSONTranslator.stringArrayList(facade.getDistinctTypes(query, companyId));
     }
 
-    // BUDGETSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+    // BUDGETS
     public boolean addBudget(int year, int quarter, int budget) {
         return facade.addBudget(year, quarter, budget);
     }

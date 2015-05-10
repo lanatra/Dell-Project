@@ -12,6 +12,11 @@
 
 <c:set var="lastStage" value="false"></c:set>
 
+<c:forEach items="${stages}" var="stage" varStatus="ite">
+    <c:if test="${stage.getType() == 'Waiting Project Verification'}">
+        <c:set var="lastWaitingProjectVerification" value="${ite.index}"></c:set>
+    </c:if>
+</c:forEach>
 <c:if test="${project.getMessage() != null}"><c:out value="${project.getMessage()}"></c:out></c:if>
 
 <div class="container project-container">
@@ -141,6 +146,8 @@
 
                     <c:if test="${project.getStatus() == 'Project Rejected'}">
                         <h3>Resubmit Project</h3>
+                        <p>The project has been rejected, look in the comments for a reason. Change the values and try again.</p>
+
                         <span><c:out value="${User.getCompany().getName()}" /> is requesting</span>
                         <input class="amount" name="budget" type="text" placeholder="Amount"/>
                         <span>for</span>
@@ -175,7 +182,7 @@
                         <textarea name="body" id="description" placeholder="Describe your project here."></textarea>
 
 
-                        <button name="answer" value="approved" class="green">Resubmit project</button>
+                        <button name="answer" value="resubmit" class="green">Resubmit project</button>
                     </c:if><c:if test="${project.getStatus() == 'Project Approved'}">
                     <p class="status-message">When the project is finished, upload images and documents as a proof of execution.</p>
                     <div class="stage-actions">

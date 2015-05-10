@@ -41,7 +41,7 @@
         <input type="text" placeholder="Search" class="search"
                <c:if test="${param.type != null}">value="<c:out value="${param.type}"></c:out>"</c:if>
                <c:if test="${param.company != null}">value="<c:out value="${param.company}"></c:out>"</c:if>
-               <c:if test="${param.state != null}">value="<c:out value="${param.state}"></c:out>"</c:if>
+               <c:if test="${param.state != null && param.state != 'inExecution' && param.state != 'finished'}">value="<c:out value="${param.state}"></c:out>"</c:if>
                <c:if test="${param.q != null}">value="<c:out value="${param.q}"></c:out>"</c:if>
                 />
     </div>

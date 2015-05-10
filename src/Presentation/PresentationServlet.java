@@ -425,9 +425,31 @@ public class PresentationServlet extends HttpServlet {
         int companyId = u.getCompany_id();
         int userId = u.getId();
 
-        if(request.getAttribute("error") == null)
-            cont.changeProjectStatus(projectId, currentType, answer, companyId, userId);
-        response.sendRedirect("/project?id=" + projectId);
+        if(answer.equals("resubmit")) {
+            String project_body = getString("body", request);
+            int budget = getInt("budget", request);
+            String project_type = getString("type", request);
+
+
+            int execution_year = getInt("execution_year", request);
+            int execution_month = getInt("execution_month", request);
+            int execution_day = getInt("execution_day", request);
+
+            Timestamp execution_time;
+
+            if (execution_day == 0) {
+                execution_time = Timestamp.valueOf(execution_year + "-" + execution_month + "-01" + " 00:00:01");
+            } else {
+                execution_time = Timestamp.valueOf(execution_year + "-" + execution_month + "-" + execution_day + " 00:00:00");
+            }
+
+                cont.resubmitProject(budget, project_body, projectId, project_type, execution_time, u.getId());
+
+        } else {
+            if (request.getAttribute("error") == null)
+                cont.changeProjectStatus(projectId, currentType, answer, companyId, userId);
+            response.sendRedirect("/project?id=" + projectId);
+        }
     }
 
     void logout(HttpServletRequest request, HttpServletResponse response, Controller cont) throws ServletException, IOException {

@@ -75,6 +75,37 @@ public class ProjectMapper {
 
         return 0;
     }
+public void resubmitProject(int budget, String project_body, int project_id, String project_type, Timestamp execution_date, int user_id, Connection con) {
+
+        String SQL = "update projects" +
+                " set budget=?,body=?,type=?,EXECUTION_DATE=?,status='Waiting Project Verification'" +
+                " where id=?";
+
+        PreparedStatement statement = null;
+
+        try {
+            int nextProjectID = getNextProjectId();
+            statement = con.prepareStatement(SQL);
+            statement.setInt(1, budget);
+            statement.setString(2, project_body);
+            statement.setString(3, project_type);
+            statement.setTimestamp(4, execution_date);
+            statement.setInt(5, project_id);
+
+            statement.executeUpdate();
+
+            addStage(user_id, project_id, "Waiting Project Verification", DatabaseConnection.getInstance().getConnection());
+
+        } catch (SQLException t) {
+            System.out.println("SQLException in resubmitProject()");
+        }
+        catch (Exception e) {
+            System.out.println("Error in ProjectMapper - resubmitProject()");
+        } finally {
+            if (statement != null) try { statement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (con != null) try { con.close(); } catch (SQLException e) {e.printStackTrace();}
+        }
+    }
 
     public int getNextProjectId() {
         Connection con = null;
@@ -719,10 +750,10 @@ public class ProjectMapper {
                     "  sum(case when status='Project Finished' then 1 else 0 end) Finished" +
                     " from projects";
         } else {
-            SQL = "select \n" +
-                    "  sum(case when (status not in ('Project Finished', 'Cancelled')) and company_id=" + companyId + " then 1 else 0 end) WaitingForAction,\n" +
-                    "  sum(case when status='' and company_id=" + companyId + "  then 1 else 0 end) InExecution,\n" +
-                    "  sum(case when status in ('Project Finished', 'Cancelled') and company_id=" + companyId + "   then 1 else 0 end) Finished\n" +
+            SQL = "select " +
+                    "  sum(case when status not in ('Project Finished', 'Cancelled') and company_id=? then 1 else 0 end) WaitingForAction," +
+                    "  0 InExecution," +
+                    "  sum(case when status in ('Project Finished', 'Cancelled') and company_id=? then 1 else 0 end) Finished" +
                     " from projects";
         }
 
@@ -731,13 +762,16 @@ public class ProjectMapper {
 
         try {
             statement = con.prepareStatement(SQL);
+            if(companyId != 1) {
+                statement.setInt(1, companyId);
+                statement.setInt(2, companyId);
+            }
             rs = statement.executeQuery();
             if (rs.next()) {
                 res[0] = rs.getInt(1);
                 res[1] = rs.getInt(2);
                 res[2] = rs.getInt(3);
             }
-            System.out.println(res[0]);
         } catch (Exception e) {
             System.out.println("Error in ProjectMapper - getStatusCounts()");
         } finally {
@@ -828,9 +862,9 @@ public class ProjectMapper {
         ArrayList<String> results = new ArrayList<>();
         PreparedStatement statement = null;
         ResultSet rs = null;
-        String SQL = "select DISTINCT status\n" +
-                "from projects\n" +
-                "where lower(status) like lower('%" + query + "%')\n";
+        String SQL = "select DISTINCT status" +
+                " from projects" +
+                " where lower(status) like lower('%" + query + "%')";
 
         System.out.println(SQL);
 
@@ -857,13 +891,13 @@ public class ProjectMapper {
         ResultSet rs = null;
         String SQL;
         if(companyId != 1)
-            SQL = "select DISTINCT type\n" +
-                "from projects\n" +
-                "where company_id=? and lower(type) like lower('%" + query + "%')\n";
+            SQL = "select DISTINCT type" +
+                " from projects" +
+                " where company_id=? and lower(type) like lower('%" + query + "%')";
         else
-            SQL = "select DISTINCT type\n" +
-                    "from projects\n" +
-                    "where lower(type) like lower('%" + query + "%')\n";
+            SQL = "select DISTINCT type" +
+                    " from projects" +
+                    " where lower(type) like lower('%" + query + "%')";
 
         System.out.println(SQL);
 
@@ -893,30 +927,30 @@ public class ProjectMapper {
         String SQL;
 
         if(companyId == 1)
-            SQL = "    select 'Project' OriginatingTable, id, body, utl_match.jaro_winkler_similarity(body, '" + query + "') Ayy, 1\n" +
-                "    from projects\n" +
-                "    where lower(body) like lower('%" + query + "%')\n" +
-                "    union all\n" +
-                "    select 'Message', project_id, body, utl_match.jaro_winkler_similarity(body, '" + query + "') Ayy, 2\n" +
-                "    from messages\n" +
-                "    where lower(body) like lower('%" + query + "%')\n" +
-                "    union all\n" +
-                "    select 'User', id, name, utl_match.jaro_winkler_similarity(name, '" + query + "') Ayy, 3\n" +
-                "    from users\n" +
-                "    where lower(name) like lower('%" + query + "%')\n" +
+            SQL = "    select 'Project' OriginatingTable, id, body, utl_match.jaro_winkler_similarity(body, '" + query + "') Ayy, 1" +
+                "    from projects" +
+                "    where lower(body) like lower('%" + query + "%')" +
+                "    union all" +
+                "    select 'Message', project_id, body, utl_match.jaro_winkler_similarity(body, '" + query + "') Ayy, 2" +
+                "    from messages" +
+                "    where lower(body) like lower('%" + query + "%')" +
+                "    union all" +
+                "    select 'User', id, name, utl_match.jaro_winkler_similarity(name, '" + query + "') Ayy, 3" +
+                "    from users" +
+                "    where lower(name) like lower('%" + query + "%')" +
                 "    ORDER by 5 ASC, Ayy DESC";
         else
-            SQL = "    select 'Project' OriginatingTable, id, body, utl_match.jaro_winkler_similarity(body, '" + query + "') Ayy, 1\n" +
-                    "    from projects\n" +
-                    "    where lower(body) like lower('%" + query + "%') and company_id=" + companyId +"\n" +
-                    "    union all\n" +
-                    "    select 'Message', project_id, body, utl_match.jaro_winkler_similarity(body, '" + query + "') Ayy, 2\n" +
-                    "    from messages\n" +
-                    "    where lower(body) like lower('%" + query + "%') and author_id IN (SELECT id from users where company_id=" + companyId + ") \n" +
-                    "    union all\n" +
-                    "    select 'User', id, name, utl_match.jaro_winkler_similarity(name, '" + query + "') Ayy, 3\n" +
-                    "    from users\n" +
-                    "    where lower(name) like lower('%" + query + "t%') and company_id=" + companyId +"\n" +
+            SQL = "    select 'Project' OriginatingTable, id, body, utl_match.jaro_winkler_similarity(body, '" + query + "') Ayy, 1" +
+                    "    from projects" +
+                    "    where lower(body) like lower('%" + query + "%') and company_id=" + companyId +"" +
+                    "    union all" +
+                    "    select 'Message', project_id, body, utl_match.jaro_winkler_similarity(body, '" + query + "') Ayy, 2" +
+                    "    from messages" +
+                    "    where lower(body) like lower('%" + query + "%') and author_id IN (SELECT id from users where company_id=" + companyId + ") " +
+                    "    union all" +
+                    "    select 'User', id, name,  utl_match.jaro_winkler_similarity(name, '" + query + "') Ayy, 3" +
+                    "    from users" +
+                    "    where lower(name) like lower('%" + query + "%') and company_id=" + companyId +
                     "    ORDER by 5 ASC, Ayy DESC";
 
 

@@ -3,7 +3,7 @@
 <c:set var="dellAndLatest" value="${User.getCompany_id() == 1 && lastStage}"></c:set>
 <c:set var="partnerAndLatest" value="${User.getCompany_id() != 1 && lastStage}"></c:set>
 
-<div class="item<c:if test='${stages.get(stageIndex).getUser().getId() == User.getId()}'> pull-right</c:if>">
+<div class="item<c:if test='${stages.get(stageIndex).getUser().getId() == User.getId()}'> pull-right</c:if><c:if test="${stages.get(stageIndex).getType() == 'Waiting Project Verification' && lastWaitingProjectVerification != stageIndex}"> hidden</c:if> ">
     <span class="user-data"><c:out value="${stages.get(stageIndex).getUser().getName()}"></c:out> - <c:out value="${stages.get(stageIndex).getUser().getCompany().getName()}"></c:out></span>
     <span class="date isDate"><c:out value="${stages.get(stageIndex).getDate()}"></c:out></span>
     <div class="bubble">
@@ -29,7 +29,7 @@
                 <p class="status-message">Add a comment to explain your decision of rejecting the project.</p>
             </c:if>
             <c:if test="${partnerAndLatest}">
-                <p class="status-message">Dell has rejected your request. Change your request to match Dell�s comment.</p>
+                <p class="status-message">Dell has rejected your request. Change your request to match Dell's comment.</p>
             </c:if>
         </c:if>
 
