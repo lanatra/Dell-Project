@@ -28,11 +28,11 @@ public class Message {
     }
 
     public String toHTML() {
-        String html = "      <div class=\"item message pull-right\">\n" +
-                "               <span class=\"user-data\">" + user.getName() + " - " + company.getName() + "</span>\n" +
-                "               <span class=\"date isDate\">" + creation_date_millis + "</span>\n" +
+        String html = "      <div class=\"item message pull-right\">" +
+                "               <span class=\"user-data\">" + user.getName() + " - " + company.getName() + "</span>" +
+                "               <span class=\"date isDate\">" + creation_date_millis + "</span>" +
                 "               <div class=\"inner-bubble\">" +
-                "                   <p>" + body + "</p>\n" +
+                "                   <p>" + body + "</p>" +
                 "               </div>" +
                 "            </div>";
 

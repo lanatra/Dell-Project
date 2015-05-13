@@ -17,6 +17,8 @@ import java.io.*;
 
 public class Controller {
 
+    public static final String POE_FOLDER = "D:\\Skydrive\\CPHB\\2. Semester Project - Dell\\Netbeans\\DellProject\\DellProject-war\\web\\WEB-INF\\poe-folder";
+    
     DatabaseFacade facade;
     IdGenerator gen;
 
@@ -45,11 +47,11 @@ public class Controller {
                 filename = handler.getFileName();
                 facade.updateCompanyLogo(filename, company_id);
             } else if(logo_url != null) {
-                System.out.println(new File(System.getenv("POE_FOLDER") + File.separator + "companies" + File.separator + company_id + File.separator + "logo." + logo_url.substring(logo_url.lastIndexOf(".") + 1, logo_url.length())).getPath());
+                System.out.println(new File(POE_FOLDER + File.separator + "companies" + File.separator + company_id + File.separator + "logo." + logo_url.substring(logo_url.lastIndexOf(".") + 1, logo_url.length())).getPath());
                 try {
                     URL website = new URL(logo_url);
                     ReadableByteChannel rbc = Channels.newChannel(website.openStream());
-                    File outputFolder = new File(System.getenv("POE_FOLDER") + File.separator + "companies" + File.separator + company_id );
+                    File outputFolder = new File(POE_FOLDER + File.separator + "companies" + File.separator + company_id );
                     outputFolder.mkdirs();
                     String ext = logo_url.substring(logo_url.lastIndexOf(".") + 1);
                     if(ext.equals("png") || ext.equals("jpg") || ext.equals("jpeg") || ext.equals("gif") || ext.equals("bmp"))

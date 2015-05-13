@@ -464,7 +464,7 @@ public class PresentationServlet extends HttpServlet {
         int project_id = getInt("proj_id", request);
         int user_id = u.getId();
         int stage = -1;
-        if(getString("stage", request) != null)
+        if(getLazyString("stage", request) != null)
             stage = getInt("stage", request);
         if(cont.addPoeFile(project_id, file, user_id, stage)) {
             response.sendRedirect("/project?id=" + project_id);
@@ -529,7 +529,7 @@ public class PresentationServlet extends HttpServlet {
                 "attachment;filename=" + filename);
 
         // testing first poe
-        String path = System.getenv("POE_FOLDER") + File.separator + project_id + File.separator + filename;
+        String path = Controller.POE_FOLDER + File.separator + project_id + File.separator + filename;
 
         File file = new File(path);
         FileInputStream fileIn = new FileInputStream(file);
@@ -554,14 +554,14 @@ public class PresentationServlet extends HttpServlet {
             boolean download = Boolean.parseBoolean(request.getParameter("download"));
 
             String[] path = userpath.split("/");
-            String filename = System.getenv("POE_FOLDER");
+            String filename = Controller.POE_FOLDER;
 
             for (int i=2; i < path.length; i++) {
                 filename+= File.separator + path[i];
             }
-
-            //String filename = System.getenv("POE_FOLDER") + File.separator + userpath.split("/")[2] + File.separator + userpath.split("/")[3];
+            System.out.println(filename);
             File file = new File(filename);
+            System.out.println(file.getName());
 
             if(download) {
                 response.setContentType("application/force-download");
@@ -594,7 +594,7 @@ public class PresentationServlet extends HttpServlet {
             }
             out.close();
             in.close();
-        } catch (Exception e) {};
+        } catch (Exception e) {System.out.println("Error serving resource");};
 
     }
 

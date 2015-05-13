@@ -17,6 +17,7 @@ public class FileHandling {
 
     String filename;
     String filetype;
+    
 
     public void putFile(Part file, int project_id) throws IOException {
 
@@ -24,7 +25,7 @@ public class FileHandling {
        // String projectRoot = path.substring(0, path.lastIndexOf("\\")) + "\\Poe\\";
        // String PoeRootByProjectId = projectRoot + project_id;
 
-        String path = System.getenv("POE_FOLDER");
+        String path = Controller.POE_FOLDER;
 
         String newPath = path + File.separator + project_id;
 
@@ -65,7 +66,7 @@ public class FileHandling {
     }
 
     public void putLogo(Part file, int company_id) throws IOException {
-        String path = System.getenv("POE_FOLDER");
+        String path = Controller.POE_FOLDER;
 
         String newPath = path + File.separator + "companies" + File.separator + company_id;
 
@@ -106,7 +107,7 @@ public class FileHandling {
 
     public boolean deleteFile(String filename, int project_id) throws IOException {
        try {
-           String stringpath = System.getenv("POE_FOLDER") + File.separator + project_id + File.separator + filename;
+           String stringpath = Controller.POE_FOLDER + File.separator + project_id + File.separator + filename;
            Path path = Paths.get(stringpath);
            Files.delete(path);
        } catch (Exception e) {
