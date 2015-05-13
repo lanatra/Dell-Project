@@ -1244,3 +1244,7 @@ div#graphs, div#numbers {
   div#numbers div#Totalcostofeachtype, div#numbers div#Typeswithhighestsuccessrate, div#numbers div#Countofprojectsforeachtype {
     float: left;
     width: 50%; }
+
+  .proof-container.new {
+      border: 1px solid green;
+  }
